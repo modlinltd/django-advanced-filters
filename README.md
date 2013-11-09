@@ -48,6 +48,9 @@ By default the mixin uses a template which extends django's built-in
 `change_list` template. This template is based off of grapelli's
 fork of this template, hence the 'grp' classes and funny looking javascript.
 
-Regardless, you can easily write your own template which uses context
-variables `{{ advanced_filters }}` and `{{ advanced_filters.formset }}`,
-to render the advanced filter creation form.
+The default template also uses the superb [magnificPopup](dimsemenov/Magnific-Popup)
+which is currently linked from a CDN.
+
+Regardless of the above, you can easily write your own template which uses
+context variables `{{ advanced_filters }}` and
+`{{ advanced_filters.formset }}`, to render the advanced filter creation form.

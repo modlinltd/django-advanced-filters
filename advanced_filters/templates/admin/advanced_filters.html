@@ -4,6 +4,7 @@
 {% block extrahead %}
 	{{ block.super }}
 	{# add some style for the dialog #}
+	<link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.magnific-popup/0.9.3/magnific-popup.css">
 	<style>
 		.white-popup {
 			position: relative;
@@ -72,6 +73,7 @@
 					<a href="#" class="grp-button" onclick="$.magnificPopup.close();">{% trans "Cancel" %}</a>
 				</form>
 
+				<script type="text/javascript" charset="utf-8" src="//cdn.jsdelivr.net/jquery.magnific-popup/0.9.3/jquery.magnific-popup.min.js"></script>
 				<script type="text/javascript" charset="utf-8">
 					// using django's original jquery, initial formset
 					(function($) {
