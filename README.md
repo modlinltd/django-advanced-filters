@@ -54,3 +54,7 @@ which is currently linked from a CDN.
 Regardless of the above, you can easily write your own template which uses
 context variables `{{ advanced_filters }}` and
 `{{ advanced_filters.formset }}`, to render the advanced filter creation form.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/modlinltd/django-advanced-filters/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
