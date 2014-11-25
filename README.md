@@ -3,7 +3,7 @@ django-advanced-filters
 
 A django ModelAdmin mixin which adds advanced filtering abilities to the admin.
 
-Mimics the advanced search feature in [VTiger](vtiger-crm/vtigercrm),
+Mimics the advanced search feature in [VTiger](https://www.vtiger.com/),
 [see here for more info](https://wiki.vtiger.com/index.php/Create_Custom_Filters)
 
 
