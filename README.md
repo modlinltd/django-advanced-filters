@@ -13,6 +13,7 @@ For release notes, see [Changelog](CHANGELOG.md)
 * ~~Add packaging (setup.py, etc...)~~
 * ~~Add edit/view functionality to the filters~~
 * Add permission user/group selection functionality to the filter form
+* Allow toggling of predefined templates (grappelli / vanilla django admin), and front-end features.
 
 
 ## Requirements
@@ -25,7 +26,7 @@ For release notes, see [Changelog](CHANGELOG.md)
 
 ## Set up
 
-1. Add `'advanced_filters'` to `INSTALLED_APPS`.
+1. Add both `'advanced_filters'` and `'easy_select2'` to `INSTALLED_APPS`.
 2. Add `url(r'^advanced_filters/', include('advanced_filters.urls'))` to your project's urlconf.
 3. Run `python manage.py syncdb`
 
