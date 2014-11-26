@@ -1,0 +1,6 @@
+Django==1.7.1
+django-braces==1.4.0
+django-easy-select2==1.2.5
+simplejson==3.6.5
+six==1.8.0
+wsgiref==0.1.2

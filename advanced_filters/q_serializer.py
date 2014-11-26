@@ -1,31 +1,28 @@
 """This is a module to serializers/deserializes Django Q (query) object."""
-import base64
-import logging
-from time import mktime
 from datetime import datetime, date
+import base64
+import time
 
 from django.db.models import Q
 from django.core.serializers.base import SerializationError
 
-try:
-    import simplejson as json
-except ImportError:
-    import json
+import simplejson as json
 
 
-dt2ts = lambda obj: mktime(obj.timetuple()) if isinstance(obj, date) else obj
-
-logger = logging.getLogger('advanced_filters')
+dt2ts = lambda obj: time.mktime(obj.timetuple()) if isinstance(
+    obj, date) else obj
+min_ts = time.mktime(datetime.min.timetuple())
+max_ts = time.mktime((3000,) + (0,) * 8)  # avoid OverflowError on windows
 
 
 class QSerializer(object):
     """
-    A Q object serializer base class. Pass base64=True when initalizing
-    to base64 encode/decode the returned/passed string.
+    A Q object serializer base class. Pass base64=True when initializing
+    to Base-64 encode/decode the returned/passed string.
 
     By default the class provides loads/dumps methods that wrap around
     json serialization, but they may be easily overwritten to serialize
-    into other formats (i.e xml, yaml, etc...)
+    into other formats (i.e XML, YAML, etc...)
     """
     b64_enabled = False
 
@@ -33,15 +30,21 @@ class QSerializer(object):
         if base64:
             self.b64_enabled = True
 
+    @staticmethod
+    def _is_range(qtuple):
+        return qtuple[0].endswith("__range") and len(qtuple[1]) == 2
+
     def prepare_value(self, qtuple):
-        if qtuple[0].endswith("__range") and len(qtuple[1]) == 2:
+        if self._is_range(qtuple):
+            qtuple[1][0] = qtuple[1][0] or min_ts
+            qtuple[1][1] = qtuple[1][1] or max_ts
             qtuple[1] = (datetime.fromtimestamp(qtuple[1][0]),
                          datetime.fromtimestamp(qtuple[1][1]))
         return qtuple
 
     def serialize(self, q):
         """
-        Serialize a Q object.
+        Serialize a Q object into a (possibly nested) dict.
         """
         children = []
         for child in q.children:
@@ -55,7 +58,7 @@ class QSerializer(object):
 
     def deserialize(self, d):
         """
-        Serialize a Q object.
+        De-serialize a Q object from a (possibly nested) dict.
         """
         children = []
         for child in d.pop('children'):
@@ -67,8 +70,41 @@ class QSerializer(object):
         query.children = children
         query.connector = d['connector']
         query.negated = d['negated']
-        query.subtree_parents = d['subtree_parents']
+        if 'subtree_parents' in d:
+            query.subtree_parents = d['subtree_parents']
         return query
+
+    def get_field_values_list(self, d):
+        """
+        Iterate over a (possibly nested) dict, and return a list
+        of all children queries, as a dict of the following structure:
+        {
+            'field': 'some_field__iexact',
+            'value': 'some_value',
+            'value_from': 'optional_range_val1',
+            'value_to': 'optional_range_val2',
+            'negate': True,
+        }
+
+        OR relations are expressed as an extra "line" between queries.
+        """
+        fields = []
+        children = d.get('children', [])
+        for child in children:
+            if isinstance(child, dict):
+                fields.extend(self.get_field_values_list(child))
+            else:
+                f = {'field': child[0], 'value': child[1]}
+                if self._is_range(child):
+                    f['value_from'] = child[1][0]
+                    f['value_to'] = child[1][1]
+                f['negate'] = d.get('negated', False)
+                fields.append(f)
+
+            # add _OR line
+            if d['connector'] == 'OR' and children[-1] != child:
+                fields.append({'field': '_OR', 'value': 'null'})
+        return fields
 
     def dumps(self, obj):
         if not isinstance(obj, Q):
@@ -78,9 +114,11 @@ class QSerializer(object):
             return base64.b64encode(string)
         return string
 
-    def loads(self, string):
+    def loads(self, string, raw=False):
         if self.b64_enabled:
             d = json.loads(base64.b64decode(string))
         else:
             d = json.loads(string)
+        if raw:
+            return d
         return self.deserialize(d)

@@ -1,31 +1,15 @@
 {% extends "admin/change_list.html" %}
 {% load i18n static admin_modify %}
-
-{% block extrahead %}
-	{{ block.super }}
-	{# add some style for the dialog #}
-	<link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.magnific-popup/0.9.3/magnific-popup.css">
-	<style>
-		.white-popup {
-			position: relative;
-			background: #FFF;
-			padding: 20px;
-			width: auto;
-			max-width: 800px;
-			margin: 20px auto;
-		}
-		.empty-form {
-			display: none;
-		}
-	</style>
-{% endblock extrahead %}
-
+{% load cycle from future %}
 
 {% block object-tools-items %}
 	{{ block.super }}
 	{# Add a link to the end of the tool items #}
 	{% if advanced_filters %}
-		<li><a class="grp-state-focus ajax-popup-link" href="#advanced_filters" >{% trans "Advanced Filter" %}</a></li>
+		<li><div class="afilters">
+			<a class="ajax-popup-link icons-object-tools-add-link" href="#advanced_filters" >{% trans "Advanced Filter" %}</a>{% if '_afilter' in request.GET %}<a class="edit-link" href="{% url 'admin:advanced_filters_advancedfilter_change' current_afilter %}" >{% trans "Edit" %}</a>
+			{% endif %}
+		</div></li>
 	{% endif %}
 {% endblock object-tools-items %}
 
@@ -44,24 +28,30 @@
 						{{ advanced_filters.as_table }}
 					</table>
 					<br/>
-					<table id="{{ formset.prefix }}-group">
+					<table id="{{ formset.prefix }}-group" data-rules-formset>
 						<thead>
 							<tr>
 								{% for field in formset.fields %}
-									<th>{{ field.label|capfirst }}</th>
+									<th style="color: black;">{{ field.label|capfirst }}</th>
 								{% endfor %}
 							</tr>
 						</thead>
 						<tbody>
 							{% for form in formset %}
 								<tr class="form-row {% cycle "row1" "row2" %} {% if forloop.last %}empty-form{% endif %}" id="{{ formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}">
+									{{form.non_field_errors}}
 									{{ form.id }}
 									{% for field in form.visible_fields %}
 										<td{% if field.field.name %} class="field-{{ field.field.name }}"{% endif %}>
-										{{ field }}
-										{{ field.errors }}
-									</td>
-
+											{{ field }}
+											{% if field.errors %}
+												<ul style="min-height: 30px;" class="errorlist">
+													{% for error in field.errors %}
+														<li>{{ error }}</li>
+													{% endfor %}
+												</ul>
+											{% endif %}
+										</td>
 									{% endfor %}
 								</tr>
 							{% endfor %}
@@ -70,31 +60,34 @@
 					<br />
 					<input method="POST" type="submit" value="{% trans "Save" %}">
 					<input method="POST" name="_save_goto" type="submit" value="{% trans "Save & Filter Now!" %}">
-					<a href="#" class="grp-button" onclick="$.magnificPopup.close();">{% trans "Cancel" %}</a>
+					<a href="#" class="grp-button" style="margin:auto" onclick="$.magnificPopup.close();">{% trans "Cancel" %}</a>
 				</form>
 
-				<script type="text/javascript" charset="utf-8" src="//cdn.jsdelivr.net/jquery.magnific-popup/0.9.3/jquery.magnific-popup.min.js"></script>
+				{{ advanced_filters.media }}
+
 				<script type="text/javascript" charset="utf-8">
 					// using django's original jquery, initial formset
+					var FORM_MODEL = undefined;
+					var MODEL_LABEL = '{{ app_label }}.{{ opts.model_name }}';
 					(function($) {
-						$("#{{ formset.prefix }}-group > tbody > tr")
-							.tabularFormset({
-								prefix: "{{ formset.prefix }}",
-								adminStaticPrefix: '{% static "admin/" %}',
-								addText: "{% trans "Add another filter" %}",
-								deleteText: "{% trans 'Remove' %}"
+						$.magnificPopup.instance._onFocusIn = function(e) {
+							// Do nothing if target element is select2 input
+							if( $(e.target).hasClass('select2-input') ) {
+								return true;
+							} 
+							// Else call parent method
+							$.magnificPopup.proto._onFocusIn.call(this,e);
+						};
+						$('.ajax-popup-link').magnificPopup({
+							type:'inline',
 						});
-						$(function() {
-							$('.ajax-popup-link').magnificPopup({
-								type:'inline',
-							});
-							if ($(".errorlist", "#advanced_filters").length) {
-								$('.ajax-popup-link').magnificPopup('open');
-							}
-						});
+						if ($(".errorlist", "#advanced_filters").length) {
+							$('.ajax-popup-link').magnificPopup('open');
+						}
 					})(django.jQuery);
 				</script>
-				<script type="text/javascript" charset="utf-8" src="{% static "advanced_filters.js" %}"></script>
+
+				{% include "admin/common_js_init.html" with formset=formset %}
 			</div>
 		{% endwith %}
 	{% endif %}

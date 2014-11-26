@@ -1,0 +1,3 @@
+include *.md
+recursive-include advanced_filters/static *
+recursive-include advanced_filters/templates *

@@ -2,13 +2,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.test import TestCase
 
-from .models import AdvancedFilter
-
-User = get_user_model()  # TODO: test if this works in simple tests
+from advanced_filters.models import AdvancedFilter
 
 
-class AdvancedFilterTestCase(TestCase):
+class AdvancedFilterPermissions(TestCase):
     def setUp(self):
+        User = get_user_model()
         self.user = User.objects.create(email='test1@example.com')
 
         self.group = Group.objects.create(name='test')
@@ -19,7 +18,8 @@ class AdvancedFilterTestCase(TestCase):
 
         self.advancedfilter = AdvancedFilter.objects.create(
             title='test', url='test', created_by=self.user,
-            b64_query='MQ==')
+            b64_query='MQ=='
+        )
 
     def test_filter_by_user_empty(self):
         qs = AdvancedFilter.objects.filter_by_user(user=self.user)
