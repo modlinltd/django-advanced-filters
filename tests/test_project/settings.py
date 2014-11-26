@@ -21,9 +21,7 @@ SECRET_KEY = 'j8sh+203#+(n@z8^2lgkj5-kw)wg+vz3drd9@4oluava*f65st'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -38,6 +36,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'advanced_filters',
+    'easy_select2',
+
+    'reps',
+    'customers',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -51,9 +53,9 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'test_project.urls'
-
 WSGI_APPLICATION = 'test_project.wsgi.application'
 
+AUTH_USER_MODEL = 'reps.SalesRep'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
@@ -71,11 +73,8 @@ DATABASES = {
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
