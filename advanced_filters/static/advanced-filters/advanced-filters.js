@@ -142,7 +142,7 @@ var OperatorHandlers = function() {
 	};
 };
 
-// using Grappelli's jquery
+// using Grappelli's jquery if available
 (function($) {
 	$(document).ready(function() {
 		if (!_af_handlers) {
@@ -151,4 +151,4 @@ var OperatorHandlers = function() {
 			_af_handlers.init();
 		}
 	});
-})(grp.jQuery);
+})(jQuery);
