@@ -13,6 +13,7 @@ For release notes, see [Changelog](CHANGELOG.md)
 * ~~Add packaging (setup.py, etc...)~~
 * ~~Add edit/view functionality to the filters~~
 * Add permission user/group selection functionality to the filter form
+* Allow toggling of predefined templates (grappelli / vanilla django admin), and front-end features.
 
 
 ## Requirements
