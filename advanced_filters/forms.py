@@ -42,9 +42,9 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
 
     field = forms.ChoiceField(required=True, widget=forms.Select(
         attrs={'class': 'query-field'}))
-    operator = forms.ChoiceField(required=True, choices=OPERATORS,
-                                 initial="iexact", widget=forms.Select(
-                                 attrs={'class': 'query-operator'}))
+    operator = forms.ChoiceField(
+        required=True, choices=OPERATORS, initial="iexact",
+        widget=forms.Select(attrs={'class': 'query-operator'}))
     value = VaryingTypeCharField(required=True, widget=forms.TextInput(
         attrs={'class': 'query-value'}))
     value_from = forms.DateTimeField(widget=forms.HiddenInput(
@@ -54,7 +54,9 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
     negate = forms.BooleanField(initial=False, required=False)
 
     def _build_field_choices(self, fields):
-        """Iterate over passed model fields tuple and update initial choices."""
+        """
+        Iterate over passed model fields tuple and update initial choices.
+        """
         return tuple(sorted(
             [(fquery, capfirst(fname)) for fquery, fname in fields.items()],
             key=lambda f: f[1].lower())
@@ -137,8 +139,8 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
     def clean(self):
         cleaned_data = super(AdvancedFilterQueryForm, self).clean()
         if cleaned_data['operator'] == "range":
-            if ('value_from' in cleaned_data
-                    and 'value_to' in cleaned_data):
+            if ('value_from' in cleaned_data and
+                    'value_to' in cleaned_data):
                 self.set_range_value(cleaned_data)
         return cleaned_data
 
