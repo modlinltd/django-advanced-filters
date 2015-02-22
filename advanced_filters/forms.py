@@ -249,6 +249,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         model_admin = kwargs.pop('model_admin', None)
         instance = kwargs.get('instance')
+        extra_form = kwargs.pop('extra_form', False)
         if model_admin:
             self._model = model_admin.model
         elif instance and instance.model:
@@ -271,7 +272,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
             data = args[0]
         elif kwargs.get('data'):
             data = kwargs.get('data')
-        self.initialize_form(instance, self._model, data)
+        self.initialize_form(instance, self._model, data, extra_form)
 
     def clean(self):
         cleaned_data = super(AdvancedFilterForm, self).clean()
@@ -312,7 +313,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
             query = reduce(operator.or_, ORed)
         return query
 
-    def initialize_form(self, instance, model, data=None):
+    def initialize_form(self, instance, model, data=None, extra=None):
         """ Takes a "finalized" query and generate it's form data """
         model_fields = self.get_fields_from_model(model, self._filter_fields)
 
@@ -323,7 +324,8 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
                     AdvancedFilterQueryForm._parse_query_dict(
                         field_data, model))
 
-        self.fields_formset = AFQFormSetNoExtra(
+        formset = AFQFormSetNoExtra if extra is None else AFQFormSet
+        self.fields_formset = formset(
             data=data,
             initial=forms or None,
             model_fields=model_fields

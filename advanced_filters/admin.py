@@ -73,7 +73,7 @@ class AdminAdvancedFiltersMixin(object):
         data = request.POST if request.REQUEST.get(
             'action') == 'advanced_filters' else None
         adv_filters_form = self.advanced_filter_form(
-            data=data, model_admin=self)
+            data=data, model_admin=self, extra_form=True)
         extra_context.update({
             'advanced_filters': adv_filters_form,
             'current_afilter': request.GET.get('_afilter'),
