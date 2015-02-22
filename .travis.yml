@@ -1,0 +1,31 @@
+language: python
+python:
+  - "2.6"
+  - "2.7"
+  - "3.3"
+  - "3.4"
+matrix:
+  exclude:
+    - python: "2.6"
+      env: DJANGO=1.7
+    - python: "3.3"
+    - python: "3.4"
+
+  include:
+    - python: "3.3"
+      env: DJANGO=1.6
+    - python: "3.3"
+      env: DJANGO=1.7
+    - python: "3.4"
+      env: DJANGO=1.7
+env:
+  - DJANGO=1.5
+  - DJANGO=1.6
+  - DJANGO=1.7
+install:
+  - pip install django==$DJANGO --use-mirrors
+  - pip install pep8 --use-mirrors
+  - pip install -e . --use-mirrors
+script:
+  - python tests/manage.py test advanced_filters -v2 -s
+  - pep8 --exclude=*urls.py advanced_filters -v
