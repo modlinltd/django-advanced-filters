@@ -9,10 +9,15 @@ from django.core.serializers.base import SerializationError
 import simplejson as json
 
 
-dt2ts = lambda obj: time.mktime(obj.timetuple()) if isinstance(
-    obj, date) else obj
-min_ts = time.mktime(datetime.min.timetuple())
+try:
+    min_ts = time.mktime(datetime.min.timetuple())
+except OverflowError:
+    min_ts = 0
 max_ts = time.mktime((3000,) + (0,) * 8)  # avoid OverflowError on windows
+
+
+def dt2ts(obj):
+    return time.mktime(obj.timetuple()) if isinstance(obj, date) else obj
 
 
 class QSerializer(object):
