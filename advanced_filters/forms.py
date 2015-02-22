@@ -212,12 +212,12 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
         fields = ('title',)
 
     class Media:
-        required_js = [static('easy_select2/vendor/jquery/jquery.min.js'),
+        required_js = [static('admin/js/jquery.min.js'),
                        static('orig_inlines%s.js' %
                        ('' if settings.DEBUG else '.min')),
                        static('magnific-popup/jquery.magnific-popup.js'),
                        static('advanced-filters/advanced-filters.js'), ]
-        js = required_js + SELECT2_WIDGET_JS
+        js = SELECT2_WIDGET_JS + required_js
         css = {'screen': [static(SELECT2_CSS),
                           static('advanced-filters/advanced-filters.css'),
                           static('magnific-popup/magnific-popup.css')]}

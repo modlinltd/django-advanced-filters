@@ -2,6 +2,11 @@
 {% load i18n static admin_modify %}
 {% load cycle from future %}
 
+{% block extrastyle %}
+	{{ advanced_filters.media.css }}
+	{{ block.super }}
+{% endblock extrastyle %}
+
 {% block object-tools-items %}
 	{{ block.super }}
 	{# Add a link to the end of the tool items #}
@@ -63,7 +68,7 @@
 					<a href="#" class="grp-button" style="margin:auto" onclick="$.magnificPopup.close();">{% trans "Cancel" %}</a>
 				</form>
 
-				{{ advanced_filters.media }}
+				{{ advanced_filters.media.js }}
 
 				<script type="text/javascript" charset="utf-8">
 					// using django's original jquery, initial formset

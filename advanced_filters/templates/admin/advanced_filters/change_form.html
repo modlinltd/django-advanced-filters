@@ -3,6 +3,10 @@
 {% load i18n admin_static admin_modify admin_urls grp_tags history compress %}
 {% load cycle from future %}
 
+{% block extrastyle %}
+	{{ adminform.media.css }}
+	{{ block.super }}
+{% endblock extrastyle %}
 
 {% block content %}
 	<form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form">{% csrf_token %}{% block form_top %}{% endblock %}
@@ -50,7 +54,7 @@
 				
 				<!-- JS for prepopulated fields -->
 				{% prepopulated_fields_js %}
-				{{ adminform.media }}
+				{{ adminform.media.js }}
 
 				<script type="text/javascript" charset="utf-8">
 					// using django's original jquery, initial formset
