@@ -1,7 +1,7 @@
 ## Django Advanced Filters
 
-[![Build Status](https://travis-ci.org/asfaltboy/bountyfulcoins.png?branch=registration)](https://travis-ci.org/asfaltboy/bountyfulcoins)
-[![Coverage Status](https://coveralls.io/repos/asfaltboy/bountyfulcoins/badge.png)](https://coveralls.io/r/asfaltboy/bountyfulcoins)
+[![Build Status](https://travis-ci.org/modlinltd/django-advanced-filters.svg?branch=master)](https://travis-ci.org/modlinltd/django-advanced-filters)
+[![Coverage Status](https://coveralls.io/repos/modlinltd/django-advanced-filters/badge.svg)](https://coveralls.io/r/modlinltd/django-advanced-filters)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/modlinltd/django-advanced-filters?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 A django ModelAdmin mixin which adds advanced filtering abilities to the admin.
