@@ -27,5 +27,5 @@ install:
   - pip install pep8 --use-mirrors
   - pip install -e . --use-mirrors
 script:
-  - python tests/manage.py test advanced_filters -v2 -s
+  - python tests/manage.py test advanced_filters -v2
   - pep8 --exclude=*urls.py advanced_filters -v
