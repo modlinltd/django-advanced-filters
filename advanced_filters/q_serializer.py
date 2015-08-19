@@ -15,9 +15,10 @@ except OverflowError:
     min_ts = 0
 
 try:
-	max_ts = time.mktime((3000,) + (0,) * 8)  # avoid OverflowError on windows
+    max_ts = time.mktime((3000,) + (0,) * 8)  # avoid OverflowError on windows
 except OverflowError:
-	max_ts = time.mktime((2038,) + (0,) * 8)  # limit 32bits
+    max_ts = time.mktime((2038,) + (0,) * 8)  # limit 32bits
+
 
 def dt2ts(obj):
     return time.mktime(obj.timetuple()) if isinstance(obj, date) else obj
