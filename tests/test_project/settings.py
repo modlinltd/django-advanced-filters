@@ -38,8 +38,8 @@ INSTALLED_APPS = (
     'advanced_filters',
     'easy_select2',
 
-    'reps',
-    'customers',
+    'tests.reps',
+    'tests.customers',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -52,8 +52,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'test_project.urls'
-WSGI_APPLICATION = 'test_project.wsgi.application'
+ROOT_URLCONF = 'tests.test_project.urls'
+WSGI_APPLICATION = 'tests.test_project.wsgi.application'
 
 AUTH_USER_MODEL = 'reps.SalesRep'
 
@@ -63,7 +63,7 @@ AUTH_USER_MODEL = 'reps.SalesRep'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': ':memory:',
     }
 }
 
