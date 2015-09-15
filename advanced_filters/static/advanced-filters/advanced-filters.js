@@ -1,5 +1,5 @@
 var _af_handlers = window._af_handlers || null;
-var OperatorHandlers = function() {
+var OperatorHandlers = function($) {
 	var self = this;
 	self.value = null;
 	self.val_input = null;
@@ -146,9 +146,9 @@ var OperatorHandlers = function() {
 (function($) {
 	$(document).ready(function() {
 		if (!_af_handlers) {
-			_af_handlers = new OperatorHandlers();
+			_af_handlers = new OperatorHandlers($);
 			_af_handlers.destroy()
 			_af_handlers.init();
 		}
 	});
-})(jQuery);
+})(window._jq || jQuery);
