@@ -55,9 +55,9 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
                 logger.debug('No choices calculated for field %s of type %s',
                              field, type(field))
             else:
-                choices = set(model_obj.objects.values_list(
-                    field.name, flat=True))
-                if len(choices) < MAX_CHOICES:
+                choices = model_obj.objects.values_list(field.name, flat=True)
+                if choices.count() < max_choices:
+                    choices = set(choices)
                     choices = zip(choices, choices)
                     logger.debug('Choices found for field %s: %s',
                                  field.name, choices)
