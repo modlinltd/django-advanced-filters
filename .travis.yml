@@ -24,8 +24,7 @@ env:
   - DJANGO=1.7
 install:
   - pip install django==$DJANGO --use-mirrors
-  - pip install pep8 coveralls --use-mirrors
-  - pip install -e . --use-mirrors
+  - pip install -e .[test] --use-mirrors
 script:
   - coverage run --source=advanced_filters setup.py test
   - pep8 --exclude=*urls.py advanced_filters -v

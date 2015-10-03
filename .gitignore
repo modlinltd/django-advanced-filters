@@ -1,6 +1,7 @@
 *.log
 *.pot
 *.pyc
+/.coverage
 local_settings.py
 build/
 dist/
