@@ -8,7 +8,10 @@ with open(os.path.join(os.path.dirname(__file__),
     README = readme.read()
 
 # allow setup.py to be run from any path
-os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+CUR_DIR = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir))
+os.chdir(CUR_DIR)
+with open(os.path.join(CUR_DIR, 'test-reqs.txt')) as f:
+    TEST_REQS = list(f.readlines())
 
 setup(
     name='django-advanced-filters',
@@ -24,6 +27,7 @@ setup(
         'django-braces==1.4.0',
         'simplejson==3.6.5',
     ],
+    extras_require=dict(test=TEST_REQS),
     zip_safe=False,
     author='Pavel Savchenko',
     author_email='pavel@modlinltd.com',
