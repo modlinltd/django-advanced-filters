@@ -22,7 +22,7 @@ For release notes, see [Changelog](CHANGELOG.md)
 
 ## Requirements
 
-* Django >= 1.5  (tested in 1.5 and 1.7, should work in 1.6 too)
+* Django >= 1.5  (Django 1.5 - 1.8 on Python 2/3/PyPy2)
 * django-easy-select2 == 1.2.5
 * django-braces == 1.4.0
 * simplejson == 3.6.5
