@@ -1,8 +1,7 @@
 from django.db.models import Q
 from django.test import TestCase
 import django
-
-import simplejson as json
+import json
 
 from advanced_filters.q_serializer import QSerializer
 
@@ -18,8 +17,6 @@ class QSerializerTest(TestCase):
     if not NEWER_DJANGO:
         correct_query['subtree_parents'] = []
 
-    correct_query_json = json.dumps(correct_query)
-
     def setUp(self):
         self.s = QSerializer()
         self.query_a = Q(test=1234)
@@ -27,14 +24,11 @@ class QSerializerTest(TestCase):
 
     def test_serialize_q(self):
         res = self.s.serialize(self.query_a)
-
         self.assertEquals(res, self.correct_query)
 
+    def test_jsondump_q(self):
         jres = self.s.dumps(self.query_a)
-        self.assertEquals(jres, self.correct_query_json)
-        # '{"connector": "AND", "negated": false, "children": [["test", '
-        # '1234]], "subtree_parents": []}'
-        # )
+        self.assertJSONEqual(jres, json.dumps(self.correct_query))
 
     def test_deserialize_q(self):
         qres = self.s.deserialize({

@@ -10,8 +10,12 @@ with open(os.path.join(os.path.dirname(__file__),
 # allow setup.py to be run from any path
 CUR_DIR = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir))
 os.chdir(CUR_DIR)
-with open(os.path.join(CUR_DIR, 'test-reqs.txt')) as f:
-    TEST_REQS = list(f.readlines())
+TEST_REQ_FILE = os.path.join(CUR_DIR, 'test-reqs.txt')
+if os.path.exists(TEST_REQ_FILE):
+    with open(TEST_REQ_FILE) as f:
+        TEST_REQS = list(f.readlines())
+else:
+    TEST_REQS = []
 
 setup(
     name='django-advanced-filters',

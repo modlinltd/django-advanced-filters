@@ -36,6 +36,10 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
             model_obj = models.get_model(app_label, model_name)
             field = get_fields_from_path(model_obj, field_name)[-1]
             model_obj = field.model  # use new model if followed a ForeignKey
+        except AttributeError as e:
+            logger.debug("Invalid kwargs passed to view: %s", e)
+            return self.render_json_response(
+                {'error': "No installed app/model: %s" % model}, status=400)
         except (LookupError, FieldDoesNotExist) as e:
             logger.debug("Invalid kwargs passed to view: %s", e)
             return self.render_json_response(
@@ -64,7 +68,7 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
                 else:
                     choices = []
 
-        results = [{'id': c[0], 'text': unicode(c[1])} for c in sorted(
+        results = [{'id': c[0], 'text': force_text(c[1])} for c in sorted(
                    choices, key=itemgetter(0))]
 
         return self.render_json_response({'results': results})
