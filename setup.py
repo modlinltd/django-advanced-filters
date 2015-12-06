@@ -1,11 +1,36 @@
+from setuptools.command.test import test as TestCommand
 from setuptools import setup
 import os
+import sys
 
 from advanced_filters import __version__
 
 with open(os.path.join(os.path.dirname(__file__),
           'README.md')) as readme:
     README = readme.read()
+
+
+class Tox(TestCommand):
+    user_options = [('tox-args=', 'a', "Arguments to pass to tox")]
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.tox_args = None
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        #import here, cause outside the eggs aren't loaded
+        import tox
+        import shlex
+        args = self.tox_args
+        if args:
+            args = shlex.split(self.tox_args)
+        errno = tox.cmdline(args=args)
+        sys.exit(errno)
 
 # allow setup.py to be run from any path
 CUR_DIR = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir))
@@ -22,7 +47,7 @@ setup(
     version=__version__,
     packages=['advanced_filters'],
     url='https://github.com/modlinltd',
-    license='MIT License',
+    license='MIT',
     include_package_data=True,
     description='A Django application for advanced admin filters',
     long_description=README,
@@ -49,5 +74,6 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
-    test_suite='run_tests',
+    tests_require=['tox'],
+    cmdclass={'test': Tox},
 )

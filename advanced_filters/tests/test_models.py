@@ -1,5 +1,3 @@
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
 from django.test import TestCase
 
 from advanced_filters.models import AdvancedFilter
@@ -7,6 +5,8 @@ from advanced_filters.models import AdvancedFilter
 
 class AdvancedFilterPermissions(TestCase):
     def setUp(self):
+        from django.contrib.auth import get_user_model
+        from django.contrib.auth.models import Group
         User = get_user_model()
         self.user = User.objects.create(email='test1@example.com')
 
