@@ -62,11 +62,13 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
             key=lambda f: f[1].lower())
         ) + self.FIELD_CHOICES
 
-    def _build_query_dict(self, formdata):
+    def _build_query_dict(self, formdata=None):
         """
         Take submitted data from form and create a query dict to be
         used in a Q object (or filter)
         """
+        if self.is_valid() and formdata is None:
+            formdata = self.cleaned_data
         key = "{}__{}".format(formdata['field'], formdata['operator'])
         if formdata['operator'] == "isnull":
             return {key: None}
