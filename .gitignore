@@ -1,8 +1,14 @@
 *.log
 *.pot
 *.pyc
+/.tox/
+/.coverage
 local_settings.py
 build/
 dist/
 django_advanced_filters.egg-info/
 tests/db.sqlite3
+/.python-version
+/.cache/
+/.eggs/
+/htmlcov/

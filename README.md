@@ -1,5 +1,6 @@
 ## Django Advanced Filters
 
+[![PyPI](https://img.shields.io/pypi/pyversions/django-advanced-filters.svg)](https://pypi.python.org/pypi/django-advanced-filters)
 [![Build Status](https://travis-ci.org/modlinltd/django-advanced-filters.svg?branch=master)](https://travis-ci.org/modlinltd/django-advanced-filters)
 [![Coverage Status](https://coveralls.io/repos/modlinltd/django-advanced-filters/badge.svg)](https://coveralls.io/r/modlinltd/django-advanced-filters)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/modlinltd/django-advanced-filters?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -9,30 +10,23 @@ A django ModelAdmin mixin which adds advanced filtering abilities to the admin.
 Mimics the advanced search feature in [VTiger](https://www.vtiger.com/),
 [see here for more info](https://wiki.vtiger.com/index.php/Create_Custom_Filters)
 
-For release notes, see [Changelog](CHANGELOG.md)
-
-### TODO
-
-* Add more tests (specifically the form and view parts)
-* ~~Add packaging (setup.py, etc...)~~
-* ~~Add edit/view functionality to the filters~~
-* Add permission user/group selection functionality to the filter form
-* Allow toggling of predefined templates (grappelli / vanilla django admin), and front-end features.
+For release notes, see [Changelog](https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/CHANGELOG.md)
 
 
 ## Requirements
 
-* Django >= 1.5  (tested in 1.5 and 1.7, should work in 1.6 too)
+* Django >= 1.5  (Django 1.5 - 1.8 on Python 2/3/PyPy2)
 * django-easy-select2 == 1.2.5
 * django-braces == 1.4.0
 * simplejson == 3.6.5
 
 
-## Set up
+## Installation & Set up
 
-1. Add both `'advanced_filters'` and `'easy_select2'` to `INSTALLED_APPS`.
-2. Add `url(r'^advanced_filters/', include('advanced_filters.urls'))` to your project's urlconf.
-3. Run `python manage.py syncdb`
+1. Install from pypi: `pip install django-advanced-filters`
+2. Add both `'advanced_filters'` and `'easy_select2'` to `INSTALLED_APPS`.
+3. Add `url(r'^advanced_filters/', include('advanced_filters.urls'))` to your project's urlconf.
+4. Run `python manage.py syncdb`
 
 ## Integration Example
 
@@ -91,7 +85,8 @@ context variables `{{ advanced_filters }}` and
 `{{ advanced_filters.formset }}`, to render the advanced filter creation form.
 
 Here's a screenshot
-![alt text](screenshot.png "Creating via a modal")
+
+![alt text](https://raw.githubusercontent.com/modlinltd/django-advanced-filters/master/screenshot.png "Creating via a modal")
 
 ## Structure
 
@@ -188,5 +183,10 @@ The GetFieldChoices view is required to dynamically (using javascript) fetch a
 list of valid field choices when creating/changing an `AdvancedFilter`.
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/modlinltd/django-advanced-filters/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+## TODO
 
+* Add more tests (specifically the admin and view parts)
+* ~~Add packaging (setup.py, etc...)~~
+* ~~Add edit/view functionality to the filters~~
+* Add permission user/group selection functionality to the filter form
+* Allow toggling of predefined templates (grappelli / vanilla django admin), and front-end features.

@@ -1,33 +1,29 @@
 language: python
+sudo: false
+cache: pip
 python:
   - "2.6"
   - "2.7"
   - "3.3"
   - "3.4"
+  - "pypy"
 matrix:
   exclude:
     - python: "2.6"
-      env: DJANGO=1.7
-    - python: "3.3"
-    - python: "3.4"
-
-  include:
-    - python: "3.3"
-      env: DJANGO=1.6
-    - python: "3.3"
-      env: DJANGO=1.7
-    - python: "3.4"
-      env: DJANGO=1.7
+      env: DJANGO="Django>=1.7,<1.8"
+    - python: "2.6"
+      env: DJANGO="Django>=1.8,<1.9"
 env:
-  - DJANGO=1.5
-  - DJANGO=1.6
-  - DJANGO=1.7
+  - DJANGO="Django>=1.5,<1.6"
+  - DJANGO="Django>=1.6,<1.7"
+  - DJANGO="Django>=1.7,<1.8"
+  - DJANGO="Django>=1.8,<1.9"
+  # - DJANGO="Django>=1.9a"
 install:
-  - pip install django==$DJANGO --use-mirrors
-  - pip install pep8 coveralls --use-mirrors
-  - pip install -e . --use-mirrors
+  - pip install $DJANGO
+  - pip install -e .[test]
 script:
-  - coverage run --source=advanced_filters setup.py test
+  - coverage run -m py.test advanced_filters
   - pep8 --exclude=*urls.py advanced_filters -v
 after_success:
   coveralls

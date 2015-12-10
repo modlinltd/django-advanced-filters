@@ -1,6 +1,5 @@
-Django==1.7.1
-django-braces==1.4.0
+coveralls==0.5
 django-easy-select2==1.2.5
-simplejson==3.6.5
-six==1.8.0
-wsgiref==0.1.2
+factory-boy==2.5.2
+pep8==1.6.2
+pytest-django==2.9.1

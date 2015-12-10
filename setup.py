@@ -1,21 +1,62 @@
+from setuptools.command.test import test as TestCommand
 from setuptools import setup
 import os
+import sys
 
 from advanced_filters import __version__
 
-with open(os.path.join(os.path.dirname(__file__),
-          'README.md')) as readme:
-    README = readme.read()
+
+class Tox(TestCommand):
+    user_options = [('tox-args=', 'a', "Arguments to pass to tox")]
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.tox_args = None
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        #import here, cause outside the eggs aren't loaded
+        import tox
+        import shlex
+        args = self.tox_args
+        if args:
+            args = shlex.split(self.tox_args)
+        errno = tox.cmdline(args=args)
+        sys.exit(errno)
+
+
+# get long description from README
+readme = 'README.md'
+changelog = 'CHANGELOG.md'
+try:
+    import pypandoc
+    README = b'%s\n%s' % (pypandoc.convert(readme, 'rst'), pypandoc.convert(changelog, 'rst'))
+except ImportError:
+    print('PyPandoc not installed. Cannot convert README.md to rst')
+    with open(os.path.join(os.path.dirname(__file__), readme)) as readme:
+        README = readme.read()
 
 # allow setup.py to be run from any path
-os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+CUR_DIR = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir))
+os.chdir(CUR_DIR)
+TEST_REQ_FILE = os.path.join(CUR_DIR, 'test-reqs.txt')
+if os.path.exists(TEST_REQ_FILE):
+    with open(TEST_REQ_FILE) as f:
+        TEST_REQS = list(f.readlines())
+else:
+    TEST_REQS = []
+
 
 setup(
     name='django-advanced-filters',
     version=__version__,
     packages=['advanced_filters'],
-    url='https://github.com/modlinltd',
-    license='MIT License',
+    url='https://github.com/modlinltd/django-advanced-filters',
+    license='MIT',
     include_package_data=True,
     description='A Django application for advanced admin filters',
     long_description=README,
@@ -24,6 +65,7 @@ setup(
         'django-braces==1.4.0',
         'simplejson==3.6.5',
     ],
+    extras_require=dict(test=TEST_REQS),
     zip_safe=False,
     author='Pavel Savchenko',
     author_email='pavel@modlinltd.com',
@@ -34,12 +76,15 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        # Replace these appropriately if you are stuck on Python 2.
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
-    test_suite='run_tests',
+    tests_require=['tox'],
+    cmdclass={'test': Tox},
 )

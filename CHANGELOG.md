@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.0.1 - A Public Release
+
+### Bugs
+   - proper support for py26 and py3X and different Django releases
+   - avoid querying all instances for choices
+   - resolve settings inside view and refine error handling
+
+### Tests
+   - add doctests to the `form_helpers`
+   - add tests for `forms`
+   - add test case `views.TestGetFieldChoicesView`
+   - setup.py/travis: add `test-reqs.txt` as extras_require
+   - refactor testing to use `py.test` and run `tox` from `setup.py`
+   - travis: use latest version of each Django release
+
+### Docs:
+   - `README`: explain what we test against
+
 ## 1.0 - First contact
 
 #### Major changes
@@ -19,7 +37,3 @@ dynamically populate [`field` options](README.md#fields).
 * Hide `QSerializer` calling logic in the model
 * Allow modifying `advanced_filter_form` property (defaults to `AdvancedFilterForm`)
 * Correct documentation regarding position of mixin in subclass (issue #1)
-
-## 0.1 - Beta / concept initial version
-
-* Initial commits
