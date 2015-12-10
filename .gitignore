@@ -9,3 +9,6 @@ dist/
 django_advanced_filters.egg-info/
 tests/db.sqlite3
 /.python-version
+/.cache/
+/.eggs/
+/htmlcov/

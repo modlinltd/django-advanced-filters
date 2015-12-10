@@ -13,6 +13,7 @@ from django.forms.formsets import formset_factory, BaseFormSet
 from django.templatetags.static import static
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
+from django.utils.six.moves import range, reduce
 from django.utils.text import capfirst
 
 from easy_select2.widgets import SELECT2_WIDGET_JS, SELECT2_CSS
@@ -62,12 +63,14 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
             key=lambda f: f[1].lower())
         ) + self.FIELD_CHOICES
 
-    def _build_query_dict(self, formdata):
+    def _build_query_dict(self, formdata=None):
         """
         Take submitted data from form and create a query dict to be
         used in a Q object (or filter)
         """
-        key = "{}__{}".format(formdata['field'], formdata['operator'])
+        if self.is_valid() and formdata is None:
+            formdata = self.cleaned_data
+        key = "{field}__{operator}".format(**formdata)
         if formdata['operator'] == "isnull":
             return {key: None}
         elif formdata['operator'] == "istrue":
@@ -138,7 +141,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
 
     def clean(self):
         cleaned_data = super(AdvancedFilterQueryForm, self).clean()
-        if cleaned_data['operator'] == "range":
+        if cleaned_data.get('operator') == "range":
             if ('value_from' in cleaned_data and
                     'value_to' in cleaned_data):
                 self.set_range_value(cleaned_data)
@@ -154,7 +157,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
             query = query & Q(**query_dict)
         return query
 
-    def __init__(self, model_fields, *args, **kwargs):
+    def __init__(self, model_fields={}, *args, **kwargs):
         super(AdvancedFilterQueryForm, self).__init__(*args, **kwargs)
         self.FIELD_CHOICES = self._build_field_choices(model_fields)
         self.fields['field'].choices = self.FIELD_CHOICES
@@ -185,16 +188,18 @@ class AdvancedFilterFormSet(BaseFormSet):
         self.add_fields(form, None)
         return form
 
+    def _construct_forms(self):
+        # not strictly required, but Django 1.5 calls this on init
+        self.forms = []
+        for i in range(min(self.total_form_count(), self.absolute_max)):
+            self.forms.append(self._construct_form(
+                i, model_fields=self.model_fields))
+
     @cached_property
     def forms(self):
-        """
-        Instantiate forms at first property access.
-
-        Change: Allow passing of additional kwargs to form instance upon init
-        """
-        # DoS protection is included in total_form_count()
-        forms = [self._construct_form(i, **{'model_fields': self.model_fields})
-                 for i in xrange(self.total_form_count())]
+        # override the original property to include `model_fields` argument
+        forms = [self._construct_form(i, model_fields=self.model_fields)
+                 for i in range(self.total_form_count())]
         forms.append(self.empty_form)  # add initial empty form
         return forms
 
@@ -252,19 +257,24 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
         model_admin = kwargs.pop('model_admin', None)
         instance = kwargs.get('instance')
         extra_form = kwargs.pop('extra_form', False)
+        # TODO: allow all fields to be determined by model
+        filter_fields = kwargs.pop('filter_fields', None)
         if model_admin:
             self._model = model_admin.model
         elif instance and instance.model:
             # get existing instance model
             self._model = get_model(*instance.model.split('.'))
-            model_admin = admin.site._registry[self._model]
+            try:
+                model_admin = admin.site._registry[self._model]
+            except KeyError:
+                logger.debug('No ModelAdmin registered for %s', self._model)
         else:
             raise Exception('Adding new AdvancedFilter from admin is '
                             'not supported')
 
-        self._filter_fields = getattr(
-            model_admin,
-            'advanced_filter_fields', ())
+        self._filter_fields = filter_fields or getattr(
+            model_admin, 'advanced_filter_fields', ())
+        print(filter_fields, model_admin, self._filter_fields)
 
         super(AdvancedFilterForm, self).__init__(*args, **kwargs)
 
