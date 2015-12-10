@@ -1,4 +1,6 @@
 language: python
+sudo: false
+cache: pip
 python:
   - "2.6"
   - "2.7"
@@ -8,17 +10,18 @@ python:
 matrix:
   exclude:
     - python: "2.6"
-      env: DJANGO=1.7
+      env: DJANGO="Django>=1.7,<1.8"
     - python: "2.6"
-      env: DJANGO=1.8
+      env: DJANGO="Django>=1.8,<1.9"
 env:
-  - DJANGO=1.5
-  - DJANGO=1.6
-  - DJANGO=1.7
-  - DJANGO=1.8
+  - DJANGO="Django>=1.5,<1.6"
+  - DJANGO="Django>=1.6,<1.7"
+  - DJANGO="Django>=1.7,<1.8"
+  - DJANGO="Django>=1.8,<1.9"
+  # - DJANGO="Django>=1.9a"
 install:
-  - pip install django==$DJANGO --use-mirrors
-  - pip install -e .[test] --use-mirrors
+  - pip install $DJANGO
+  - pip install -e .[test]
 script:
   - coverage run -m py.test advanced_filters
   - pep8 --exclude=*urls.py advanced_filters -v
