@@ -5,10 +5,6 @@ import sys
 
 from advanced_filters import __version__
 
-with open(os.path.join(os.path.dirname(__file__),
-          'README.md')) as readme:
-    README = readme.read()
-
 
 class Tox(TestCommand):
     user_options = [('tox-args=', 'a', "Arguments to pass to tox")]
@@ -32,6 +28,18 @@ class Tox(TestCommand):
         errno = tox.cmdline(args=args)
         sys.exit(errno)
 
+
+# get long description from README
+readme = 'README.md'
+changelog = 'CHANGELOG.md'
+try:
+    import pypandoc
+    README = b'%s\n%s' % (pypandoc.convert(readme, 'rst'), pypandoc.convert(changelog, 'rst'))
+except ImportError:
+    print('PyPandoc not installed. Cannot convert README.md to rst')
+    with open(os.path.join(os.path.dirname(__file__), readme)) as readme:
+        README = readme.read()
+
 # allow setup.py to be run from any path
 CUR_DIR = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir))
 os.chdir(CUR_DIR)
@@ -42,11 +50,12 @@ if os.path.exists(TEST_REQ_FILE):
 else:
     TEST_REQS = []
 
+
 setup(
     name='django-advanced-filters',
     version=__version__,
     packages=['advanced_filters'],
-    url='https://github.com/modlinltd',
+    url='https://github.com/modlinltd/django-advanced-filters',
     license='MIT',
     include_package_data=True,
     description='A Django application for advanced admin filters',
@@ -67,7 +76,9 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        # Replace these appropriately if you are stuck on Python 2.
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
