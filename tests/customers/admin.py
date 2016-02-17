@@ -6,7 +6,7 @@ from .models import Client
 
 
 class ClientAdmin(AdminAdvancedFiltersMixin, admin.ModelAdmin):
-    advanced_filter_fields = ('language', 'first_name', 'rep',
+    advanced_filter_fields = ('language', 'first_name',
                               ('assigned_to__email', 'Sales Rep.'))
 
 admin.site.register(Client, ClientAdmin)
