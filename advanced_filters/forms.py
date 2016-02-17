@@ -274,7 +274,6 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
 
         self._filter_fields = filter_fields or getattr(
             model_admin, 'advanced_filter_fields', ())
-        print(filter_fields, model_admin, self._filter_fields)
 
         super(AdvancedFilterForm, self).__init__(*args, **kwargs)
 

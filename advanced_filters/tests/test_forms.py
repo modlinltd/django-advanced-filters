@@ -209,7 +209,6 @@ class TestAdvancedFilterForm(CommonFormTest):
         updated_data = {'form-1-field': 'last_name', 'form-0-DELETE': True,
                         'form-INITIAL_FORMS': 1, 'form-TOTAL_FORMS': 2}
         data = self._create_query_form_data(form_number=1, **updated_data)
-        print(data)
         form = AdvancedFilterForm(data, instance=self.af,
                                   filter_fields=['first_name', 'last_name'])
         assert form.is_valid(), (form.errors, form.fields_formset.errors)
