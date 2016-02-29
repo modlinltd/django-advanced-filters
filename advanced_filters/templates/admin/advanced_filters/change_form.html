@@ -1,7 +1,8 @@
-{% extends "admin/change_form_orig.html" %}
+{% extends "admin/change_form.html" %}
 
-{% load i18n admin_static admin_modify admin_urls grp_tags history compress %}
-{% load cycle from future %}
+{% load i18n admin_static admin_modify admin_urls %}
+{# django == 1.5 support #}
+{# {% load cycle from future %} #}
 
 {% block extrastyle %}
 	{{ adminform.media.css }}

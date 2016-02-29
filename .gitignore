@@ -12,3 +12,4 @@ tests/db.sqlite3
 /.cache/
 /.eggs/
 /htmlcov/
+/advanced_filters/.coverage
