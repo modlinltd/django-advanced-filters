@@ -30,7 +30,15 @@ class AdvancedListFilters(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value():
-            advfilter = AdvancedFilter.objects.filter(id=self.value()).first()
+            filters = AdvancedFilter.objects.filter(id=self.value())
+            if hasattr(filters, 'first'):
+                advfilter = filters.first()
+            else:
+                # django == 1.5 support
+                try:
+                    advfilter = filters.order_by()[0]
+                except IndexError:
+                    advfilter = None
             if not advfilter:
                 logger.error("AdvancedListFilters.queryset: Invalid filter id")
                 return queryset

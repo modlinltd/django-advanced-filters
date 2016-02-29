@@ -39,7 +39,12 @@ class ChageFormAdminTest(TestCase):
                      '_save_goto': 1}
         res = self.client.post(url, data=form_data)
         assert res.status_code == 302
-        assert res.url.endswith('admin/customers/client/?_afilter=1')
+        # django == 1.5 support
+        if hasattr(res, 'url'):
+            assert res.url.endswith('admin/customers/client/?_afilter=1')
+        else:
+            url = res._headers['location'][1]
+            assert url.endswith('admin/customers/client/?_afilter=1')
 
     def test_create_page_disabled(self):
         self.user.user_permissions.add(Permission.objects.get(
@@ -54,8 +59,7 @@ class AdvancedFilterCreationTest(TestCase):
                  'action': 'advanced_filters'}
     good_data = {'title': 'Test title', 'form-0-field': 'language',
                  'form-0-operator': 'iexact', 'form-0-value': 'ru', }
-    b64query = ('eyJjb25uZWN0b3IiOiAiQU5EIiwgIm5lZ2F0ZWQiOiBmYWxzZSwgImNoaWxkcm'
-                'VuIjogW1sibGFuZ3VhZ2VfX2lleGFjdCIsICJydSJdXX0=')
+    query = ['language__iexact', 'ru']
 
     def setUp(self):
         self.user = factories.SalesRep()
@@ -69,8 +73,10 @@ class AdvancedFilterCreationTest(TestCase):
         assert res.status_code == 200
         title = ['Create advanced filter']
         fields = ['First name', 'Language', 'Sales Rep']
+        # python >= 3.3 support
+        response_content = res.content.decode('utf-8')
         for part in title + fields:
-            assert part in res.content
+            assert part in response_content
 
     def test_create_form_validation(self):
         self.user.user_permissions.add(Permission.objects.get(
@@ -96,19 +102,30 @@ class AdvancedFilterCreationTest(TestCase):
         form = res.context_data['advanced_filters']
         assert form.is_valid()
         assert AdvancedFilter.objects.count() == 1
-        created_filter = AdvancedFilter.objects.last()
+
+        # django == 1.5 support
+        created_filter = AdvancedFilter.objects.order_by('-pk')[0]
+
         assert created_filter.title == self.good_data['title']
-        assert created_filter.b64_query == self.b64query
+        assert list(created_filter.query.children[0]) == self.query
 
         # save with redirect to filter
         form_data['_save_goto'] = 1
         res = self.client.post(url, data=form_data)
         assert res.status_code == 302
         assert AdvancedFilter.objects.count() == 2
-        created_filter = AdvancedFilter.objects.last()
-        assert res.url.endswith('admin/customers/client/?_afilter=%s' %
+
+        # django == 1.5 support
+        created_filter = AdvancedFilter.objects.order_by('-pk')[0]
+        if hasattr(res, 'url'):
+            assert res.url.endswith('admin/customers/client/?_afilter=%s' %
+                                    created_filter.pk)
+        else:
+            url = res._headers['location'][1]
+            assert url.endswith('admin/customers/client/?_afilter=%s' %
                                 created_filter.pk)
-        assert created_filter.b64_query == self.b64query
+
+        assert list(created_filter.query.children[0]) == self.query
 
 
 class AdvancedFilterUsageTest(TestCase):
@@ -128,17 +145,27 @@ class AdvancedFilterUsageTest(TestCase):
         url = reverse('admin:customers_client_changelist')
         res = self.client.get(url, data={'_afilter': self.a.pk})
         assert res.status_code == 200
-        assert not res.context_data['cl'].filter_specs
+        cl = res.context_data['cl']
+        assert not cl.filter_specs
         # filter not applied due to user not being in list
-        assert res.context_data['cl'].queryset.count() == 10
+        if hasattr(cl, 'queryset'):
+            assert cl.queryset.count() == 10
+        else:
+            # django == 1.5 support
+            assert cl.query_set.count() == 10
 
     def test_filters_available_to_users(self):
         self.a.users.add(self.user)
         url = reverse('admin:customers_client_changelist')
         res = self.client.get(url, data={'_afilter': self.a.pk})
         assert res.status_code == 200
-        assert res.context_data['cl'].filter_specs
-        assert res.context_data['cl'].queryset.count() == 2
+        cl = res.context_data['cl']
+        assert cl.filter_specs
+        if hasattr(cl, 'queryset'):
+            assert cl.queryset.count() == 2
+        else:
+            # django == 1.5 support
+            assert cl.query_set.count() == 2
 
     def test_filters_available_to_groups(self):
         group = self.user.groups.create()
@@ -146,5 +173,10 @@ class AdvancedFilterUsageTest(TestCase):
         url = reverse('admin:customers_client_changelist')
         res = self.client.get(url, data={'_afilter': self.a.pk})
         assert res.status_code == 200
-        assert res.context_data['cl'].filter_specs
-        assert res.context_data['cl'].queryset.count() == 2
+        cl = res.context_data['cl']
+        assert cl.filter_specs
+        if hasattr(cl, 'queryset'):
+            assert cl.queryset.count() == 2
+        else:
+            # django == 1.5 support
+            assert cl.query_set.count() == 2

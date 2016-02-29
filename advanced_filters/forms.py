@@ -190,6 +190,7 @@ class AdvancedFilterFormSet(BaseFormSet):
 
     def _construct_forms(self):
         # not strictly required, but Django 1.5 calls this on init
+        # django == 1.5 support
         self.forms = []
         for i in range(min(self.total_form_count(), self.absolute_max)):
             self.forms.append(self._construct_form(
