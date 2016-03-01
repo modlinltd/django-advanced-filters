@@ -43,7 +43,7 @@ class ChageFormAdminTest(TestCase):
         if hasattr(res, 'url'):
             assert res.url.endswith('admin/customers/client/?_afilter=1')
         else:
-            url = res._headers['location'][1]
+            url = res['location']
             assert url.endswith('admin/customers/client/?_afilter=1')
 
     def test_create_page_disabled(self):
@@ -121,7 +121,7 @@ class AdvancedFilterCreationTest(TestCase):
             assert res.url.endswith('admin/customers/client/?_afilter=%s' %
                                     created_filter.pk)
         else:
-            url = res._headers['location'][1]
+            url = res['location']
             assert url.endswith('admin/customers/client/?_afilter=%s' %
                                 created_filter.pk)
 
