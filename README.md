@@ -1,9 +1,23 @@
 ## Django Advanced Filters
 
-[![PyPI](https://img.shields.io/pypi/pyversions/django-advanced-filters.svg)](https://pypi.python.org/pypi/django-advanced-filters)
-[![Build Status](https://travis-ci.org/modlinltd/django-advanced-filters.svg?branch=master)](https://travis-ci.org/modlinltd/django-advanced-filters)
-[![Coverage Status](https://coveralls.io/repos/modlinltd/django-advanced-filters/badge.svg)](https://coveralls.io/r/modlinltd/django-advanced-filters)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/modlinltd/django-advanced-filters?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+| Branch | Build | Coverage | PyPI | Gitter |
+| ------ | ----- | -------- | ---- | ------ |
+| Master | [![Build Status][5]][7] | [![Coverage Status][8]][10] | [![PyPI][1]][2] | [![Gitter][3]][4] |
+| Develop | [![Build Status][6]][7] | [![Coverage Status][9]][11] | 🔺 | 🔺 |
+
+
+[1]: https://img.shields.io/pypi/pyversions/django-advanced-filters.svg
+[2]: https://pypi.python.org/pypi/django-advanced-filters
+[3]: https://badges.gitter.im/Join%20Chat.svg
+[4]: https://gitter.im/modlinltd/django-advanced-filters?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[5]: https://travis-ci.org/modlinltd/django-advanced-filters.svg?branch=master
+[6]: https://travis-ci.org/modlinltd/django-advanced-filters.svg?branch=develop
+[7]: https://travis-ci.org/modlinltd/django-advanced-filters
+[8]: https://coveralls.io/repos/modlinltd/django-advanced-filters/badge.svg?branch=master
+[9]: https://coveralls.io/repos/modlinltd/django-advanced-filters/badge.svg?branch=develop
+[10]: https://coveralls.io/github/modlinltd/django-advanced-filters?branch=master
+[11]: https://coveralls.io/github/modlinltd/django-advanced-filters?branch=develop
+
 
 A django ModelAdmin mixin which adds advanced filtering abilities to the admin.
 
@@ -185,8 +199,9 @@ list of valid field choices when creating/changing an `AdvancedFilter`.
 
 ## TODO
 
-* Add more tests (specifically the admin and view parts)
+* ~~Add more tests (specifically the admin and view parts)~~
 * ~~Add packaging (setup.py, etc...)~~
 * ~~Add edit/view functionality to the filters~~
 * Add permission user/group selection functionality to the filter form
 * Allow toggling of predefined templates (grappelli / vanilla django admin), and front-end features.
+* Support more (newer) python/django versions
