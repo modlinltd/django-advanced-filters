@@ -8,6 +8,7 @@ from tests import factories
 
 
 class ChageFormAdminTest(TestCase):
+    """ Test the AdvancedFilter admin change page """
     def setUp(self):
         self.user = factories.SalesRep()
         assert self.client.login(username='user', password='test')
@@ -55,6 +56,7 @@ class ChageFormAdminTest(TestCase):
 
 
 class AdvancedFilterCreationTest(TestCase):
+    """ Test creation of AdvancedFilter in target model changelist """
     form_data = {'form-TOTAL_FORMS': 1, 'form-INITIAL_FORMS': 0,
                  'action': 'advanced_filters'}
     good_data = {'title': 'Test title', 'form-0-field': 'language',
@@ -129,6 +131,7 @@ class AdvancedFilterCreationTest(TestCase):
 
 
 class AdvancedFilterUsageTest(TestCase):
+    """ Test filter visibility and actual filtering of a changelist """
     def setUp(self):
         self.user = factories.SalesRep()
         assert self.client.login(username='user', password='test')
