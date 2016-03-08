@@ -4,10 +4,10 @@ import logging
 import operator
 
 from django import forms
+from django.apps import apps
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin.utils import get_fields_from_path
-from django.apps import apps
 from django.db.models import Q, FieldDoesNotExist
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
@@ -221,7 +221,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
         fields = ('title',)
 
     class Media:
-        required_js = [static('admin/js/jquery.min.js'),
+        required_js = [static('admin/js/vendor/jquery/jquery.min.js'),
                        static('orig_inlines%s.js' %
                        ('' if settings.DEBUG else '.min')),
                        static('magnific-popup/jquery.magnific-popup.js'),

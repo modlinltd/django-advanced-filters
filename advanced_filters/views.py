@@ -4,6 +4,7 @@ import logging
 from django.conf import settings
 from django.contrib.admin.utils import get_fields_from_path
 from django.db import models
+from django.apps import apps
 from django.db.models.fields import FieldDoesNotExist
 from django.utils.encoding import force_text
 from django.views.generic import View
@@ -33,7 +34,7 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
                 status=400)
         app_label, model_name = model.split('.', 1)
         try:
-            model_obj = models.get_model(app_label, model_name)
+            model_obj = apps.get_model(app_label, model_name)
             field = get_fields_from_path(model_obj, field_name)[-1]
             model_obj = field.model  # use new model if followed a ForeignKey
         except AttributeError as e:
