@@ -1,3 +1,7 @@
+#form-group {
+	width: 100%;
+}
+
 .grp-object-tools li div {
 	display: block;
 	padding: 4px 15px;
