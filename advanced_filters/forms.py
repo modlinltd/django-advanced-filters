@@ -6,8 +6,9 @@ import operator
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.admin.util import get_fields_from_path
-from django.db.models import Q, get_model, FieldDoesNotExist
+from django.contrib.admin.utils import get_fields_from_path
+from django.apps import apps
+from django.db.models import Q, FieldDoesNotExist
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.templatetags.static import static
@@ -264,7 +265,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
             self._model = model_admin.model
         elif instance and instance.model:
             # get existing instance model
-            self._model = get_model(*instance.model.split('.'))
+            self._model = apps.get_model(*instance.model.split('.'))
             try:
                 model_admin = admin.site._registry[self._model]
             except KeyError:
