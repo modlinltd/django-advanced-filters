@@ -24,8 +24,9 @@ A django ModelAdmin mixin which adds advanced filtering abilities to the admin.
 Mimics the advanced search feature in [VTiger](https://www.vtiger.com/),
 [see here for more info](https://wiki.vtiger.com/index.php/Create_Custom_Filters)
 
-For release notes, see [Changelog](https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/CHANGELOG.md)
+![screenshot](https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/screenshot.png "Creating via a modal")
 
+For release notes, see [Changelog](https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/CHANGELOG.md)
 
 ## Requirements
 
@@ -97,10 +98,6 @@ which is currently bundled with the application.
 Regardless of the above, you can easily write your own template which uses
 context variables `{{ advanced_filters }}` and
 `{{ advanced_filters.formset }}`, to render the advanced filter creation form.
-
-Here's a screenshot
-
-![alt text](https://raw.githubusercontent.com/modlinltd/django-advanced-filters/master/screenshot.png "Creating via a modal")
 
 ## Structure
 

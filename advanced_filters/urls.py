@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from .views import GetFieldChoices
+from advanced_filters.views import GetFieldChoices
 
 urlpatterns = patterns(
     # API
