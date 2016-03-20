@@ -30,15 +30,14 @@ class Tox(TestCommand):
 
 
 # get long description from README
-readme = 'README.md'
-changelog = 'CHANGELOG.md'
-try:
-    import pypandoc
-    README = b'%s\n%s' % (pypandoc.convert(readme, 'rst'), pypandoc.convert(changelog, 'rst'))
-except ImportError:
-    print('PyPandoc not installed. Cannot convert README.md to rst')
-    with open(os.path.join(os.path.dirname(__file__), readme)) as readme:
-        README = readme.read()
+readme = 'README.rst'
+changelog = 'CHANGELOG.rst'
+base = os.path.dirname(__file__)
+with open(os.path.join(base, readme)) as readme:
+    README = readme.read()
+with open(os.path.join(base, changelog)) as changelog:
+    CHANGELOG = changelog.read()
+README = b'%s\n%s' % (README, CHANGELOG)
 
 # allow setup.py to be run from any path
 CUR_DIR = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir))
