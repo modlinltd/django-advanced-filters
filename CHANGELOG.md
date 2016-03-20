@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.0.2 - A Better Future
+
+This release features better test coverage and support for Django 1.9.
+
+### Bugs
+   - stretch formset table to the modal container width
+   - toggle advanced `vendor/jquery` dir according to Django version
+   - retain support older Django versions
+   - clean up legacy tags in templates
+
+### Tests
+   - add admin views tests
+   - add Django 1.9 to test matrix
+   - other minor improvements
+
+### Docs
+   - Improve README with a newer screenshot and pretty tables for badges
+
+### Contributors:
+   - Pavel Savchenko
+   - Leonardo J. Caballero G
+   - Schuyler Duveen
+
 ## 1.0.1 - A Public Release
 
 ### Bugs
