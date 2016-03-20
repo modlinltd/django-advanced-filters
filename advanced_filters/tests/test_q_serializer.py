@@ -3,7 +3,7 @@ from django.test import TestCase
 import django
 import json
 
-from advanced_filters.q_serializer import QSerializer
+from ..q_serializer import QSerializer
 
 NEWER_DJANGO = django.VERSION >= (1, 6)
 

@@ -5,10 +5,9 @@ try:
     from django.test import override_settings
 except ImportError:
     from django.test.utils import override_settings
-import django
 from django.utils.encoding import force_text
-
 from django.core.urlresolvers import reverse
+import django
 
 from tests import factories
 
@@ -18,7 +17,7 @@ class TestGetFieldChoicesView(TestCase):
 
     def setUp(self):
         self.user = factories.SalesRep()
-        self.assertTrue(self.client.login(username='user', password='test'))
+        assert self.client.login(username='user', password='test')
 
     def assert_json(self, response, expect):
         self.assertJSONEqual(force_text(response.content), expect)
@@ -31,7 +30,7 @@ class TestGetFieldChoicesView(TestCase):
                 exception, error, self.client.get, view_url)
             return
         res = self.client.get(view_url)
-        self.assertEqual(res.status_code, 400)
+        assert res.status_code == 400
         self.assert_json(res, dict(error=error))
 
     def test_invalid_args(self):

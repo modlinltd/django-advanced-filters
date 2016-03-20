@@ -3,12 +3,13 @@
 *.pyc
 /.tox/
 /.coverage
-local_settings.py
+/tests/test_project/host_settings.py
 build/
 dist/
 django_advanced_filters.egg-info/
-tests/db.sqlite3
+tests/db.sqlite*
 /.python-version
 /.cache/
 /.eggs/
 /htmlcov/
+/advanced_filters/.coverage

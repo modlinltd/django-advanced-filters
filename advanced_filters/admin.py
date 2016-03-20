@@ -3,7 +3,12 @@ import logging
 from django.contrib import admin, messages
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.admin.util import unquote
+
+try:
+    from django.contrib.admin.utils import unquote
+except ImportError:
+    # django < 1.7 support
+    from django.contrib.admin.util import unquote
 from django.shortcuts import resolve_url
 
 from .forms import AdvancedFilterForm
@@ -30,7 +35,15 @@ class AdvancedListFilters(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value():
-            advfilter = AdvancedFilter.objects.filter(id=self.value()).first()
+            filters = AdvancedFilter.objects.filter(id=self.value())
+            if hasattr(filters, 'first'):
+                advfilter = filters.first()
+            else:
+                # django == 1.5 support
+                try:
+                    advfilter = filters.order_by()[0]
+                except IndexError:
+                    advfilter = None
             if not advfilter:
                 logger.error("AdvancedListFilters.queryset: Invalid filter id")
                 return queryset
@@ -61,7 +74,7 @@ class AdminAdvancedFiltersMixin(object):
                 request, messages.SUCCESS,
                 _('Advanced filter added successfully.')
             )
-            if '_save_goto' in request.REQUEST:
+            if '_save_goto' in (request.GET or request.POST):
                 url = "{path}{qparams}".format(
                     path=request.path, qparams="?_afilter={id}".format(
                         id=afilter.id))
@@ -70,7 +83,7 @@ class AdminAdvancedFiltersMixin(object):
             logger.info('Failed saving advanced filter, params: %s', form.data)
 
     def adv_filters_handle(self, request, extra_context={}):
-        data = request.POST if request.REQUEST.get(
+        data = request.POST if request.POST.get(
             'action') == 'advanced_filters' else None
         adv_filters_form = self.advanced_filter_form(
             data=data, model_admin=self, extra_form=True)

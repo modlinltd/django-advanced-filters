@@ -4,10 +4,24 @@ import logging
 import operator
 
 from django import forms
+
+try:
+    from django.apps import apps
+    get_model = apps.get_model
+except ImportError:
+    # django < 1.7 support
+    from django.db.models import get_model
+
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.admin.util import get_fields_from_path
-from django.db.models import Q, get_model, FieldDoesNotExist
+
+try:
+    from django.contrib.admin.utils import get_fields_from_path
+except ImportError:
+    # django < 1.7 support
+    from django.contrib.admin.util import get_fields_from_path
+
+from django.db.models import Q, FieldDoesNotExist
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.templatetags.static import static
@@ -16,12 +30,16 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.six.moves import range, reduce
 from django.utils.text import capfirst
 
+import django
+
 from easy_select2.widgets import SELECT2_WIDGET_JS, SELECT2_CSS
 
 from .models import AdvancedFilter
 from .form_helpers import CleanWhiteSpacesMixin,  VaryingTypeCharField
 
 
+# django < 1.9 support
+USE_VENDOR_DIR = django.VERSION >= (1, 9)
 logger = logging.getLogger('advanced_filters.forms')
 
 
@@ -190,6 +208,7 @@ class AdvancedFilterFormSet(BaseFormSet):
 
     def _construct_forms(self):
         # not strictly required, but Django 1.5 calls this on init
+        # django == 1.5 support
         self.forms = []
         for i in range(min(self.total_form_count(), self.absolute_max)):
             self.forms.append(self._construct_form(
@@ -219,7 +238,8 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
         fields = ('title',)
 
     class Media:
-        required_js = [static('admin/js/jquery.min.js'),
+        required_js = [static('admin/js/%sjquery.min.js' %
+                       ('vendor/jquery/' if USE_VENDOR_DIR else '')),
                        static('orig_inlines%s.js' %
                        ('' if settings.DEBUG else '.min')),
                        static('magnific-popup/jquery.magnific-popup.js'),
@@ -274,7 +294,6 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
 
         self._filter_fields = filter_fields or getattr(
             model_admin, 'advanced_filter_fields', ())
-        print(filter_fields, model_admin, self._filter_fields)
 
         super(AdvancedFilterForm, self).__init__(*args, **kwargs)
 

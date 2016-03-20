@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db.models import Q
 
-from advanced_filters.models import AdvancedFilter
+from ..models import AdvancedFilter
 
 
 class AdvancedFilterPermissions(TestCase):
