@@ -21,7 +21,7 @@ info <https://wiki.vtiger.com/index.php/Create_Custom_Filters>`__
    :width: 768 px
 
 
-For release notes, see `Changelog <https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/CHANGELOG.md>`__
+For release notes, see `Changelog <https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/CHANGELOG.rst>`__
 
 Requirements
 ============
