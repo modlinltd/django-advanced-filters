@@ -1,5 +1,5 @@
 from setuptools.command.test import test as TestCommand
-from setuptools import setup
+from setuptools import setup, find_packages
 import os
 import sys
 
@@ -53,12 +53,12 @@ else:
 setup(
     name='django-advanced-filters',
     version=__version__,
-    packages=['advanced_filters'],
     url='https://github.com/modlinltd/django-advanced-filters',
     license='MIT',
-    include_package_data=True,
     description='A Django application for advanced admin filters',
     long_description=README,
+    packages=find_packages(exclude=['tests*', 'tests.*', '*.tests']),
+    include_package_data=True,
     install_requires=[
         'django-easy-select2==1.2.5',
         'django-braces==1.4.0',

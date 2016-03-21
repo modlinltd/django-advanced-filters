@@ -1,6 +1,19 @@
 Changelog
 =========
 
+1.0.3 - The Package Fix
+-----------------------
+
+This is a quick fix for packaging (setup.py) errors and documentation.
+
+Bugs
+~~~~
+
+-  add missing Django 1.7 migrations
+-  README updated to mention ``manage.py migrate`` command
+-  Use ReST for README and CHANGELOG: avoid conversion from markdown
+
+
 1.0.2 - A Better Future
 -----------------------
 
