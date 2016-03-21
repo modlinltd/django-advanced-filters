@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.4 - Unbreak Python 3
+------------------------
+
+This release contains a fix to allow distribution installation on Python 3 which was broken since 1.0.2
+
 1.0.3 - The Package Fix
 -----------------------
 
@@ -78,26 +83,26 @@ Major changes
 ~~~~~~~~~~~~~
 
 -  Add a new (required) field
-   ```AdvancedFilter.model`` <README.md#model-correlation>`__
+   ```AdvancedFilter.model`` <https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/README.rst#model-correlation>`__
 -  Add parsing query dict into initialized formsets (allows for `editing
    existing
-   instance <README.md#editing-previously-created-advanced-filters>`__).
+   instance <https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/README.rst#editing-previously-created-advanced-filters>`__).
 -  Add
    ```AdvancedFilterAdmin`` <#editing-previously-created-advanced-filters>`__
    for actually accessing and `editing existing ``AdvancedFilter``
-   instances <README.md#editing-previously-created-advanced-filters>`__.
+   instances <https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/README.rst#editing-previously-created-advanced-filters>`__.
 -  Use `Select2 <https://github.com/asyncee/django-easy-select2>`__ and
    an AJAX view to dynamically populate ```field``
-   options <README.md#fields>`__.
+   options <https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/README.rst#fields>`__.
 -  Add proper support for nested serialization of queries.
 
 Minor changes
 ~~~~~~~~~~~~~
 
--  Implement more ```operators`` <README.md#operators>`__ (``isnull``,
+-  Implement more ```operators`` <https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/README.rst#operators>`__ (``isnull``,
    ``istrue`` and ``isfalse``)
 -  Allow `custom verbose naming of fields in
-   advanced\_filter\_fields <README.md#custom-naming-of-fields>`__
+   advanced\_filter\_fields <https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/README.rst#custom-naming-of-fields>`__
 -  Add helper methods to the model to hide (and decouple) core
    serialization functionality from users.
 -  Strip whitespace in field values validation
