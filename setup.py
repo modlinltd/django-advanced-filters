@@ -29,15 +29,16 @@ class Tox(TestCommand):
         sys.exit(errno)
 
 
-# get long description from README
-readme = 'README.rst'
-changelog = 'CHANGELOG.rst'
-base = os.path.dirname(__file__)
-with open(os.path.join(base, readme)) as readme:
-    README = readme.read()
-with open(os.path.join(base, changelog)) as changelog:
-    CHANGELOG = changelog.read()
-README = b'%s\n%s' % (README, CHANGELOG)
+def get_full_description():
+    # get long description from README
+    readme = 'README.rst'
+    changelog = 'CHANGELOG.rst'
+    base = os.path.dirname(__file__)
+    with open(os.path.join(base, readme)) as readme:
+        README = readme.read()
+    with open(os.path.join(base, changelog)) as changelog:
+        CHANGELOG = changelog.read()
+    return '%s\n%s' % (README, CHANGELOG)
 
 # allow setup.py to be run from any path
 CUR_DIR = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir))
@@ -57,7 +58,7 @@ setup(
     license='MIT',
     description='A Django application for advanced admin filters',
     keywords='django-admin admin advanced filters custom query',
-    long_description=README,
+    long_description=get_full_description(),
     packages=find_packages(exclude=['tests*', 'tests.*', '*.tests']),
     include_package_data=True,
     install_requires=[
