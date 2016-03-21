@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.0.4 - Unbreak Python 3
+------------------------
+
+This release contains a fix to allow distribution installation on Python 3 which was broken since 1.0.2
+
 1.0.3 - The Package Fix
 -----------------------
 

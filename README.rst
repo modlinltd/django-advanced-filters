@@ -26,7 +26,7 @@ For release notes, see `Changelog <https://raw.githubusercontent.com/modlinltd/d
 Requirements
 ============
 
--  Django >= 1.5 (Django 1.5 - 1.8 on Python 2/3/PyPy2)
+-  Django >= 1.5 (Django 1.5 - 1.9 on Python 2/3/PyPy2)
 -  django-easy-select2 == 1.2.5
 -  django-braces == 1.4.0
 -  simplejson == 3.6.5
