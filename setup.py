@@ -56,6 +56,7 @@ setup(
     url='https://github.com/modlinltd/django-advanced-filters',
     license='MIT',
     description='A Django application for advanced admin filters',
+    keywords='django-admin admin advanced filters custom query',
     long_description=README,
     packages=find_packages(exclude=['tests*', 'tests.*', '*.tests']),
     include_package_data=True,
