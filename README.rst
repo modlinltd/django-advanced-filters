@@ -39,7 +39,7 @@ Installation & Set up
    ``INSTALLED_APPS``.
 3. Add ``url(r'^advanced_filters/', include('advanced_filters.urls'))``
    to your project's urlconf.
-4. Run ``python manage.py syncdb``
+4. Run ``python manage.py syncdb`` or ``manage.py migrate --run-syncdb`` (for django >= 1.9)
 
 Integration Example
 ===================
