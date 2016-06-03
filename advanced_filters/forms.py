@@ -106,8 +106,9 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         """
         Take a list of query field dict and return data for form initialization
         """
+        operator = 'iexact'
         if query_data['field'] == '_OR':
-            query_data['operator'] = 'iexact'
+            query_data['operator'] = operator
             return query_data
 
         parts = query_data['field'].split('__')
@@ -116,6 +117,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         else:
             if parts[-1] in dict(AdvancedFilterQueryForm.OPERATORS).keys():
                 field = '__'.join(parts[:-1])
+                operator = parts[-1]
             else:
                 field = query_data['field']
 
@@ -138,7 +140,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
                 # this is a date/datetime field
                 query_data['operator'] = "range"  # default
             else:
-                query_data['operator'] = "iexact"  # default
+                query_data['operator'] = operator  # default
 
         if isinstance(query_data.get('value'),
                       list) and query_data['operator'] == 'range':
