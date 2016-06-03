@@ -230,7 +230,7 @@ class AdvancedFilterFormSet(BaseFormSet):
 
 AFQFormSet = formset_factory(
     AdvancedFilterQueryForm, formset=AdvancedFilterFormSet,
-    extra=1, can_delete=True)
+    extra=0, can_delete=True)
 
 AFQFormSetNoExtra = formset_factory(
     AdvancedFilterQueryForm, formset=AdvancedFilterFormSet,
