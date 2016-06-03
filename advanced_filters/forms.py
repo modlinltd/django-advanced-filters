@@ -53,6 +53,10 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         ("isnull", _("Is NULL")),
         ("istrue", _("Is TRUE")),
         ("isfalse", _("Is FALSE")),
+        ("lt", _("Less Than")),
+        ("gt", _("Greater Than")),
+        ("lte", _("Less Than or Equal To")),
+        ("gte", _("Less Than or Equal To")),
     )
 
     FIELD_CHOICES = (
