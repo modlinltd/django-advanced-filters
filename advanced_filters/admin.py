@@ -161,5 +161,4 @@ class AdvancedFilterAdmin(admin.ModelAdmin):
         return self.user_has_permission(request.user) or obj in self.model.objects.filter_by_user(request.user)
 
 
-
 admin.site.register(AdvancedFilter, AdvancedFilterAdmin)
