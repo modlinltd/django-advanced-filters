@@ -361,7 +361,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
                     AdvancedFilterQueryForm._parse_query_dict(
                         field_data, model))
 
-        formset = AFQFormSetNoExtra if not extra or not instance else AFQFormSet
+        formset = AFQFormSetNoExtra if not extra else AFQFormSet
         self.fields_formset = formset(
             data=data,
             initial=forms or None,
