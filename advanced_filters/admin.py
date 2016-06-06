@@ -139,22 +139,26 @@ class AdvancedFilterAdmin(admin.ModelAdmin):
                 return HttpResponseRedirect(url)
         return orig_response
 
+    @staticmethod
+    def user_has_permission(user):
+        """Filters by user if not superuser or explicitly allowed in settings"""
+        return user.is_superuser or not getattr(settings, "ADVANCED_FILTER_EDIT_BY_USER", True)
+
     def get_queryset(self, request):
-        # Filters by user unless the user is not a superuser or the settings specify not to
-        if getattr(settings, "ADVANCED_FILTER_EDIT_BY_USER", True) or not request.user.is_superuser:
-            return self.model.objects.filter_by_user(request.user)
-        else:
+        if self.user_has_permission(request.user):
             return super(AdvancedFilterAdmin, self).get_queryset(request)
+        else:
+            return self.model.objects.filter_by_user(request.user)
 
     def has_change_permission(self, request, obj=None):
-        if obj is None or request.user.is_superuser:
+        if obj is None:
             return super(AdvancedFilterAdmin, self).has_change_permission(request)
-        return obj in self.model.objects.filter_by_user(request.user)
+        return self.user_has_permission(request.user) or obj in self.model.objects.filter_by_user(request.user)
 
     def has_delete_permission(self, request, obj=None):
-        if obj is None or request.user.is_superuser:
+        if obj is None:
             return super(AdvancedFilterAdmin, self).has_delete_permission(request)
-        return obj in self.model.objects.filter_by_user(request.user)
+        return self.user_has_permission(request.user) or obj in self.model.objects.filter_by_user(request.user)
 
 
 
