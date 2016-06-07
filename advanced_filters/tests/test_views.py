@@ -100,6 +100,7 @@ class TestGetFieldChoicesView(TestCase):
     def test_more_than_max_database_choices(self):
         factories.Client.create_batch(5, assigned_to=self.user)
         view_url = reverse(self.url_name, kwargs=dict(
-            model='customers.Client', field_name='first_name'))
+            model='customers.Client', field_name='id'))
         res = self.client.get(view_url)
+        print(res)
         self.assert_json(res, {'results': []})
