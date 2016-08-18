@@ -102,5 +102,4 @@ class TestGetFieldChoicesView(TestCase):
         view_url = reverse(self.url_name, kwargs=dict(
             model='customers.Client', field_name='id'))
         res = self.client.get(view_url)
-        print(res)
         self.assert_json(res, {'results': []})
