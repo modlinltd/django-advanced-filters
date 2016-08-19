@@ -103,3 +103,13 @@ class TestGetFieldChoicesView(TestCase):
             model='customers.Client', field_name='id'))
         res = self.client.get(view_url)
         self.assert_json(res, {'results': []})
+
+    @override_settings(ADVANCED_FILTERS_MAX_CHOICES=4)
+    def test_distinct_database_choices(self):
+        factories.Client.create_batch(5, assigned_to=self.user, email="foo@bar.com")
+        view_url = reverse(self.url_name, kwargs=dict(
+            model='customers.Client', field_name='email'))
+        res = self.client.get(view_url)
+        self.assert_json(res, {'results':
+                [{'id': 'foo@bar.com', 'text': 'foo@bar.com'}],
+        })
