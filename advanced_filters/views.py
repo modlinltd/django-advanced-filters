@@ -69,7 +69,10 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
                 logger.debug('No choices calculated for field %s of type %s',
                              field, type(field))
             else:
-                choices = model_obj.objects.values_list(field.name, flat=True).distinct()
+                # the order_by() avoids ambiguity with values() and distinct()
+                choices = model_obj.objects.order_by(field.name).values_list(
+                    field.name, flat=True).distinct()
+                # additional query is ok to avoid fetching too many values
                 if choices.count() <= max_choices:
                     choices = zip(choices, choices)
                     logger.debug('Choices found for field %s: %s',
