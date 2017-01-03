@@ -62,7 +62,6 @@ setup(
     packages=find_packages(exclude=['tests*', 'tests.*', '*.tests']),
     include_package_data=True,
     install_requires=[
-        'django-easy-select2==1.2.5',
         'django-braces==1.4.0',
         'simplejson==3.6.5',
     ],
