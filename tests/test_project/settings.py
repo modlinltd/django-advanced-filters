@@ -36,7 +36,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'advanced_filters',
-    'easy_select2',
 
     'tests.reps',
     'tests.customers',

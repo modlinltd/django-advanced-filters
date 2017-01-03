@@ -32,8 +32,6 @@ from django.utils.text import capfirst
 
 import django
 
-from easy_select2.widgets import SELECT2_WIDGET_JS, SELECT2_CSS
-
 from .models import AdvancedFilter
 from .form_helpers import CleanWhiteSpacesMixin,  VaryingTypeCharField
 
@@ -41,6 +39,10 @@ from .form_helpers import CleanWhiteSpacesMixin,  VaryingTypeCharField
 # django < 1.9 support
 USE_VENDOR_DIR = django.VERSION >= (1, 9)
 logger = logging.getLogger('advanced_filters.forms')
+
+# select2 location can be modified via settings
+SELECT2_JS = getattr(settings, 'SELECT2_JS', 'select2/select2.min.js')
+SELECT2_CSS = getattr(settings, 'SELECT2_CSS', 'select2/select2.min.css')
 
 
 class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
@@ -250,9 +252,8 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
                        ('' if settings.DEBUG else '.min')),
                        static('magnific-popup/jquery.magnific-popup.js'),
                        static('advanced-filters/advanced-filters.js'), ]
-        js = SELECT2_WIDGET_JS + required_js
-        css = {'screen': [static(SELECT2_CSS),
-                          static('advanced-filters/advanced-filters.css'),
+        js = [SELECT2_JS] + required_js
+        css = {'screen': [static(SELECT2_CSS), static('advanced-filters/advanced-filters.css'),
                           static('magnific-popup/magnific-popup.css')]}
 
     def get_fields_from_model(self, model, fields):
