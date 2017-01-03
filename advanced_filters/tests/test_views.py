@@ -39,6 +39,10 @@ class TestGetFieldChoicesView(TestCase):
             self.assert_view_error(
                 'expected length 2, got 1',
                 model='a', field_name='b', exception=ValueError)
+        elif sys.version_info >= (3, 5):
+            self.assert_view_error(
+                'not enough values to unpack (expected 2, got 1)', model='a',
+                field_name='b', exception=ValueError)
         else:
             self.assert_view_error(
                 'need more than 1 value to unpack', model='a',
