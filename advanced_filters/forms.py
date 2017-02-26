@@ -252,7 +252,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
                        ('' if settings.DEBUG else '.min')),
                        static('magnific-popup/jquery.magnific-popup.js'),
                        static('advanced-filters/advanced-filters.js'), ]
-        js = [SELECT2_JS] + required_js
+        js = required_js + [SELECT2_JS]
         css = {'screen': [static(SELECT2_CSS), static('advanced-filters/advanced-filters.css'),
                           static('magnific-popup/magnific-popup.css')]}
 

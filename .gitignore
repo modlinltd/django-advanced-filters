@@ -13,3 +13,5 @@ tests/db.sqlite*
 /.eggs/
 /htmlcov/
 /advanced_filters/.coverage
+
+/tests/local.db
