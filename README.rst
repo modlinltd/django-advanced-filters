@@ -27,7 +27,6 @@ Requirements
 ============
 
 -  Django >= 1.5 (Django 1.5 - 1.9 on Python 2/3/PyPy2)
--  django-easy-select2 == 1.2.5
 -  django-braces == 1.4.0
 -  simplejson == 3.6.5
 
@@ -35,8 +34,7 @@ Installation & Set up
 =====================
 
 1. Install from pypi: ``pip install django-advanced-filters``
-2. Add both ``'advanced_filters'`` and ``'easy_select2'`` to
-   ``INSTALLED_APPS``.
+2. Add both ``'advanced_filters'`` to ``INSTALLED_APPS``.
 3. Add ``url(r'^advanced_filters/', include('advanced_filters.urls'))``
    to your project's urlconf.
 4. Run ``python manage.py syncdb`` or ``python manage.py migrate`` (for django >= 1.7)
