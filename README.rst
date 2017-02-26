@@ -48,6 +48,8 @@ Extending a ModelAdmin is pretty straightforward:
 
 .. code-block:: python
 
+    from advanced_filters.admin import AdminAdvancedFiltersMixin
+
     class ProfileAdmin(AdminAdvancedFiltersMixin, models.ModelAdmin):
         list_filter = ('name', 'language', 'ts')   # simple list filters
 
