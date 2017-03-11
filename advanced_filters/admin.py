@@ -62,7 +62,7 @@ class AdminAdvancedFiltersMixin(object):
     def __init__(self, *args, **kwargs):
         super(AdminAdvancedFiltersMixin, self).__init__(*args, **kwargs)
         # add list filters to filters
-        self.list_filter = (AdvancedListFilters,) + self.list_filter
+        self.list_filter = (AdvancedListFilters,) + tuple(self.list_filter)
 
     def save_advanced_filter(self, request, form):
         if form.is_valid():
