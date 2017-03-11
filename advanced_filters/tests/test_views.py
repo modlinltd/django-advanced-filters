@@ -39,6 +39,10 @@ class TestGetFieldChoicesView(TestCase):
             self.assert_view_error(
                 'expected length 2, got 1',
                 model='a', field_name='b', exception=ValueError)
+        elif sys.version_info >= (3, 5):
+            self.assert_view_error(
+                'not enough values to unpack (expected 2, got 1)', model='a',
+                field_name='b', exception=ValueError)
         else:
             self.assert_view_error(
                 'need more than 1 value to unpack', model='a',
@@ -100,6 +104,14 @@ class TestGetFieldChoicesView(TestCase):
     def test_more_than_max_database_choices(self):
         factories.Client.create_batch(5, assigned_to=self.user)
         view_url = reverse(self.url_name, kwargs=dict(
-            model='customers.Client', field_name='first_name'))
+            model='customers.Client', field_name='id'))
         res = self.client.get(view_url)
         self.assert_json(res, {'results': []})
+
+    @override_settings(ADVANCED_FILTERS_MAX_CHOICES=4)
+    def test_distinct_database_choices(self):
+        factories.Client.create_batch(5, assigned_to=self.user, email="foo@bar.com")
+        view_url = reverse(self.url_name, kwargs=dict(
+            model='customers.Client', field_name='email'))
+        res = self.client.get(view_url)
+        self.assert_json(res, {'results': [{'id': 'foo@bar.com', 'text': 'foo@bar.com'}]})

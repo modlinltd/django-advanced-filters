@@ -142,6 +142,51 @@ class TestQueryForm(TestCase):
             assert isinstance(res, dict)
             assert res == expected[i]
 
+    def test_all_operators_are_restored(self):
+        Rep = get_user_model()
+        date_range = (datetime(1980, 1, 1), datetime(1986, 1, 1))
+        complex_query = (Q(first_name='bar') |
+                         (Q(first_name__iexact='fez') &
+                          Q(is_staff=False) &
+                          Q(date_joined__range=date_range) &
+                          Q(is_superuser=True) &
+                          Q(is_active=None) &
+                          Q(is_staff=False) &
+                          Q(last_name__icontains='foo') &
+                          Q(last_name__lt='q') &
+                          Q(last_name__lte='r') &
+                          Q(last_name__gt='b') &
+                          Q(last_name__gte='c') &
+                          Q(email__iregex=r'^(foo|bar)$')
+                          ))
+        af = AdvancedFilter(query=complex_query)
+
+        expected = [
+            {'field': 'first_name', 'negate': False, 'operator': 'iexact', 'value': 'bar'},
+            {'field': '_OR', 'operator': 'iexact', 'value': 'null'},
+            {'field': 'first_name', 'negate': False, 'operator': 'iexact', 'value': 'fez'},
+            {'field': 'is_staff', 'negate': False, 'operator': 'isfalse', 'value': False},
+            {'field': 'date_joined',
+             'negate': False,
+             'operator': 'range',
+             'value': '1980-01-01,1986-01-01',
+             'value_from': time.mktime(date_range[0].timetuple()),
+             'value_to': time.mktime(date_range[1].timetuple())},
+            {'field': 'is_superuser', 'negate': False, 'operator': 'istrue', 'value': True},
+            {'field': 'is_active', 'negate': False, 'operator': 'isnull', 'value': None},
+            {'field': 'is_staff', 'negate': False, 'operator': 'isfalse', 'value': False},
+            {'field': 'last_name', 'negate': False, 'operator': 'icontains', 'value': 'foo'},
+            {'field': 'last_name', 'negate': False, 'operator': 'lt', 'value': 'q'},
+            {'field': 'last_name', 'negate': False, 'operator': 'lte', 'value': 'r'},
+            {'field': 'last_name', 'negate': False, 'operator': 'gt', 'value': 'b'},
+            {'field': 'last_name', 'negate': False, 'operator': 'gte', 'value': 'c'},
+            {'field': 'email', 'negate': False, 'operator': 'iregex', 'value': r'^(foo|bar)$'}
+        ]
+        for i, field in enumerate(af.list_fields()):
+            res = AdvancedFilterQueryForm._parse_query_dict(field, Rep)
+            assert isinstance(res, dict)
+            assert res == expected[i]
+
 
 class CommonFormTest(TestCase):
     mgmg_form_data = {

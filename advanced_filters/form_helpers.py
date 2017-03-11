@@ -4,7 +4,6 @@ import re
 from django import forms
 
 from django.utils import six
-from easy_select2.widgets import Select2TextInput
 
 logger = logging.getLogger('advanced_filters.form_helpers')
 
@@ -62,33 +61,3 @@ class CleanWhiteSpacesMixin(object):
                 cleaned_data[k] = re.sub(extra_spaces_pattern, ' ',
                                          self.cleaned_data[k] or '').strip()
         return cleaned_data
-
-
-def get_select2textinput_widget(choices=None):
-    """
-    Accepts django-style choices (tuple of tuples), prepares
-    and returns an instance of a Select2TextInput widget.
-
-    For more info on this custom widget, see doc here:
-    http://django-easy-select2.readthedocs.org/en/latest/index.html
-
-    >>> from django.utils.translation import ugettext_lazy as _
-    >>> widget = get_select2textinput_widget()
-    >>> args, kwargs = ('test_field', None,), dict(attrs=dict(id='id_test_field'))
-    >>> widget = get_select2textinput_widget([
-    ...     (1, 'first option'),
-    ...     (2, _('test me')),
-    ... ])
-    >>> data = {'data': [{'id': 1, 'text': 'first option'},
-    ...                  {'id': 2, 'text': 'test me'}],
-    ...         'width': '250px'}
-    >>> assert widget.select2attrs == data
-    """
-    attributes = {
-        # select2 script takes data in json values such as:
-        # 'data': [ {'id': 'value', 'text': 'description'}, ... ],
-    }
-    if choices:
-        attributes['data'] = [{'id': c[0], 'text': six.text_type(c[1])}
-                              for c in choices]
-    return Select2TextInput(select2attrs=attributes)

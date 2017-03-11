@@ -127,6 +127,8 @@ var OperatorHandlers = function($) {
 				$(this).data('pre_change', $(this).val());
 			}).change();
 		});
+		self.field_selected($('.form-row select.query-field').first());
+
 	};
 
 	self.destroy = function() {

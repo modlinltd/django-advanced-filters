@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.contrib import admin, messages
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
@@ -137,6 +138,27 @@ class AdvancedFilterAdmin(admin.ModelAdmin):
                     path=path, qparams="?_afilter={id}".format(id=object_id))
                 return HttpResponseRedirect(url)
         return orig_response
+
+    @staticmethod
+    def user_has_permission(user):
+        """Filters by user if not superuser or explicitly allowed in settings"""
+        return user.is_superuser or not getattr(settings, "ADVANCED_FILTER_EDIT_BY_USER", True)
+
+    def get_queryset(self, request):
+        if self.user_has_permission(request.user):
+            return super(AdvancedFilterAdmin, self).get_queryset(request)
+        else:
+            return self.model.objects.filter_by_user(request.user)
+
+    def has_change_permission(self, request, obj=None):
+        if obj is None:
+            return super(AdvancedFilterAdmin, self).has_change_permission(request)
+        return self.user_has_permission(request.user) or obj in self.model.objects.filter_by_user(request.user)
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is None:
+            return super(AdvancedFilterAdmin, self).has_delete_permission(request)
+        return self.user_has_permission(request.user) or obj in self.model.objects.filter_by_user(request.user)
 
 
 admin.site.register(AdvancedFilter, AdvancedFilterAdmin)

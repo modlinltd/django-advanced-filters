@@ -28,7 +28,9 @@ class ChageFormAdminTest(TestCase):
             codename='change_advancedfilter'))
         url = reverse('admin:advanced_filters_advancedfilter_change',
                       args=(self.a.pk,))
-        res = self.client.get(url)
+
+        with self.settings(ADVANCED_FILTER_EDIT_BY_USER=False):
+            res = self.client.get(url)
         assert res.status_code == 200
 
     def test_change_and_goto(self):
@@ -38,7 +40,8 @@ class ChageFormAdminTest(TestCase):
                       args=(self.a.pk,))
         form_data = {'form-TOTAL_FORMS': 1, 'form-INITIAL_FORMS': 0,
                      '_save_goto': 1}
-        res = self.client.post(url, data=form_data)
+        with self.settings(ADVANCED_FILTER_EDIT_BY_USER=False):
+            res = self.client.post(url, data=form_data)
         assert res.status_code == 302
         # django == 1.5 support
         if hasattr(res, 'url'):
@@ -71,7 +74,8 @@ class AdvancedFilterCreationTest(TestCase):
         self.user.user_permissions.add(Permission.objects.get(
             codename='change_client'))
         url = reverse('admin:customers_client_changelist')
-        res = self.client.get(url)
+        with self.settings(ADVANCED_FILTER_EDIT_BY_USER=False):
+            res = self.client.get(url)
         assert res.status_code == 200
         title = ['Create advanced filter']
         fields = ['First name', 'Language', 'Sales Rep']
