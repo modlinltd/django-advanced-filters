@@ -26,7 +26,7 @@
 		{% with advanced_filters.fields_formset as formset %}
 			<div class="white-popup mfp-hide" id="advanced_filters">
 				<h1>{% trans "Create advanced filter" %}:</h1>
-				<form method="POST" id="advanced_filters_form">
+				<form novalidate method="POST" id="advanced_filters_form">
 					{% csrf_token %}
 					{{ formset.management_form }}
 					<input type="hidden" value="advanced_filters" name="action">
