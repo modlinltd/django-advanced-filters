@@ -21,6 +21,7 @@ class AdvancedFilter(models.Model):
     title = models.CharField(max_length=255, null=False, blank=False)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL,
                                    related_name='created_advanced_filters')
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     url = models.CharField(max_length=255, null=False, blank=False)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
     groups = models.ManyToManyField('auth.Group', blank=True)
