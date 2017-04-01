@@ -56,11 +56,16 @@ class AdvancedListFilters(admin.SimpleListFilter):
 
 class AdminAdvancedFiltersMixin(object):
     """ Generic AdvancedFilters mixin """
-    change_list_template = "admin/advanced_filters.html"
+    advanced_change_list_template = "admin/advanced_filters.html"
     advanced_filter_form = AdvancedFilterForm
 
     def __init__(self, *args, **kwargs):
         super(AdminAdvancedFiltersMixin, self).__init__(*args, **kwargs)
+        if self.change_list_template:
+            self.original_change_list_template = self.change_list_template
+        else:
+            self.original_change_list_template = "admin/change_list.html"
+        self.change_list_template = self.advanced_change_list_template
         # add list filters to filters
         self.list_filter = (AdvancedListFilters,) + tuple(self.list_filter)
 
@@ -89,6 +94,7 @@ class AdminAdvancedFiltersMixin(object):
         adv_filters_form = self.advanced_filter_form(
             data=data, model_admin=self, extra_form=True)
         extra_context.update({
+            'original_change_list_template': self.original_change_list_template,
             'advanced_filters': adv_filters_form,
             'current_afilter': request.GET.get('_afilter'),
             'app_label': self.opts.app_label,
