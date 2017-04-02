@@ -10,7 +10,7 @@
 {% endblock extrastyle %}
 
 {% block content %}
-	<form {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form">{% csrf_token %}{% block form_top %}{% endblock %}
+	<form novalidate {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form">{% csrf_token %}{% block form_top %}{% endblock %}
 		{% with adminform.form.fields_formset as formset %}
 			<div id="advanced_filters">
 				<h1>{% trans "Change advanced filter" %}:</h1>
