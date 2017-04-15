@@ -44,6 +44,20 @@ class TestQueryForm(TestCase):
         assert d1.replace(tzinfo=None) == datetime(1980, 1, 1)
         assert d2.replace(tzinfo=None) == datetime(1990, 1, 1)
 
+    def test_range_value_one_missing(self):
+        """ Test, that range filter works even if one range is missing """
+        Rep = get_user_model()
+        field = {
+            'value_to': 504921600.0,
+            'negate': False,
+            'value_from': None,
+            'field': 'date_joined',
+            'value': [None, 504921600.0],
+            'operator': 'range',
+        }
+        res = AdvancedFilterQueryForm._parse_query_dict(field, Rep)
+        assert res['value'] == ',1986-01-01'
+
     def test_build_field_choices(self):
         form = AdvancedFilterQueryForm(self.fields)
         assert 'field' in form.fields

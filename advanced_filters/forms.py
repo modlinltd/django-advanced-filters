@@ -45,6 +45,13 @@ SELECT2_JS = getattr(settings, 'SELECT2_JS', 'select2/select2.min.js')
 SELECT2_CSS = getattr(settings, 'SELECT2_CSS', 'select2/select2.min.css')
 
 
+def date_to_string(timestamp):
+    if timestamp:
+        return dt.fromtimestamp(timestamp).strftime('%Y-%m-%d')
+    else:
+        return ""
+
+
 class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
     """ Build the query from field, operator and value """
     OPERATORS = (
@@ -146,10 +153,9 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
 
         if isinstance(query_data.get('value'),
                       list) and query_data['operator'] == 'range':
-            dtfrom = dt.fromtimestamp(query_data.get('value_from', 0))
-            dtto = dt.fromtimestamp(query_data.get('value_to', 0))
-            query_data['value'] = ','.join([dtfrom.strftime('%Y-%m-%d'),
-                                            dtto.strftime('%Y-%m-%d')])
+            date_from = date_to_string(query_data.get('value_from'))
+            date_to = date_to_string(query_data.get('value_to'))
+            query_data['value'] = ','.join([date_from, date_to])
 
         return query_data
 
