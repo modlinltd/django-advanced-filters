@@ -32,8 +32,6 @@ from django.utils.text import capfirst
 
 import django
 
-from easy_select2.widgets import SELECT2_WIDGET_JS, SELECT2_CSS
-
 from .models import AdvancedFilter
 from .form_helpers import CleanWhiteSpacesMixin,  VaryingTypeCharField
 
@@ -41,6 +39,10 @@ from .form_helpers import CleanWhiteSpacesMixin,  VaryingTypeCharField
 # django < 1.9 support
 USE_VENDOR_DIR = django.VERSION >= (1, 9)
 logger = logging.getLogger('advanced_filters.forms')
+
+# select2 location can be modified via settings
+SELECT2_JS = getattr(settings, 'SELECT2_JS', 'select2/select2.min.js')
+SELECT2_CSS = getattr(settings, 'SELECT2_CSS', 'select2/select2.min.css')
 
 
 class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
@@ -53,6 +55,10 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         ("isnull", _("Is NULL")),
         ("istrue", _("Is TRUE")),
         ("isfalse", _("Is FALSE")),
+        ("lt", _("Less Than")),
+        ("gt", _("Greater Than")),
+        ("lte", _("Less Than or Equal To")),
+        ("gte", _("Greater Than or Equal To")),
     )
 
     FIELD_CHOICES = (
@@ -102,8 +108,9 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         """
         Take a list of query field dict and return data for form initialization
         """
+        operator = 'iexact'
         if query_data['field'] == '_OR':
-            query_data['operator'] = 'iexact'
+            query_data['operator'] = operator
             return query_data
 
         parts = query_data['field'].split('__')
@@ -112,6 +119,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         else:
             if parts[-1] in dict(AdvancedFilterQueryForm.OPERATORS).keys():
                 field = '__'.join(parts[:-1])
+                operator = parts[-1]
             else:
                 field = query_data['field']
 
@@ -134,7 +142,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
                 # this is a date/datetime field
                 query_data['operator'] = "range"  # default
             else:
-                query_data['operator'] = "iexact"  # default
+                query_data['operator'] = operator  # default
 
         if isinstance(query_data.get('value'),
                       list) and query_data['operator'] == 'range':
@@ -244,9 +252,8 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
                        ('' if settings.DEBUG else '.min')),
                        static('magnific-popup/jquery.magnific-popup.js'),
                        static('advanced-filters/advanced-filters.js'), ]
-        js = SELECT2_WIDGET_JS + required_js
-        css = {'screen': [static(SELECT2_CSS),
-                          static('advanced-filters/advanced-filters.css'),
+        js = [SELECT2_JS] + required_js
+        css = {'screen': [static(SELECT2_CSS), static('advanced-filters/advanced-filters.css'),
                           static('magnific-popup/magnific-popup.css')]}
 
     def get_fields_from_model(self, model, fields):
@@ -355,7 +362,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
                     AdvancedFilterQueryForm._parse_query_dict(
                         field_data, model))
 
-        formset = AFQFormSetNoExtra if extra is None else AFQFormSet
+        formset = AFQFormSetNoExtra if not extra else AFQFormSet
         self.fields_formset = formset(
             data=data,
             initial=forms or None,

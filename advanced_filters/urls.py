@@ -1,10 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from advanced_filters.views import GetFieldChoices
 
-urlpatterns = patterns(
-    # API
-    '',
+urlpatterns = [
     url(r'^field_choices/(?P<model>.+)/(?P<field_name>.+)/?',
         GetFieldChoices.as_view(),
         name='afilters_get_field_choices'),
@@ -13,4 +11,4 @@ urlpatterns = patterns(
     url(r'^field_choices/$',
         GetFieldChoices.as_view(),
         name='afilters_get_field_choices'),
-)
+]

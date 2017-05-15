@@ -36,7 +36,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'advanced_filters',
-    'easy_select2',
 
     'tests.reps',
     'tests.customers',
@@ -55,6 +54,12 @@ ROOT_URLCONF = 'tests.test_project.urls'
 WSGI_APPLICATION = 'tests.test_project.wsgi.application'
 
 AUTH_USER_MODEL = 'reps.SalesRep'
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+    },
+]
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
