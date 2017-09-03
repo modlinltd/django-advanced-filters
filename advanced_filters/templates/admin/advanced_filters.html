@@ -1,4 +1,4 @@
-{% extends "admin/change_list.html" %}
+{% extends original_change_list_template %}
 {% load i18n static admin_modify %}
 {# django == 1.5 support #}
 {# {% load cycle from future %} #}
@@ -26,7 +26,7 @@
 		{% with advanced_filters.fields_formset as formset %}
 			<div class="white-popup mfp-hide" id="advanced_filters">
 				<h1>{% trans "Create advanced filter" %}:</h1>
-				<form method="POST" id="advanced_filters_form">
+				<form novalidate method="POST" id="advanced_filters_form">
 					{% csrf_token %}
 					{{ formset.management_form }}
 					<input type="hidden" value="advanced_filters" name="action">
@@ -46,7 +46,6 @@
 							{% for form in formset %}
 								<tr class="form-row {% cycle "row1" "row2" %} {% if forloop.last %}empty-form{% endif %}" id="{{ formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}">
 									{{form.non_field_errors}}
-									{{ form.id }}
 									{% for field in form.visible_fields %}
 										<td{% if field.field.name %} class="field-{{ field.field.name }}"{% endif %}>
 											{{ field }}

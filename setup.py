@@ -40,6 +40,7 @@ def get_full_description():
         CHANGELOG = changelog.read()
     return '%s\n%s' % (README, CHANGELOG)
 
+
 # allow setup.py to be run from any path
 CUR_DIR = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir))
 os.chdir(CUR_DIR)

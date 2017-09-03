@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.test import TestCase
 
 from ..models import AdvancedFilter
+from ..admin import AdvancedListFilters
 from tests import factories
 
 
@@ -153,7 +154,8 @@ class AdvancedFilterUsageTest(TestCase):
         res = self.client.get(url, data={'_afilter': self.a.pk})
         assert res.status_code == 200
         cl = res.context_data['cl']
-        assert not cl.filter_specs
+        assert not any(isinstance(f, AdvancedListFilters)
+                       for f in cl.filter_specs)
         # filter not applied due to user not being in list
         if hasattr(cl, 'queryset'):
             assert cl.queryset.count() == 10
@@ -167,7 +169,8 @@ class AdvancedFilterUsageTest(TestCase):
         res = self.client.get(url, data={'_afilter': self.a.pk})
         assert res.status_code == 200
         cl = res.context_data['cl']
-        assert cl.filter_specs
+        assert any(isinstance(f, AdvancedListFilters)
+                   for f in cl.filter_specs)
         if hasattr(cl, 'queryset'):
             assert cl.queryset.count() == 2
         else:
