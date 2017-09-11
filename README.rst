@@ -171,7 +171,7 @@ Remove
 
 Similarly to other `django
 formsets <https://docs.djangoproject.com/en/dev/topics/forms/formsets/>`__,
-used to remove the formset on submit.
+used to remove the selected line on submit.
 
 Editing previously created advanced filters
 ===========================================
@@ -193,17 +193,18 @@ Query Serialization
 Model correlation
 =================
 
-Since version 1.0, The underlying ``AdvancedFilter`` model instances are
-tightly coupled with a specific model (using the app\_label.Name model
-name), for which admin changelist they are to used and created in.
+Since version 1.0, ``AdvancedFilter`` are tightly coupled with a specific model
+using the ``model`` field and the app\_label.Name template.
+On creation, ``model`` is populated based on the admin changelist it's created
+in.
 
 This change has a few benefits:
 
-1. Admin mixin can be used with multiple ``ModelAdmin`` classes while
+1. The mixin can be used with multiple ``ModelAdmin`` classes while
    performing specific query serialization and field validation that are
    at the base of the filter functionality.
 
-2. Allows users to edit previously created filters outside of the
+2. Users can edit previously created filters outside of the
    context of a changelist, as we do in the
    ```AdvancedFilterAdmin`` <#editing-previously-created-advanced-filters>`__.
 
