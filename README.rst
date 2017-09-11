@@ -211,12 +211,6 @@ This change has a few benefits:
 3. Limit the ``AdvancedListFilters`` to limit queryset (and thus, the
    underlying options) to a specified model.
 
-Note: Since we are at the early stages of development I have skipped the
-South / 1.7 schema (new field) and data migrations (add specific model
-to all existing instances of AdvancedFilter model) migrations. Though
-this shouldn't be too difficult to do, if the need arises I can add
-migration examples.
-
 Views
 =====
 
