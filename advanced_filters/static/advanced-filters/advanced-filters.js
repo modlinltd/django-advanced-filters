@@ -97,7 +97,6 @@ var OperatorHandlers = function($) {
 			if (!value.val() == "null") {
 				value.val("");
 			}
-			op.val("iexact").change();
 			self.initialize_select2(elm);
 		}
 	};
