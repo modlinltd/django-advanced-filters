@@ -18,13 +18,13 @@ class AdvancedFilter(models.Model):
         verbose_name = _('Advanced Filter')
         verbose_name_plural = _('Advanced Filters')
 
-    title = models.CharField(max_length=255, null=False, blank=False)
+    title = models.CharField(max_length=255, null=False, blank=False, verbose_name=_('Title'))
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                   related_name='created_advanced_filters')
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    url = models.CharField(max_length=255, null=False, blank=False)
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
-    groups = models.ManyToManyField('auth.Group', blank=True)
+                                   related_name='created_advanced_filters', verbose_name=_('Created by'))
+    created_at = models.DateTimeField(auto_now_add=True, null=True, verbose_name=_('Created at'))
+    url = models.CharField(max_length=255, null=False, blank=False, verbose_name=_('URL'))
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, verbose_name=_('Users'))
+    groups = models.ManyToManyField('auth.Group', blank=True, verbose_name=_('Groups'))
 
     objects = UserLookupManager()
 
