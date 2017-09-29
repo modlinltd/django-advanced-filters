@@ -74,7 +74,8 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
 
     field = forms.ChoiceField(required=True, widget=forms.Select(
         attrs={'class': 'query-field'}), label=_('Field'))
-    operator = forms.ChoiceField(label=_('Operator'),
+    operator = forms.ChoiceField(
+        label=_('Operator'),
         required=True, choices=OPERATORS, initial="iexact",
         widget=forms.Select(attrs={'class': 'query-operator'}))
     value = VaryingTypeCharField(required=True, widget=forms.TextInput(
