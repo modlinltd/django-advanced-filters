@@ -1,0 +1,146 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-25 09:49+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: admin.py:24
+msgid "Advanced filters"
+msgstr "Filtros avanzados"
+
+#: admin.py:81
+msgid "Advanced filter added successfully."
+msgstr "Filtro guardado correctamente."
+
+#: forms.py:58
+msgid "Equals"
+msgstr "Igual"
+
+#: forms.py:59
+msgid "Contains"
+msgstr "Contiene"
+
+#: forms.py:60
+msgid "One of"
+msgstr "Uno de"
+
+#: forms.py:61
+msgid "DateTime Range"
+msgstr "Rango de fecha y hora"
+
+#: forms.py:62
+msgid "Is NULL"
+msgstr "es Nulo"
+
+#: forms.py:63
+msgid "Is TRUE"
+msgstr "Es Verdadero"
+
+#: forms.py:64
+msgid "Is FALSE"
+msgstr "Es Falso"
+
+#: forms.py:65
+msgid "Less Than"
+msgstr "Menor que"
+
+#: forms.py:66
+msgid "Greater Than"
+msgstr "Mayor que"
+
+#: forms.py:67
+msgid "Less Than or Equal To"
+msgstr "Menor o igual a"
+
+#: forms.py:68
+msgid "Greater Than or Equal To"
+msgstr "Mayor o igual a"
+
+#: forms.py:72
+msgid "Or (mark an or between blocks)"
+msgstr "O (Marca O entre bloques)"
+
+#: forms.py:76
+msgid "Field"
+msgstr "Campo"
+
+#: forms.py:79
+msgid "Operator"
+msgstr "Operador"
+
+#: forms.py:81
+msgid "Value"
+msgstr "Valor"
+
+#: forms.py:83
+msgid "Value from"
+msgstr "Desde"
+
+#: forms.py:85
+msgid "Value to"
+msgstr "Hasta"
+
+#: forms.py:86
+msgid "Negate"
+msgstr "Negación"
+
+#: models.py:18 templates/admin/advanced_filters.html:16
+msgid "Advanced Filter"
+msgstr "Filtro avanzado"
+
+#: models.py:19
+msgid "Advanced Filters"
+msgstr "Filtros avanzados"
+
+#: models.py:22
+msgid "Title"
+msgstr "Título"
+
+#: templates/admin/advanced_filters.html:16
+msgid "Edit"
+msgstr "Editar"
+
+#: templates/admin/advanced_filters.html:28
+msgid "Create advanced filter"
+msgstr "Crear filtro avanzado"
+
+#: templates/admin/advanced_filters.html:66
+msgid "Save"
+msgstr "Guardar"
+
+#: templates/admin/advanced_filters.html:67
+#: templates/admin/advanced_filters/change_form.html:52
+msgid "Save & Filter Now!"
+msgstr "Guardar y filtrar!"
+
+#: templates/admin/advanced_filters.html:68
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: templates/admin/advanced_filters/change_form.html:16
+msgid "Change advanced filter"
+msgstr "Cambiar filtro avanzado"
+
+#: templates/admin/common_js_init.html:14
+msgid "Add another filter"
+msgstr "Añadir otro filtro"
+
+#: templates/admin/common_js_init.html:15
+msgid "Remove"
+msgstr "Eliminar"

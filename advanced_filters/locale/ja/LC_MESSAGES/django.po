@@ -1,0 +1,139 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-03-11 18:34+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: admin.py:24
+msgid "Advanced filters"
+msgstr "カスタムフィルター"
+
+#: admin.py:76
+msgid "Advanced filter added successfully."
+msgstr "カスタムフィルターが追加されました。"
+
+#: forms.py:51
+msgid "Equals"
+msgstr "等しい"
+
+#: forms.py:52
+msgid "Contains"
+msgstr "含む（文字列）"
+
+#: forms.py:53
+msgid "One of"
+msgstr "含む（複数の中の一つ）"
+
+#: forms.py:54
+msgid "DateTime Range"
+msgstr "期間"
+
+#: forms.py:55
+msgid "Is NULL"
+msgstr "空（NULL）"
+
+#: forms.py:56
+msgid "Is TRUE"
+msgstr "真（TRUE）"
+
+#: forms.py:57
+msgid "Is FALSE"
+msgstr "偽（FALSE）"
+
+#: forms.py:58
+msgid "Less Than"
+msgstr "値より少ない"
+
+#: forms.py:59
+msgid "Greater Than"
+msgstr "値より多い"
+
+#: forms.py:60
+msgid "Less Than or Equal To"
+msgstr "値以下"
+
+#: forms.py:61
+msgid "Greater Than or Equal To"
+msgstr "値以上"
+
+#: forms.py:65
+msgid "Or (mark an or between blocks)"
+msgstr "OR（各条件をANDではなくORとして処理）"
+
+#: models.py:18 templates/admin/advanced_filters.html:16
+msgid "Advanced Filter"
+msgstr "カスタムフィルター"
+
+#: models.py:19
+msgid "Advanced Filters"
+msgstr "カスタムフィルター"
+
+#: templates/admin/advanced_filters.html:16
+msgid "Edit"
+msgstr "修正"
+
+#: templates/admin/advanced_filters.html:28
+msgid "Create advanced filter"
+msgstr "カスタムフィルターの作成"
+
+#: templates/admin/advanced_filters.html:67
+msgid "Save"
+msgstr "保存"
+
+#: templates/admin/advanced_filters.html:68
+#: templates/admin/advanced_filters/change_form.html:53
+msgid "Save & Filter Now!"
+msgstr "保存してフィルターを適用"
+
+#: templates/admin/advanced_filters.html:69
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: templates/admin/advanced_filters/change_form.html:16
+msgid "Change advanced filter"
+msgstr "カスタムフィルターを変更"
+
+#: templates/admin/common_js_init.html:14
+msgid "Add another filter"
+msgstr "他のフィルターを追加"
+
+#: templates/admin/common_js_init.html:15
+msgid "Remove"
+msgstr "削除"
+
+#: models.py:21
+msgid "Title"
+msgstr "タイトル"
+
+#: forms.py:76
+msgid "Field"
+msgstr "項目"
+
+#: forms.py:77
+msgid "Operator"
+msgstr "比較"
+
+#: forms.py:81
+msgid "Value"
+msgstr "値"
+
+#: forms.py:86
+msgid "Negate"
+msgstr "否定"
+
