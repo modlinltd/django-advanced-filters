@@ -24,7 +24,6 @@ except ImportError:
 from django.db.models import Q, FieldDoesNotExist
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
-from django.templatetags.static import static
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 from django.utils.six.moves import range, reduce
@@ -73,17 +72,18 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
     )
 
     field = forms.ChoiceField(required=True, widget=forms.Select(
-        attrs={'class': 'query-field'}))
+        attrs={'class': 'query-field'}), label=_('Field'))
     operator = forms.ChoiceField(
+        label=_('Operator'),
         required=True, choices=OPERATORS, initial="iexact",
         widget=forms.Select(attrs={'class': 'query-operator'}))
     value = VaryingTypeCharField(required=True, widget=forms.TextInput(
-        attrs={'class': 'query-value'}))
+        attrs={'class': 'query-value'}), label=_('Value'))
     value_from = forms.DateTimeField(widget=forms.HiddenInput(
         attrs={'class': 'query-dt-from'}), required=False)
     value_to = forms.DateTimeField(widget=forms.HiddenInput(
         attrs={'class': 'query-dt-to'}), required=False)
-    negate = forms.BooleanField(initial=False, required=False)
+    negate = forms.BooleanField(initial=False, required=False, label=_('Negate'))
 
     def _build_field_choices(self, fields):
         """
@@ -252,16 +252,19 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
         fields = ('title',)
 
     class Media:
-        required_js = [static('admin/js/%sjquery.min.js' %
-                       ('vendor/jquery/' if USE_VENDOR_DIR else '')),
-                       static('advanced-filters/jquery_adder.js'),
-                       static('orig_inlines%s.js' %
-                       ('' if settings.DEBUG else '.min')),
-                       static('magnific-popup/jquery.magnific-popup.js'),
-                       static('advanced-filters/advanced-filters.js'), ]
+        required_js = [
+            'admin/js/%sjquery.min.js' % ('vendor/jquery/' if USE_VENDOR_DIR else ''),
+            'advanced-filters/jquery_adder.js',
+            'orig_inlines%s.js' % ('' if settings.DEBUG else '.min'),
+            'magnific-popup/jquery.magnific-popup.js',
+            'advanced-filters/advanced-filters.js',
+        ]
         js = required_js + [SELECT2_JS]
-        css = {'screen': [static(SELECT2_CSS), static('advanced-filters/advanced-filters.css'),
-                          static('magnific-popup/magnific-popup.css')]}
+        css = {'screen': [
+            SELECT2_CSS,
+            'advanced-filters/advanced-filters.css',
+            'magnific-popup/magnific-popup.css'
+        ]}
 
     def get_fields_from_model(self, model, fields):
         """

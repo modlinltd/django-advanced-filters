@@ -1,6 +1,46 @@
 Changelog
 =========
 
+1.0.7.1 - Fix PyPi fail
+-----------------------
+
+- Equivalent to the prev version, bumped since we can't reupload the files to PyPi.
+
+1.0.7 - The holiday edition
+---------------------------
+
+This is mostly a minor release with the biggest being the `AdvancedFilterForm.Media` fix, 2 additional translations and bunch of docs cleanup (thanks everyone)!
+
+Changes since 1.0.6:
+
+Bug Fixes
+~~~~~~~~~
+
+- Fix AdvancedFilterForm Media declaration
+- Fix pep8: E128 on forms.py (Merge d7acb36)
+
+Features
+~~~~~~~~
+
+- Add Japanese locale (Merge d7acb36)
+- Add Spanish locale (Merge 1a482cf)
+
+Documentation:
+~~~~~~~~~~~~~~
+
+- a bit of polishing (Merge 4c88ea3)
+- removing confusing migrations paragraph (Merge 4c88ea3)
+
+Contributors:
+~~~~~~~~~~~~~
+
+- KINOSHITA Shinji
+- Pavel Savchenko
+- Benny Daon
+- Mathieu Richardoz
+- José Sánchez Moreno
+
+
 1.0.6 - Bout Time
 -----------------
 
