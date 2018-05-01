@@ -13,5 +13,5 @@ tests/db.sqlite*
 /.eggs/
 /htmlcov/
 /advanced_filters/.coverage
-
+.DS_Store
 /tests/local.db
