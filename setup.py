@@ -63,7 +63,7 @@ setup(
     packages=find_packages(exclude=['tests*', 'tests.*', '*.tests']),
     include_package_data=True,
     install_requires=[
-        'django-braces==1.4.0',
+        'django-braces==1.13.0',
         'simplejson==3.6.5',
     ],
     extras_require=dict(test=TEST_REQS),
