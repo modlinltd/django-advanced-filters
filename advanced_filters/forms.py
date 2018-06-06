@@ -5,21 +5,12 @@ import operator
 
 from django import forms
 
-try:
-    from django.apps import apps
-    get_model = apps.get_model
-except ImportError:
-    # django < 1.7 support
-    from django.db.models import get_model
+from django.apps import apps
+get_model = apps.get_model
 
 from django.conf import settings
 from django.contrib import admin
-
-try:
-    from django.contrib.admin.utils import get_fields_from_path
-except ImportError:
-    # django < 1.7 support
-    from django.contrib.admin.util import get_fields_from_path
+from django.contrib.admin.utils import get_fields_from_path
 
 from django.db.models import Q, FieldDoesNotExist
 from django.db.models.fields import DateField

@@ -5,11 +5,7 @@ from django.contrib import admin, messages
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 
-try:
-    from django.contrib.admin.utils import unquote
-except ImportError:
-    # django < 1.7 support
-    from django.contrib.admin.util import unquote
+from django.contrib.admin.utils import unquote
 from django.shortcuts import resolve_url
 
 from .forms import AdvancedFilterForm
@@ -75,6 +71,8 @@ class AdminAdvancedFiltersMixin(object):
             afilter.created_by = request.user
             afilter.query = form.generate_query()
             afilter.save()
+            afilter.b64_query = afilter.b64_query.decode("utf-8")
+            afilter.save()
             afilter.users.add(request.user)
             messages.add_message(
                 request, messages.SUCCESS,
@@ -128,6 +126,7 @@ class AdvancedFilterAdmin(admin.ModelAdmin):
         if new_object and not new_object.pk:
             new_object.created_by = request.user
 
+        new_object.b64_query = new_object.b64_query.decode("utf-8")
         super(AdvancedFilterAdmin, self).save_model(
             request, new_object, *args, **kwargs)
 
