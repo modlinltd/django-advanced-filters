@@ -14,4 +14,5 @@ tests/db.sqlite*
 /htmlcov/
 /advanced_filters/.coverage
 .DS_Store
+.pytest_cache
 /tests/local.db
