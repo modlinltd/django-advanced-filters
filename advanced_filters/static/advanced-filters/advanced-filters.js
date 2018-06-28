@@ -70,11 +70,13 @@ var OperatorHandlers = function($) {
 						  MODEL_LABEL) + '/' + field;
 		var input = $(elm).parents('tr').find('input.query-value');
 		input.select2("destroy");
-		$.get(choices_url, function(data) {
-			input.select2({'data': data, 'createSearchChoice': function(term) {
-                return { 'id': term, 'text': term };
-            }});
-		});
+		if (input[0].value === "") {
+			$.get(choices_url, function(data) {
+				input.select2({'data': data, 'createSearchChoice': function(term) {
+			return { 'id': term, 'text': term };
+		    }});
+			});
+		};
 	};
 
 	self.field_selected = function(elm) {
