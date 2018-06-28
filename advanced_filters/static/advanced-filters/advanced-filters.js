@@ -56,10 +56,23 @@ var OperatorHandlers = function($) {
 		self.value = $(elm).val();
 		self.val_input = $(elm).parents('tr').find('.query-value');
 		console.log("selected operator: " + self.value);
+
 		if (self.value == "range") {
 			self.add_datepickers();
+		} else if (self.value == "istrue") {
+			self.val_input.val("True");
+		} else if (self.value == "isfalse") {
+			self.val_input.val("False");
+		} else if (self.value == "isnull") {
+			self.val_input.val("null");
 		} else {
 			self.remove_datepickers();
+		}
+
+		if ($.inArray(self.value, ["istrue","isnull","isfalse"]) > -1) {
+			self.val_input.hide();
+		} else {
+			self.val_input.show();
 		}
 	};
 
