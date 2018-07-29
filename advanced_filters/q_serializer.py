@@ -121,7 +121,7 @@ class QSerializer(object):
             raise SerializationError
         string = json.dumps(self.serialize(obj), default=dt2ts)
         if self.b64_enabled:
-            return base64.b64encode(six.b(string))
+            return base64.b64encode(six.b(string)).decode("utf-8")
         return string
 
     def loads(self, string, raw=False):

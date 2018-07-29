@@ -6,7 +6,10 @@ try:
 except ImportError:
     from django.test.utils import override_settings
 from django.utils.encoding import force_text
-from django.core.urlresolvers import reverse
+try:
+    from django.urls import reverse
+except ImportError:  # Django < 2.0
+    from django.core.urlresolvers import reverse
 import django
 
 from tests import factories
@@ -47,7 +50,12 @@ class TestGetFieldChoicesView(TestCase):
             self.assert_view_error(
                 'need more than 1 value to unpack', model='a',
                 field_name='b', exception=ValueError)
-        if django.VERSION >= (1, 7):
+        if django.VERSION >= (1, 11):
+            self.assert_view_error("No installed app with label 'Foo'.",
+                                   model='Foo.test', field_name='baz')
+            self.assert_view_error("App 'reps' doesn't have a 'Foo' model.",
+                                   model='reps.Foo', field_name='b')
+        elif django.VERSION >= (1, 7):
             self.assert_view_error("No installed app with label 'foo'.",
                                    model='foo.test', field_name='baz')
             self.assert_view_error("App 'reps' doesn't have a 'foo' model.",
@@ -57,7 +65,7 @@ class TestGetFieldChoicesView(TestCase):
                                    model='foo.test', field_name='baz')
             self.assert_view_error("No installed app/model: reps.Foo",
                                    model='reps.Foo', field_name='b')
-        if sys.version_info >= (3, 3):
+        if sys.version_info >= (3, 3) or django.VERSION >= (1, 11):
             expected_exception = "SalesRep has no field named 'baz'"
         else:
             expected_exception = "SalesRep has no field named u'baz'"
