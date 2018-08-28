@@ -209,16 +209,10 @@ class AdvancedFilterFormSet(BaseFormSet):
             form = self.forms[0]
             self.fields = form.visible_fields()
 
-    @property
-    def empty_form(self):
-        form = self.form(
-            model_fields=self.model_fields,
-            auto_id=self.auto_id,
-            prefix=self.add_prefix('__prefix__'),
-            empty_permitted=True,
-        )
-        self.add_fields(form, None)
-        return form
+    def get_form_kwargs(self, index):
+        kwargs = super(AdvancedFilterFormSet, self).get_form_kwargs(index)
+        kwargs['model_fields'] = self.model_fields
+        return kwargs
 
     def _construct_forms(self):
         # not strictly required, but Django 1.5 calls this on init
