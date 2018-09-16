@@ -1,18 +1,9 @@
 from operator import itemgetter
 import logging
 
-try:
-    from django.apps import apps
-    get_model = apps.get_model
-except ImportError:
-    # django < 1.7 support
-    from django.db.models import get_model
+from django.apps import apps
 from django.conf import settings
-try:
-    from django.contrib.admin.utils import get_fields_from_path
-except ImportError:
-    # django < 1.7 support
-    from django.contrib.admin.util import get_fields_from_path
+from django.contrib.admin.utils import get_fields_from_path
 from django.db import models
 from django.db.models.fields import FieldDoesNotExist
 from django.utils.encoding import force_text
@@ -43,7 +34,7 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
                 status=400)
         app_label, model_name = model.split('.', 1)
         try:
-            model_obj = get_model(app_label, model_name)
+            model_obj = apps.get_model(app_label, model_name)
             field = get_fields_from_path(model_obj, field_name)[-1]
             model_obj = field.model  # use new model if followed a ForeignKey
         except AttributeError as e:

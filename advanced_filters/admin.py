@@ -2,15 +2,10 @@ import logging
 
 from django.conf import settings
 from django.contrib import admin, messages
+from django.contrib.admin.utils import unquote
 from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext_lazy as _
-
-try:
-    from django.contrib.admin.utils import unquote
-except ImportError:
-    # django < 1.7 support
-    from django.contrib.admin.util import unquote
 from django.shortcuts import resolve_url
+from django.utils.translation import ugettext_lazy as _
 
 from .forms import AdvancedFilterForm
 from .models import AdvancedFilter
