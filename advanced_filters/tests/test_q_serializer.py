@@ -1,11 +1,8 @@
 from django.db.models import Q
 from django.test import TestCase
-import django
 import json
 
 from ..q_serializer import QSerializer
-
-NEWER_DJANGO = django.VERSION >= (1, 6)
 
 
 class QSerializerTest(TestCase):
@@ -14,8 +11,6 @@ class QSerializerTest(TestCase):
         'connector': u'AND',
         'negated': False,
     }
-    if not NEWER_DJANGO:
-        correct_query['subtree_parents'] = []
 
     def setUp(self):
         self.s = QSerializer()

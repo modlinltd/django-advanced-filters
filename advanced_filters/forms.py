@@ -203,14 +203,6 @@ class AdvancedFilterFormSet(BaseFormSet):
         kwargs['model_fields'] = self.model_fields
         return kwargs
 
-    def _construct_forms(self):
-        # not strictly required, but Django 1.5 calls this on init
-        # django == 1.5 support
-        self.forms = []
-        for i in range(min(self.total_form_count(), self.absolute_max)):
-            self.forms.append(self._construct_form(
-                i, model_fields=self.model_fields))
-
     @cached_property
     def forms(self):
         # override the original property to include `model_fields` argument

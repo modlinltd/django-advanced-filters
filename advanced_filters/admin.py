@@ -34,12 +34,6 @@ class AdvancedListFilters(admin.SimpleListFilter):
             filters = AdvancedFilter.objects.filter(id=self.value())
             if hasattr(filters, 'first'):
                 advfilter = filters.first()
-            else:
-                # django == 1.5 support
-                try:
-                    advfilter = filters.order_by()[0]
-                except IndexError:
-                    advfilter = None
             if not advfilter:
                 logger.error("AdvancedListFilters.queryset: Invalid filter id")
                 return queryset
