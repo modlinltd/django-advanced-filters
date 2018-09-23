@@ -26,11 +26,10 @@ For release notes, see `Changelog <https://raw.githubusercontent.com/modlinltd/d
 Requirements
 ============
 
--  Django >= 1.5 (Django 1.5 - 1.9 on Python 2/3/PyPy2)
+-  Django >= 1.7 (Django 1.7 - 2.1 on Python 2/3/PyPy2)
 -  django-braces == 1.4.0
 -  simplejson == 3.6.5
 
-*NOTE*: While the latest Django 1.5.X is supported, the bundled jQuery it includes is outdated (1.4.2) and as such, most of our admin frontend scripts fail. This means that to use advanced-filters in Django 1.5 admin, you'd have to probably include your own jQuery (1.9 or later) and add it to global namespace prior to other scripts in `AdvancedFilterForm.Meta`.
 
 Installation & Set up
 =====================
@@ -53,11 +52,17 @@ Extending a ModelAdmin is pretty straightforward:
     class ProfileAdmin(AdminAdvancedFiltersMixin, models.ModelAdmin):
         list_filter = ('name', 'language', 'ts')   # simple list filters
 
-        # select from these fields in the advanced filter creation form
+        # specify which fields can be selected in the advanced filter
+        # creation form
         advanced_filter_fields = (
-            'name', 'language', 'ts'
+            'name',
+            'language',
+            'ts',
+
             # even use related fields as lookup fields
-            'country__name', 'posts__title', 'comments__content'
+            'country__name',
+            'posts__title',
+            'comments__content',
         )
 
 Adding a new advanced filter (see below) will display a new list filter

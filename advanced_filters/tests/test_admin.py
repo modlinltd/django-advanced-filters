@@ -1,4 +1,7 @@
-from django.core.urlresolvers import reverse
+try:
+    from django.urls import reverse
+except ImportError:  # Django < 2.0
+    from django.core.urlresolvers import reverse
 from django.contrib.auth.models import Permission
 from django.db.models import Q
 from django.test import TestCase
@@ -44,12 +47,8 @@ class ChageFormAdminTest(TestCase):
         with self.settings(ADVANCED_FILTER_EDIT_BY_USER=False):
             res = self.client.post(url, data=form_data)
         assert res.status_code == 302
-        # django == 1.5 support
-        if hasattr(res, 'url'):
-            assert res.url.endswith('admin/customers/client/?_afilter=1')
-        else:
-            url = res['location']
-            assert url.endswith('admin/customers/client/?_afilter=1')
+        url = res['location']
+        assert url.endswith('admin/customers/client/?_afilter=1')
 
     def test_create_page_disabled(self):
         self.user.user_permissions.add(Permission.objects.get(
@@ -110,7 +109,6 @@ class AdvancedFilterCreationTest(TestCase):
         assert form.is_valid()
         assert AdvancedFilter.objects.count() == 1
 
-        # django == 1.5 support
         created_filter = AdvancedFilter.objects.order_by('-pk')[0]
 
         assert created_filter.title == self.good_data['title']
@@ -122,15 +120,10 @@ class AdvancedFilterCreationTest(TestCase):
         assert res.status_code == 302
         assert AdvancedFilter.objects.count() == 2
 
-        # django == 1.5 support
         created_filter = AdvancedFilter.objects.order_by('-pk')[0]
-        if hasattr(res, 'url'):
-            assert res.url.endswith('admin/customers/client/?_afilter=%s' %
-                                    created_filter.pk)
-        else:
-            url = res['location']
-            assert url.endswith('admin/customers/client/?_afilter=%s' %
-                                created_filter.pk)
+        url = res['location']
+        assert url.endswith('admin/customers/client/?_afilter=%s' %
+                            created_filter.pk)
 
         assert list(created_filter.query.children[0]) == self.query
 
@@ -159,9 +152,6 @@ class AdvancedFilterUsageTest(TestCase):
         # filter not applied due to user not being in list
         if hasattr(cl, 'queryset'):
             assert cl.queryset.count() == 10
-        else:
-            # django == 1.5 support
-            assert cl.query_set.count() == 10
 
     def test_filters_available_to_users(self):
         self.a.users.add(self.user)
@@ -173,9 +163,6 @@ class AdvancedFilterUsageTest(TestCase):
                    for f in cl.filter_specs)
         if hasattr(cl, 'queryset'):
             assert cl.queryset.count() == 2
-        else:
-            # django == 1.5 support
-            assert cl.query_set.count() == 2
 
     def test_filters_available_to_groups(self):
         group = self.user.groups.create()
@@ -187,6 +174,3 @@ class AdvancedFilterUsageTest(TestCase):
         assert cl.filter_specs
         if hasattr(cl, 'queryset'):
             assert cl.queryset.count() == 2
-        else:
-            # django == 1.5 support
-            assert cl.query_set.count() == 2

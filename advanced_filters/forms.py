@@ -5,22 +5,11 @@ import operator
 
 from django import forms
 
-try:
-    from django.apps import apps
-    get_model = apps.get_model
-except ImportError:
-    # django < 1.7 support
-    from django.db.models import get_model
+from django.apps import apps
 
 from django.conf import settings
 from django.contrib import admin
-
-try:
-    from django.contrib.admin.utils import get_fields_from_path
-except ImportError:
-    # django < 1.7 support
-    from django.contrib.admin.util import get_fields_from_path
-
+from django.contrib.admin.utils import get_fields_from_path
 from django.db.models import Q, FieldDoesNotExist
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
@@ -209,24 +198,10 @@ class AdvancedFilterFormSet(BaseFormSet):
             form = self.forms[0]
             self.fields = form.visible_fields()
 
-    @property
-    def empty_form(self):
-        form = self.form(
-            model_fields=self.model_fields,
-            auto_id=self.auto_id,
-            prefix=self.add_prefix('__prefix__'),
-            empty_permitted=True,
-        )
-        self.add_fields(form, None)
-        return form
-
-    def _construct_forms(self):
-        # not strictly required, but Django 1.5 calls this on init
-        # django == 1.5 support
-        self.forms = []
-        for i in range(min(self.total_form_count(), self.absolute_max)):
-            self.forms.append(self._construct_form(
-                i, model_fields=self.model_fields))
+    def get_form_kwargs(self, index):
+        kwargs = super(AdvancedFilterFormSet, self).get_form_kwargs(index)
+        kwargs['model_fields'] = self.model_fields
+        return kwargs
 
     @cached_property
     def forms(self):
@@ -235,6 +210,7 @@ class AdvancedFilterFormSet(BaseFormSet):
                  for i in range(self.total_form_count())]
         forms.append(self.empty_form)  # add initial empty form
         return forms
+
 
 AFQFormSet = formset_factory(
     AdvancedFilterQueryForm, formset=AdvancedFilterFormSet,
@@ -300,7 +276,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
             self._model = model_admin.model
         elif instance and instance.model:
             # get existing instance model
-            self._model = get_model(*instance.model.split('.'))
+            self._model = apps.get_model(*instance.model.split('.'))
             try:
                 model_admin = admin.site._registry[self._model]
             except KeyError:
