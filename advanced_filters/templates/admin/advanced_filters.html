@@ -1,7 +1,5 @@
 {% extends original_change_list_template %}
 {% load i18n static admin_modify %}
-{# django == 1.5 support #}
-{# {% load cycle from future %} #}
 
 {% block extrastyle %}
 	{{ advanced_filters.media.css }}
@@ -79,7 +77,7 @@
 							// Do nothing if target element is select2 input
 							if( $(e.target).hasClass('select2-input') ) {
 								return true;
-							} 
+							}
 							// Else call parent method
 							$.magnificPopup.proto._onFocusIn.call(this,e);
 						};
