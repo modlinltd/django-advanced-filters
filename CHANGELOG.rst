@@ -1,6 +1,47 @@
 Changelog
 =========
 
+1.1.0 - The future is bright
+----------------------------
+
+This release highlights support for Django 2.0 and 2.1 as well as
+deprecating support for versions Django < 1.7 and Python 2.6 and 3.3
+
+Bug fixes
+~~~~~~~~~
+
+- bump django-braces==1.13 for Django 2 support (Merge 80e055e)
+- use request context processor in test_project (Merge 80e055e)
+
+Misc.
+~~~~~
+
+- ignore .DS_Store
+- fixes for Django 2.0 and 1.11, update tests (Merge 80e055e)
+- test in Django 2.1 (Merge d8d236d)
+- add updated migrations of model attributes (Merge 80e055e)
+- fix ValueError while creating empty form (Merge d8d236d)
+- python 2.6 and django < 1.7 are deprecated
+- lower and upper bounds in install_requires
+- avoid all-catch except clause (Merge 80e055e)
+
+Tests
+~~~~~
+
+- correct tox env django spec for ver 1.11 (Merge 80e055e)
+- correct make_query assertion for Django>=2 (Merge 80e055e)
+- update pytest-django in diff. envs + tox (Merge d8d236d)
+
+Contributors
+~~~~~~~~~~~~
+
+- Goncalo Gomes
+- predatell
+- Petr Dlouhý
+- benny daon
+- Pavel Savchenko
+
+
 1.0.7.1 - Fix PyPi fail
 -----------------------
 
