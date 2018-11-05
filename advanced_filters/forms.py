@@ -260,8 +260,10 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
                         model_field = get_fields_from_path(model, field)[-1]
                         verbose_name = model_field.verbose_name
                     except (FieldDoesNotExist, IndexError, TypeError) as e:
-                        logger.warning("AdvancedFilterForm: skip invalid field "
-                                    "- %s", e)
+                        logger.warning(
+                            "AdvancedFilterForm: skip invalid field "
+                                    "- %s", e
+                        )
                         continue
                 model_fields[field] = verbose_name
         return model_fields
