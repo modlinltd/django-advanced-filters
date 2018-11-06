@@ -66,7 +66,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         label=_('Operator'),
         required=True, choices=OPERATORS, initial="iexact",
         widget=forms.Select(attrs={'class': 'query-operator'}))
-    value = VaryingTypeCharField(required=True, widget=forms.TextInput(
+    value = VaryingTypeCharField(required=False, widget=forms.TextInput(
         attrs={'class': 'query-value'}), label=_('Value'))
     value_from = forms.DateTimeField(widget=forms.HiddenInput(
         attrs={'class': 'query-dt-from'}), required=False)
@@ -92,7 +92,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
             formdata = self.cleaned_data
         key = "{field}__{operator}".format(**formdata)
         if formdata['operator'] == "isnull":
-            return {key: None}
+            return {key: 'None'}
         elif formdata['operator'] == "istrue":
             return {formdata['field']: True}
         elif formdata['operator'] == "isfalse":
@@ -134,11 +134,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         elif query_data['value'] is False:
             query_data['operator'] = "isfalse"
         else:
-            if isinstance(mfield, DateField):
-                # this is a date/datetime field
-                query_data['operator'] = "range"  # default
-            else:
-                query_data['operator'] = operator  # default
+            query_data['operator'] = operator  # default
 
         if isinstance(query_data.get('value'),
                       list) and query_data['operator'] == 'range':
@@ -167,6 +163,15 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
                     'value_to' in cleaned_data):
                 self.set_range_value(cleaned_data)
         return cleaned_data
+
+    def clean_value(self):
+        value = self.cleaned_data['value']
+        op = self.cleaned_data.get('operator', '')
+        list = ['istrue', 'isfalse', 'isnull']
+        if op not in list:
+            self.fields['value'].required = True
+            return self.fields['value'].clean(value)
+        return value
 
     def make_query(self, *args, **kwargs):
         """ Returns a Q object from the submitted form """
