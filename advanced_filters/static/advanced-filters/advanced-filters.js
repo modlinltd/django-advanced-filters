@@ -150,13 +150,13 @@ var OperatorHandlers = function($) {
 	};
 
 	self.destroy = function() {
-		$('.form-row select.query-operator').each(function() {
+		$('.form-row select.query-operator:last').each(function() {
 			$(this).off("change");
 		});
-		$('.form-row select.query-field').each(function() {
+		$('.form-row select.query-field:last').each(function() {
 			$(this).off("change");
 		});
-		$('.form-row input.query-value').each(function() {
+		$('.form-row input.query-value:last').each(function() {
 			$(this).select2("destroy");
 		});
 	};
