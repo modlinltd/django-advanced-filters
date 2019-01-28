@@ -1,6 +1,30 @@
 Changelog
 =========
 
+1.1.1 - CHANGELOG rendering is hard
+-----------------------------------
+
+This release is for fixing the bug when installing with specific environment (
+locale that defaults to CP-1252).
+
+Bug fixes
+~~~~~~~~~
+
+- Add encoding='utf-8' to open() in setup.py (Merge 2fe81aa)
+
+Docs / Other
+~~~~~~~~~~~~
+
+- add CONTRIBUTING.rst with common processes (Merge ee7907e)
+- Update issue templates (Merge ee7907e)
+
+Contributors
+~~~~~~~~~~~~
+
+- Rebecca Turner
+- Pavel Savchenko
+
+
 1.1.0 - The future is bright
 ----------------------------
 
