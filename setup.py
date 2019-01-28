@@ -2,6 +2,7 @@ from setuptools.command.test import test as TestCommand
 from setuptools import setup, find_packages
 import os
 import sys
+import io
 
 from advanced_filters import __version__
 
@@ -34,9 +35,9 @@ def get_full_description():
     readme = 'README.rst'
     changelog = 'CHANGELOG.rst'
     base = os.path.dirname(__file__)
-    with open(os.path.join(base, readme)) as readme:
+    with io.open(os.path.join(base, readme), encoding='utf-8') as readme:
         README = readme.read()
-    with open(os.path.join(base, changelog)) as changelog:
+    with io.open(os.path.join(base, changelog), encoding='utf-8') as changelog:
         CHANGELOG = changelog.read()
     return '%s\n%s' % (README, CHANGELOG)
 
