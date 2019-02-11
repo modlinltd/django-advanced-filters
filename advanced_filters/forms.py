@@ -92,7 +92,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
             formdata = self.cleaned_data
         key = "{field}__{operator}".format(**formdata)
         if formdata['operator'] == "isnull":
-            return {key: 'None'}
+            return {key: None}
         elif formdata['operator'] == "istrue":
             return {formdata['field']: True}
         elif formdata['operator'] == "isfalse":
@@ -134,8 +134,8 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         elif query_data['value'] is False:
             query_data['operator'] = "isfalse"
         else:
-            query_data['operator'] = operator  # default
-
+            if not query_data.get('operator') == 'range':
+                query_data['operator'] = operator  # default
         if isinstance(query_data.get('value'),
                       list) and query_data['operator'] == 'range':
             date_from = date_to_string(query_data.get('value_from'))
