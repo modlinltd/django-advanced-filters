@@ -81,7 +81,7 @@ class AdminAdvancedFiltersMixin(object):
         data = request.POST if request.POST.get(
             'action') == 'advanced_filters' else None
         adv_filters_form = self.advanced_filter_form(
-            data=data, model_admin=self, extra_form=True)
+            data=data, model_admin=self, extra_form=True, request=request)
         extra_context.update({
             'original_change_list_template': self.original_change_list_template,
             'advanced_filters': adv_filters_form,
@@ -119,7 +119,11 @@ class AdvancedFilterAdmin(admin.ModelAdmin):
 
         super(AdvancedFilterAdmin, self).save_model(
             request, new_object, *args, **kwargs)
-
+    
+    def get_form(self, request, obj=None, *args, **kwargs):
+        form = super(AdvancedFilterAdmin, self).get_form(request, obj, *args, **kwargs)
+        form._request = request
+        return form
     def change_view(self, request, object_id, form_url='', extra_context=None):
         orig_response = super(AdvancedFilterAdmin, self).change_view(
             request, object_id, form_url, extra_context)

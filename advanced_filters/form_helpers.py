@@ -4,6 +4,8 @@ import re
 from django import forms
 
 from django.utils import six
+from advanced_filters.models import AdvancedFilter
+from django.utils.translation import ugettext_lazy as _
 
 logger = logging.getLogger('advanced_filters.form_helpers')
 
@@ -61,3 +63,12 @@ class CleanWhiteSpacesMixin(object):
                 cleaned_data[k] = re.sub(extra_spaces_pattern, ' ',
                                          self.cleaned_data[k] or '').strip()
         return cleaned_data
+
+
+class ValidatedRepeatTitleMixin(object):
+    def clean_title(self):
+        data = self.cleaned_data['title']
+        exist = AdvancedFilter.objects.filter(title=data, created_by=self._request.user).exists()
+        if exist:
+            raise forms.ValidationError(_("It has a filter with the same name"))
+        return data

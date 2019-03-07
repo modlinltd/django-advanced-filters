@@ -21,7 +21,7 @@ from django.utils.text import capfirst
 import django
 
 from .models import AdvancedFilter
-from .form_helpers import CleanWhiteSpacesMixin,  VaryingTypeCharField
+from .form_helpers import CleanWhiteSpacesMixin,  VaryingTypeCharField, ValidatedRepeatTitleMixin
 
 
 # django < 1.9 support
@@ -221,7 +221,7 @@ AFQFormSetNoExtra = formset_factory(
     extra=0, can_delete=True)
 
 
-class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
+class AdvancedFilterForm(ValidatedRepeatTitleMixin, CleanWhiteSpacesMixin, forms.ModelForm):
     """ Form to save/edit advanced filter forms """
     class Meta:
         model = AdvancedFilter
@@ -270,10 +270,13 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
         model_admin = kwargs.pop('model_admin', None)
         instance = kwargs.get('instance')
         extra_form = kwargs.pop('extra_form', False)
+        request = kwargs.pop('request', None)
         # TODO: allow all fields to be determined by model
         filter_fields = kwargs.pop('filter_fields', None)
         if model_admin:
             self._model = model_admin.model
+        if request:
+            self._request = request
         elif instance and instance.model:
             # get existing instance model
             self._model = apps.get_model(*instance.model.split('.'))
