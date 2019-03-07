@@ -305,7 +305,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
                 "Errors validating advanced query filters: %s",
                 pformat([(f.errors, f.non_field_errors())
                          for f in self.fields_formset.forms]))
-            raise forms.ValidationError("Error validating filter forms")
+            raise forms.ValidationError(_("Error validating filter forms"))
         cleaned_data['model'] = "%s.%s" % (self._model._meta.app_label,
                                            self._model._meta.object_name)
         return cleaned_data
