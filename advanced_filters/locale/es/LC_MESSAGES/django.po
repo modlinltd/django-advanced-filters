@@ -144,3 +144,6 @@ msgstr "Añadir otro filtro"
 #: templates/admin/common_js_init.html:15
 msgid "Remove"
 msgstr "Eliminar"
+
+msgid "Created by"
+msgstr "Creado por"
