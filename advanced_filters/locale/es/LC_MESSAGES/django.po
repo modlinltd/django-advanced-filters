@@ -127,7 +127,7 @@ msgstr "Guardar"
 #: templates/admin/advanced_filters.html:67
 #: templates/admin/advanced_filters/change_form.html:52
 msgid "Save & Filter Now!"
-msgstr "Guardar y filtrar!"
+msgstr "Guardar y filtrar"
 
 #: templates/admin/advanced_filters.html:68
 msgid "Cancel"
