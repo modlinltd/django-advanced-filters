@@ -68,7 +68,10 @@ class CleanWhiteSpacesMixin(object):
 class ValidatedRepeatTitleMixin(object):
     def clean_title(self):
         data = self.cleaned_data['title']
-        exist = AdvancedFilter.objects.filter(title=data, created_by=self._request.user).exists()
+        qs = AdvancedFilter.objects.filter(title=data, created_by=self._request.user)
+        if self.instance.id:
+            qs =  qs.exclude(id=self.instance.id)
+        exist = qs.exists()
         if exist:
             raise forms.ValidationError(_("It has a filter with the same name"))
         return data
