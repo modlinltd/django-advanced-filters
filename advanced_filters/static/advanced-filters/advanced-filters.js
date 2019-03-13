@@ -9,15 +9,17 @@ var OperatorHandlers = function($) {
 		var form_id = self.val_input.parents('tr').attr('id');
 		var form_num = parseInt(form_id.replace('form-', ''), 10);
 
-		var $from = $('<input type="text">');
+		var $from = $('<input type="date">');
+		// var $from = $('<input type="text">');
 		$from.attr("name", "form-" + form_num + "-value_from");
 		$from.attr("id", "id_form-" + form_num + "-value_from");
-		$from.attr("placeholder", gettext('Start date (YYYY-MM-DD)'));
+		// $from.attr("placeholder", gettext('Start date (YYYY-MM-DD)'));
 		$from.addClass('query-dt-from');
-		var $to = $('<input type="text">');
+		// var $to = $('<input type="text">');
+		var $to = $('<input type="date">');
 		$to.attr("name", "form-" + form_num + "-value_to");
 		$to.attr("id", "id_form-" + form_num + "-value_to");
-		$to.attr("placeholder", gettext('End date (YYYY-MM-DD)'));
+		// $to.attr("placeholder", gettext('End date (YYYY-MM-DD)'));
 		$to.addClass('query-dt-to');
 
 		self.val_input.parent().prepend($to);
