@@ -89,7 +89,8 @@ class AdminAdvancedFiltersMixin(object):
             search_query = form.generate_query()
             query_serializer = QSerializer(base64=True)
             b64_query = query_serializer.dumps(search_query)
-            url = f"{request.path}?_aquery={b64_query}"
+            url = "{path}?_aquery={query}"\
+                .format(path=request.path, query=b64_query)
             return HttpResponseRedirect(url)
         if form.is_valid():
             afilter = form.save(commit=False)
