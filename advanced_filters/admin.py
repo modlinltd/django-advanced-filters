@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from .forms import AdvancedFilterForm
 from .models import AdvancedFilter
+from .q_serializer import QSerializer
 
 
 logger = logging.getLogger('advanced_filters.admin')
@@ -43,6 +44,31 @@ class AdvancedListFilters(admin.SimpleListFilter):
         return queryset
 
 
+class AdvancedQueryFilters(admin.SimpleListFilter):
+    """Allow filtering by advanced filters query"""
+    title = ' '
+    template = 'admin/query_filter.html'
+
+    parameter_name = '_aquery'
+
+    def lookups(self, request, model_admin):
+        return None
+
+    def queryset(self, request, queryset):
+        if self.value():
+            query_serializer = QSerializer(base64=True)
+            query = query_serializer.loads(self.value())
+            return queryset.filter(query).distinct()
+
+        return queryset
+
+    def choices(self, changelist):
+        return []
+
+    def has_output(self):
+        return True
+
+
 class AdminAdvancedFiltersMixin(object):
     """ Generic AdvancedFilters mixin """
     advanced_change_list_template = "admin/advanced_filters.html"
@@ -56,9 +82,15 @@ class AdminAdvancedFiltersMixin(object):
             self.original_change_list_template = "admin/change_list.html"
         self.change_list_template = self.advanced_change_list_template
         # add list filters to filters
-        self.list_filter = (AdvancedListFilters,) + tuple(self.list_filter)
+        self.list_filter = (AdvancedListFilters, AdvancedQueryFilters,) + tuple(self.list_filter)
 
     def save_advanced_filter(self, request, form):
+        if '_just_filter' in request.POST:
+            search_query = form.generate_query()
+            query_serializer = QSerializer(base64=True)
+            b64_query = query_serializer.dumps(search_query)
+            url = f"{request.path}?_aquery={b64_query}"
+            return HttpResponseRedirect(url)
         if form.is_valid():
             afilter = form.save(commit=False)
             afilter.created_by = request.user

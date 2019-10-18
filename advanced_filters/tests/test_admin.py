@@ -127,6 +127,17 @@ class AdvancedFilterCreationTest(TestCase):
 
         assert list(created_filter.query.children[0]) == self.query
 
+        # just filter
+        form_data.pop('_save_goto')
+        form_data['_just_filter'] = 1
+        url = reverse('admin:customers_client_changelist')
+        res = self.client.post(url, data=form_data)
+
+        assert res.status_code == 302
+        assert AdvancedFilter.objects.count() == 2
+        url = res['location']
+        assert '?_aquery=' in url
+
 
 class AdvancedFilterUsageTest(TestCase):
     """ Test filter visibility and actual filtering of a changelist """
