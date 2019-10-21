@@ -19,7 +19,7 @@ class QSerializerTest(TestCase):
 
     def test_serialize_q(self):
         res = self.s.serialize(self.query_a)
-        self.assertEquals(res, self.correct_query)
+        self.assertEqual(res, self.correct_query)
 
     def test_jsondump_q(self):
         jres = self.s.dumps(self.query_a)
