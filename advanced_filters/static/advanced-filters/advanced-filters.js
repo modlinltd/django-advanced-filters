@@ -34,10 +34,10 @@ var OperatorHandlers = function($) {
 		}
 		self.val_input.css({display: 'none'});
 
-		$(".hasDatepicker").datepicker("destroy");
+		try {$(".hasDatepicker").datepicker("destroy");} catch(e) {}
 		$from.addClass('vDateField');
 		$to.addClass('vDateField');
-		grappelli.initDateAndTimePicker();
+		try {grappelli.initDateAndTimePicker();} catch(e) {}
 	};
 
 	self.remove_datepickers = function() {
@@ -45,7 +45,7 @@ var OperatorHandlers = function($) {
 		if (self.val_input.parent().find('input.vDateField').length > 0) {
 			var datefields = self.val_input.parent().find('input.vDateField');
 			datefields.each(function() {
-				$(this).datepicker("destroy");
+				try {$(this).datepicker("destroy");} catch(e) {}
 			});
 			datefields.remove();
 		}
@@ -53,28 +53,46 @@ var OperatorHandlers = function($) {
 
 	self.modify_widget = function(elm) {
 		// pick a widget for the value field according to operator
+		list = ['istrue', 'isfalse', 'isnull'];
 		self.value = $(elm).val();
 		self.val_input = $(elm).parents('tr').find('.query-value');
 		console.log("selected operator: " + self.value);
+		var field = $(elm).parents('tr').find('.query-field');
+		self.initialize_select2(field);
+
 		if (self.value == "range") {
 			self.add_datepickers();
 		} else {
 			self.remove_datepickers();
+		}
+
+		var input = $(elm).parents('tr').find('input.query-value');
+		if (list.includes(self.value)) {
+			input.prop('readonly', true);
+		} else {
+			input.prop('readonly', false);
 		}
 	};
 
 	self.initialize_select2 = function(elm) {
 		// initialize select2 widget and populate field choices
 		var field = $(elm).val();
-		var choices_url = ADVANCED_FILTER_CHOICES_LOOKUP_URL + (FORM_MODEL ||
-						  MODEL_LABEL) + '/' + field;
-		var input = $(elm).parents('tr').find('input.query-value');
-		input.select2("destroy");
-		$.get(choices_url, function(data) {
-			input.select2({'data': data, 'createSearchChoice': function(term) {
-                return { 'id': term, 'text': term };
-            }});
-		});
+		var op = $(elm).parents('tr').find('.query-operator');
+		if (field.includes('__') && op.val() == 'iexact') {
+			var choices_url = ADVANCED_FILTER_CHOICES_LOOKUP_URL + (FORM_MODEL ||
+							  MODEL_LABEL) + '/' + field;
+			var input = $(elm).parents('tr').find('input.query-value');
+			input.select2("destroy");
+			$.get(choices_url, function(data) {
+				input.select2({'data': data, 'createSearchChoice': function(term) {
+	                return { 'id': term, 'text': term };
+	            }});
+			});
+		}
+		else {
+			var input = $(elm).parents('tr').find('input.query-value');
+			input.select2("destroy");
+		}
 	};
 
 	self.field_selected = function(elm) {
@@ -108,15 +126,16 @@ var OperatorHandlers = function($) {
 			// if only 1 form and it's empty, add first extra formset
 			$('[data-rules-formset] .add-row a').click();
 		}
+
 		$('.form-row select.query-operator').each(function() {
 			$(this).off("change");
-			$(this).data('pre_change', $(this).val());
+			// $(this).data('pre_change', $(this).val());
 			$(this).on("change", function() {
 				var before_change = $(this).data('pre_change');
 				if ($(this).val() != before_change) self.modify_widget(this);
 				$(this).data('pre_change', $(this).val());
 			}).change();
-			self.modify_widget(this);
+			// self.modify_widget(this);
 		});
 		$('.form-row select.query-field').each(function() {
 			$(this).off("change");
@@ -127,18 +146,17 @@ var OperatorHandlers = function($) {
 				$(this).data('pre_change', $(this).val());
 			}).change();
 		});
-		self.field_selected($('.form-row select.query-field').first());
-
+		// self.field_selected($('.form-row select.query-field').first());
 	};
 
 	self.destroy = function() {
-		$('.form-row select.query-operator').each(function() {
+		$('.form-row select.query-operator:last').each(function() {
 			$(this).off("change");
 		});
-		$('.form-row select.query-field').each(function() {
+		$('.form-row select.query-field:last').each(function() {
 			$(this).off("change");
 		});
-		$('.form-row input.query-value').each(function() {
+		$('.form-row input.query-value:last').each(function() {
 			$(this).select2("destroy");
 		});
 	};
