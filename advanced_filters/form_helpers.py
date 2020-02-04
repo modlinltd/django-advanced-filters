@@ -3,7 +3,7 @@ import re
 
 from django import forms
 
-from django.utils import six
+import six
 
 logger = logging.getLogger('advanced_filters.form_helpers')
 
