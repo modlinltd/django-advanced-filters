@@ -16,3 +16,4 @@ tests/db.sqlite*
 .DS_Store
 .pytest_cache
 /tests/local.db
+/.venv

@@ -253,17 +253,18 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
         """
         model_fields = {}
         for field in fields:
-                if isinstance(field, tuple) and len(field) == 2:
-                    field, verbose_name = field[0], field[1]
-                else:
-                    try:
-                        model_field = get_fields_from_path(model, field)[-1]
-                        verbose_name = model_field.verbose_name
-                    except (FieldDoesNotExist, IndexError, TypeError) as e:
-                        logger.warning("AdvancedFilterForm: skip invalid field "
-                                    "- %s", e)
-                        continue
-                model_fields[field] = verbose_name
+            if isinstance(field, tuple) and len(field) == 2:
+                field, verbose_name = field[0], field[1]
+            else:
+                try:
+                    model_field = get_fields_from_path(model, field)[-1]
+                    verbose_name = model_field.verbose_name
+                except (FieldDoesNotExist, IndexError, TypeError) as e:
+                    logger.warning(
+                        "AdvancedFilterForm: skip invalid field - %s", e
+                    )
+                    continue
+            model_fields[field] = verbose_name
         return model_fields
 
     def __init__(self, *args, **kwargs):
