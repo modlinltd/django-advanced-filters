@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
                 ('language', models.CharField(choices=[(b'en', b'English'), (b'sp', b'Spanish'), (b'it', b'Italian')], default=b'en', max_length=8)),
                 ('email', models.EmailField(blank=True, max_length=254, verbose_name='email address')),
-                ('first_name', models.CharField(blank=True, max_length=30, verbose_name='first name')),
+                ('first_name', models.CharField(null=True, max_length=30, verbose_name='first name')),
                 ('last_name', models.CharField(blank=True, max_length=30, verbose_name='last name')),
                 ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
