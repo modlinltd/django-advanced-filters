@@ -47,7 +47,10 @@ if sys.version_info >= (3, 5):
 else:
     ARGUMENT_LENGTH_ERROR = "need more than 1 value to unpack"
 
-MISSING_FIELD_ERROR = "SalesRep has no field named 'baz'"
+if sys.version_info < (3, ) and django.VERSION < (1, 11):
+    MISSING_FIELD_ERROR = "SalesRep has no field named u'baz'"
+else:
+    MISSING_FIELD_ERROR = "SalesRep has no field named 'baz'"
 
 
 def test_invalid_view_kwargs(client):
