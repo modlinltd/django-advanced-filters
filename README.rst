@@ -35,7 +35,7 @@ Installation & Set up
 =====================
 
 1. Install from pypi: ``pip install django-advanced-filters``
-2. Add both ``'advanced_filters'`` to ``INSTALLED_APPS``.
+2. Add ``'advanced_filters'`` to ``INSTALLED_APPS``.
 3. Add ``url(r'^advanced_filters/', include('advanced_filters.urls'))``
    to your project's urlconf.
 4. Run ``python manage.py syncdb`` or ``python manage.py migrate`` (for django >= 1.7)
