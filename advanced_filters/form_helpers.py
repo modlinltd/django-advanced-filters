@@ -7,7 +7,7 @@ from django.utils import six
 
 logger = logging.getLogger('advanced_filters.form_helpers')
 
-extra_spaces_pattern = re.compile('\s+')
+extra_spaces_pattern = re.compile(r'\s+')
 
 
 class VaryingTypeCharField(forms.CharField):

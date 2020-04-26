@@ -1,7 +1,7 @@
 import factory
 
 
-class SalesRep(factory.django.DjangoModelFactory):
+class SalesRepFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = 'reps.SalesRep'
         django_get_or_create = ('username',)
@@ -15,7 +15,7 @@ class SalesRep(factory.django.DjangoModelFactory):
     @classmethod
     def _prepare(cls, create, **kwargs):
         password = kwargs.pop('password', None)
-        user = super(SalesRep, cls)._prepare(create, **kwargs)
+        user = super(SalesRepFactory, cls)._prepare(create, **kwargs)
         if password:
             user.set_password(password)
             if create:
@@ -23,7 +23,7 @@ class SalesRep(factory.django.DjangoModelFactory):
         return user
 
 
-class Client(factory.django.DjangoModelFactory):
+class ClientFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = 'customers.Client'
 

@@ -25,21 +25,21 @@ class AdvancedFilterPermissions(TestCase):
     def test_filter_by_user_empty(self):
         qs = AdvancedFilter.objects.filter_by_user(user=self.user)
 
-        self.assertEquals(qs.count(), 0)
+        self.assertEqual(qs.count(), 0)
 
     def test_filter_by_user_users(self):
         self.advancedfilter.users.add(self.user)
 
         qs = AdvancedFilter.objects.filter_by_user(user=self.user)
 
-        self.assertEquals(qs.count(), 1)
+        self.assertEqual(qs.count(), 1)
 
     def test_filter_by_user_groups(self):
         self.advancedfilter.groups.add(self.group)
 
         qs = AdvancedFilter.objects.filter_by_user(user=self.user)
 
-        self.assertEquals(qs.count(), 1)
+        self.assertEqual(qs.count(), 1)
 
     def test_list_fields(self):
         self.advancedfilter.query = Q(some_field__iexact='some_value')
