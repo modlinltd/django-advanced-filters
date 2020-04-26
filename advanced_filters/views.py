@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.admin.utils import get_fields_from_path
 from django.db import models
 from django.db.models.fields import FieldDoesNotExist
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.views.generic import View
 
 from braces.views import (CsrfExemptMixin, StaffuserRequiredMixin,
@@ -44,7 +44,7 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
         except (LookupError, FieldDoesNotExist) as e:
             logger.debug("Invalid kwargs passed to view: %s", e)
             return self.render_json_response(
-                {'error': force_text(e)}, status=400)
+                {'error': force_str(e)}, status=400)
 
         choices = field.choices
         # if no choices, populate with distinct values from instances
@@ -71,7 +71,7 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
                 else:
                     choices = []
 
-        results = [{'id': c[0], 'text': force_text(c[1])} for c in sorted(
+        results = [{'id': c[0], 'text': force_str(c[1])} for c in sorted(
                    choices, key=itemgetter(0))]
 
         return self.render_json_response({'results': results})

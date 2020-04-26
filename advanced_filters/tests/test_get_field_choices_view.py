@@ -3,7 +3,7 @@ import sys
 
 import django
 import pytest
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from tests.factories import ClientFactory
 
 try:
@@ -16,7 +16,7 @@ URL_NAME = "afilters_get_field_choices"
 
 
 def assert_json(content, expect):
-    assert json.loads(force_text(content)) == expect
+    assert json.loads(force_str(content)) == expect
 
 
 def assert_view_error(client, error, exception=None, **view_kwargs):
@@ -34,11 +34,11 @@ def assert_view_error(client, error, exception=None, **view_kwargs):
     assert_json(response.content, dict(error=error))
 
 
-if django.VERSION < (1, 7):
-    NO_APP_INSTALLED_ERROR = "No installed app/model: foo.test"
-    NO_MODEL_ERROR = "No installed app/model: reps.Foo"
+NO_APP_INSTALLED_ERROR = "No installed app with label 'foo'."
+
+if django.VERSION < (1, 11):
+    NO_MODEL_ERROR = "App 'reps' doesn't have a 'foo' model."
 else:
-    NO_APP_INSTALLED_ERROR = "No installed app with label 'foo'."
     NO_MODEL_ERROR = "App 'reps' doesn't have a 'Foo' model."
 
 
