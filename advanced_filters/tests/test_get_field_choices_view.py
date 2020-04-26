@@ -1,8 +1,12 @@
 import json
 import sys
+from datetime import timedelta
+from operator import attrgetter
 
 import django
+import factory
 import pytest
+from django.utils import timezone
 from django.utils.encoding import force_str
 from tests.factories import ClientFactory
 
@@ -47,7 +51,7 @@ if sys.version_info >= (3, 5):
 else:
     ARGUMENT_LENGTH_ERROR = "need more than 1 value to unpack"
 
-if sys.version_info < (3, ) and django.VERSION < (1, 11):
+if sys.version_info < (3,) and django.VERSION < (1, 11):
     MISSING_FIELD_ERROR = "SalesRep has no field named u'baz'"
 else:
     MISSING_FIELD_ERROR = "SalesRep has no field named 'baz'"
@@ -134,4 +138,33 @@ def test_distinct_database_choices(user, client, settings):
     response = client.get(view_url)
     assert_json(
         response.content, {"results": [{"id": "foo@bar.com", "text": "foo@bar.com"}]}
+    )
+
+
+def test_choices_no_date_fields_support(user, client, settings):
+    settings.ADVANCED_FILTERS_MAX_CHOICES = 4
+    logins = [timezone.now(), timezone.now() - timedelta(days=1), None]
+    ClientFactory.create_batch(
+        3, assigned_to=user, email="foo@bar.com", last_login=factory.Iterator(logins)
+    )
+    view_url = reverse(
+        URL_NAME, kwargs=dict(model="customers.Client", field_name="last_login")
+    )
+    response = client.get(view_url)
+    assert_json(response.content, {"results": []})
+
+
+def test_choices_has_null(user, client, settings):
+    settings.ADVANCED_FILTERS_MAX_CHOICES = 4
+    named_users = ClientFactory.create_batch(2, assigned_to=user)
+    names = [None] + sorted(set([nu.first_name for nu in named_users]))
+    assert len(named_users) == 2
+    ClientFactory.create_batch(2, assigned_to=user, first_name=None)
+    view_url = reverse(
+        URL_NAME, kwargs=dict(model="customers.Client", field_name="first_name")
+    )
+    response = client.get(view_url)
+    assert_json(
+        response.content,
+        {"results": [{"id": name, "text": str(name)} for name in names]},
     )

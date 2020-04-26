@@ -15,7 +15,7 @@ class Client(AbstractBaseUser):
     language = models.CharField(max_length=8, choices=VALID_LANGUAGES,
                                 default='en')
     email = models.EmailField(_('email address'), blank=True)
-    first_name = models.CharField(_('first name'), max_length=30, blank=True)
+    first_name = models.CharField(_('first name'), max_length=30, null=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
     is_active = models.BooleanField(
         _('active'), default=True,

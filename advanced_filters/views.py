@@ -1,4 +1,3 @@
-from operator import itemgetter
 import logging
 
 from django.apps import apps
@@ -72,6 +71,6 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
                     choices = []
 
         results = [{'id': c[0], 'text': force_str(c[1])} for c in sorted(
-                   choices, key=itemgetter(0))]
+                   choices, key=lambda x: (x[0] is not None, x[0]))]
 
         return self.render_json_response({'results': results})

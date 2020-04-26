@@ -27,4 +27,5 @@ class ClientFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = 'customers.Client'
 
+    first_name = factory.faker.Faker('first_name')
     email = factory.Sequence(lambda n: 'c%d@foo.com' % n)
