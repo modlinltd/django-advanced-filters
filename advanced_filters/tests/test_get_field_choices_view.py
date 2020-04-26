@@ -42,9 +42,7 @@ else:
     NO_MODEL_ERROR = "App 'reps' doesn't have a 'Foo' model."
 
 
-if "PyPy" in getattr(sys, "subversion", ()):
-    ARGUMENT_LENGTH_ERROR = "expected length 2, got 1"
-elif sys.version_info >= (3, 5):
+if sys.version_info >= (3, 5):
     ARGUMENT_LENGTH_ERROR = "not enough values to unpack (expected 2, got 1)"
 else:
     ARGUMENT_LENGTH_ERROR = "need more than 1 value to unpack"
