@@ -132,7 +132,7 @@ class AdminAdvancedFiltersMixin(object):
                 query_dict = AdvancedFilterQueryForm._parse_query_dict(query, self.model)
 
                 for key, value in query_dict.items():
-                    data[f'form-{idx}-{key}'] = value
+                    data['form-{idx}-{key}'.format(idx=idx, key=key)] = value
 
                 data['form-TOTAL_FORMS'] += 1
 
