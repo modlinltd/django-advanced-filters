@@ -26,10 +26,10 @@ Pull Request Process
    other developer, or if you do not have permission to do that, you may
    request the reviewer to merge it for you.
 
-Release process
----------------
+Manual Release process
+----------------------
 
-1. Prepeare the changelog and amend the CHANGELOG.rst
+1. Prepare the changelog and amend the CHANGELOG.rst
 2. Increase the version numbers in any examples files and the README.rst
    to the new version that this Pull Request would represent. The
    versioning scheme we use is `SemVer <http://semver.org/>`__.
