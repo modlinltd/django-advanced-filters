@@ -14,7 +14,7 @@ admin.
 
 Mimics the advanced search feature in
 `VTiger <https://www.vtiger.com/>`__, `see here for more
-info <https://wiki.vtiger.com/index.php/Create_Custom_Filters>`__
+info <https://www.vtiger.com/docs/creating-custom-filters>`__
 
 .. figure:: https://raw.githubusercontent.com/modlinltd/django-advanced-filters/develop/screenshot.png
    :alt: Creating via a modal
@@ -26,16 +26,16 @@ For release notes, see `Changelog <https://raw.githubusercontent.com/modlinltd/d
 Requirements
 ============
 
--  Django >= 1.7 (Django 1.7 - 2.1 on Python 2/3/PyPy2)
--  django-braces == 1.4.0
--  simplejson == 3.6.5
+-  Django >= 1.9 (Django 1.9 - 3.0 on Python 2/3/PyPy3)
+-  django-braces >= 1.4, < 1.14.0
+-  simplejson >= 3.6.5, < 4
 
 
 Installation & Set up
 =====================
 
 1. Install from pypi: ``pip install django-advanced-filters``
-2. Add both ``'advanced_filters'`` to ``INSTALLED_APPS``.
+2. Add ``'advanced_filters'`` to ``INSTALLED_APPS``.
 3. Add ``url(r'^advanced_filters/', include('advanced_filters.urls'))``
    to your project's urlconf.
 4. Run ``python manage.py syncdb`` or ``python manage.py migrate`` (for django >= 1.7)

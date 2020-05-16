@@ -3,7 +3,7 @@ from datetime import datetime, date
 import base64
 import time
 
-from django.utils import six
+import six
 from django.db.models import Q
 from django.core.serializers.base import SerializationError
 
