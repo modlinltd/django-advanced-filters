@@ -13,14 +13,11 @@ class SalesRepFactory(factory.django.DjangoModelFactory):
     is_superuser = False
 
     @classmethod
-    def _prepare(cls, create, **kwargs):
-        password = kwargs.pop('password', None)
-        user = super()._prepare(create, **kwargs)
-        if password:
-            user.set_password(password)
-            if create:
-                user.save()
-        return user
+    def _create(cls, model_class, *args, **kwargs):
+        """Override the default ``_create`` with our custom call."""
+        manager = cls._get_manager(model_class)
+        # avoid ``manager.create(*args, **kwargs)`` = encrypt password
+        return manager.create_user(*args, **kwargs)
 
 
 class ClientFactory(factory.django.DjangoModelFactory):
