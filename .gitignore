@@ -18,5 +18,6 @@ tests/db.sqlite*
 /tests/local.db
 /.venv
 .vscode/settings.json
+Sublimerge.vcs-cache
 pyrightconfig.json
 .ropeproject
