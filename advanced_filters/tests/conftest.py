@@ -3,7 +3,8 @@ from tests.factories import ClientFactory, SalesRepFactory
 
 
 @pytest.fixture
-def user(db):
+@pytest.mark.usefixtures("db")
+def user():
     return SalesRepFactory()
 
 
@@ -16,3 +17,4 @@ def client(client, user):
 @pytest.fixture
 def three_clients(user):
     return ClientFactory.create_batch(3, assigned_to=user)
+
