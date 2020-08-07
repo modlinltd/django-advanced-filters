@@ -1,14 +1,16 @@
 import os
-from time import sleep
+import os.path
 from types import MethodType
 
 import pytest
-from django.contrib.auth.models import Permission
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.webdriver import Options, WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+
+from django.contrib.auth.models import Permission
+
 from tests.factories import ClientFactory
 
 try:
@@ -36,6 +38,9 @@ FILTER_UL = "%s/following::ul" % FILTER_HEADING
 def selenium(live_server, user, pytestconfig):
     """ Initialize and authenticate the selenium driver """
     options = Options()
+    print("CI:", os.getenv("CI"))
+    print("PATH:", os.getenv("PATH"))
+    print("MOZ_HEADLESS:", os.getenv("MOZ_HEADLESS"))
     if os.getenv("CI"):
         options.headless = True
         options.add_argument("-headless")
@@ -97,7 +102,7 @@ def test_filter_is_usable(three_clients, selenium):
     name_value = selenium.find_element_by_css_selector(FORM_ROW_VALUE)
     assert name_value.get_attribute("value") == ""
 
-    # type a user's name autocompletes to the name
+    # type a user's name auto-completes to the name
     select2_trigger = selenium.find_element_by_css_selector(FORM_SELECT2_CONTAINER)
     assert select2_trigger
     select2_trigger.click()
@@ -112,7 +117,7 @@ def test_filter_is_usable(three_clients, selenium):
     save_and_filter.click()
     WebDriverWait(selenium, timeout=5).until(EC.url_changes(current_url))
 
-    # assert filter was created and avialable in changelist filter list
+    # assert filter was created and available in changelist filter list
     filters = selenium.find_element_by_id('changelist-filter')
     assert filters
     filter_heading = filters.find_element_by_xpath(FILTER_HEADING)

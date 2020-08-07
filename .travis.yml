@@ -1,4 +1,6 @@
 language: python
+addons:
+  firefox: "latest-esr"
 cache: pip
 python:
   - "2.7"
@@ -9,6 +11,8 @@ python:
   - "pypy3"
 
 env:
+  global:
+    - MOZ_HEADLESS=1
   matrix:
     - DJANGO="1.9"
     - DJANGO="1.10"
@@ -19,7 +23,14 @@ env:
     - DJANGO="3.0"
     - DJANGO="3.1"
 
+before_install:
+  - ./get_gecko.sh
+  - export PATH=$PATH:$PWD/geckodriver
+  - export MOZ_HEADLESS=1
+  - echo "Path is" $PATH
+
 install: pip install tox-travis coveralls
 script: tox
+after_script: cat geckodriver.log
 after_success:
   coveralls
