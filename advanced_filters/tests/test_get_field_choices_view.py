@@ -71,11 +71,6 @@ def test_field_with_choices(client):
     )
 
 
-@pytest.fixture
-def three_clients(user):
-    return ClientFactory.create_batch(3, assigned_to=user)
-
-
 def test_disabled_field(three_clients, client, settings):
     settings.ADVANCED_FILTERS_DISABLE_FOR_FIELDS = ("email",)
     view_url = reverse(
