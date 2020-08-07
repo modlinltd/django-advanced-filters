@@ -1,10 +1,10 @@
-from setuptools.command.test import test as TestCommand
-from setuptools import setup, find_packages
+import io
 import os
 import sys
-import io
 
 from advanced_filters import __version__
+from setuptools import find_packages, setup
+from setuptools.command.test import test as TestCommand
 
 
 class Tox(TestCommand):
@@ -93,6 +93,7 @@ setup(
         'Framework :: Django :: 2.1',
         'Framework :: Django :: 2.2',
         'Framework :: Django :: 3.0',
+        'Framework :: Django :: 3.1',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
