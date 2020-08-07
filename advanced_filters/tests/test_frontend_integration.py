@@ -25,18 +25,28 @@ FORM_SELECT2_CONTAINER = "#form-group tr.form-row .query-value"
 FORM_SELECT2_INPUT = ".select2-input"
 FORM_ROW_VALUE = "#id_form-0-value"
 SAVE_AND_FILTER = "input[name='_save_goto']"
-CHANGELIST_FIELD_NAME = 'td.field-first_name'
+CHANGELIST_FIELD_NAME = "td.field-first_name"
+# FILTER_HEADING = "h3:not(#changelist-filter-clear)"
+FILTER_HEADING = "//h3[contains(text(), 'By Advanced filters')]"
+FILTER_UL = "%s/following::ul" % FILTER_HEADING
 
 
 @pytest.fixture
 @pytest.mark.django_db(transaction=True)
-def selenium(live_server, user):
+def selenium(live_server, user, pytestconfig):
     """ Initialize and authenticate the selenium driver """
     options = Options()
     if os.getenv("CI"):
         options.headless = True
-        # options.add_argument("-headless")
-    driver = WebDriver(firefox_options=options)
+        options.add_argument("-headless")
+        if pytestconfig.getoption("verbose") > 0:
+            options.log.level = "trace"
+    try:
+        driver = WebDriver(firefox_options=options)
+    except Exception as exc:
+        print("Exception while initializing driver:", exc)
+        raise
+
     driver.live_server_url = live_server.url
 
     # override get to help with url construction
@@ -83,7 +93,7 @@ def test_filter_is_usable(three_clients, selenium):
     # fill in the title and select2 "name" value
     title_input = selenium.find_element_by_css_selector(FORM_TITLE_INPUT)
     assert title_input
-    title_input.send_keys('my name filter')
+    title_input.send_keys("my name filter")
     name_value = selenium.find_element_by_css_selector(FORM_ROW_VALUE)
     assert name_value.get_attribute("value") == ""
 
@@ -105,7 +115,10 @@ def test_filter_is_usable(three_clients, selenium):
     # assert filter was created and avialable in changelist filter list
     filters = selenium.find_element_by_id('changelist-filter')
     assert filters
-    assert filters.find_element_by_tag_name('h3').text == 'By Advanced filters'
+    filter_heading = filters.find_element_by_xpath(FILTER_HEADING)
+    advanced_filter_list = filters.find_element_by_xpath(FILTER_UL)
+    filter_choices = advanced_filter_list.find_elements_by_css_selector("li > a")
+    assert [choice.text for choice in filter_choices] == ["All", "my name filter"]
 
     # assert the change list is filtered by our filter's query
     name_cells = selenium.find_elements_by_css_selector(CHANGELIST_FIELD_NAME)
