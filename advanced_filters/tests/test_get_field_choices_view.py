@@ -1,7 +1,7 @@
 import json
 import sys
 from datetime import timedelta
-from operator import attrgetter
+from operator import attrgetter, itemgetter
 
 import django
 import factory
@@ -15,8 +15,12 @@ from tests.factories import ClientFactory
 URL_NAME = "afilters_get_field_choices"
 
 
+def parse_json(content):
+    return json.loads(force_str(content))
+
+
 def assert_json(content, expect):
-    assert json.loads(force_str(content)) == expect
+    assert parse_json(content) == expect
 
 
 def assert_view_error(client, error, exception=None, **view_kwargs):
@@ -93,10 +97,10 @@ def test_database_choices(three_clients, client):
         URL_NAME, kwargs=dict(model="customers.Client", field_name="email")
     )
     response = client.get(view_url)
-    assert_json(
-        response.content,
-        {"results": [dict(id=e.email, text=e.email) for e in three_clients]},
-    )
+    result = parse_json(response.content)
+    data = (dict(id=e.email, text=e.email) for e in three_clients)
+    sort_func = itemgetter('id')
+    assert sorted(result['results'], key=sort_func) == sorted(data, key=sort_func)
 
 
 def test_more_than_max_database_choices(user, client, settings):
