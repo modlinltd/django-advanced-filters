@@ -10,7 +10,8 @@ from django.apps import apps
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin.utils import get_fields_from_path
-from django.db.models import Q, FieldDoesNotExist
+from django.core.exceptions import FieldDoesNotExist
+from django.db.models import Q
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.utils.functional import cached_property
