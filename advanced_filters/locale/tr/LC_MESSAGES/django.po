@@ -1,0 +1,156 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-08-09 01:42+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ozcan Yarimdunya ozcanyd@gmail.com\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: admin.py:19
+msgid "Advanced filters"
+msgstr "Gelişmiş filtreler"
+
+#: admin.py:70
+msgid "Advanced filter added successfully."
+msgstr "Gelişmiş filtre başarıyla eklendi."
+
+#: forms.py:47
+msgid "Equals"
+msgstr "Eşittir"
+
+#: forms.py:48
+msgid "Contains"
+msgstr "İçerir"
+
+#: forms.py:49
+msgid "One of"
+msgstr "Herhangi biri"
+
+#: forms.py:50
+msgid "DateTime Range"
+msgstr "TarihSaat Aralığı"
+
+#: forms.py:51
+msgid "Is NULL"
+msgstr "BOŞ Mu"
+
+#: forms.py:52
+msgid "Is TRUE"
+msgstr "Doğru Mu"
+
+#: forms.py:53
+msgid "Is FALSE"
+msgstr "YANLIŞ Mı"
+
+#: forms.py:54
+msgid "Less Than"
+msgstr "Küçüktür"
+
+#: forms.py:55
+msgid "Greater Than"
+msgstr "Büyüktür"
+
+#: forms.py:56
+msgid "Less Than or Equal To"
+msgstr "Küçük veya Eşittir"
+
+#: forms.py:57
+msgid "Greater Than or Equal To"
+msgstr "Büyük veya Eşittir"
+
+#: forms.py:61
+msgid "Or (mark an or between blocks)"
+msgstr "Veya (bloklar arasından bir tane veya işaretleyin)"
+
+#: forms.py:65
+msgid "Field"
+msgstr "Alan"
+
+#: forms.py:67
+msgid "Operator"
+msgstr "Operatör"
+
+#: forms.py:71
+msgid "Value"
+msgstr "Değer"
+
+#: forms.py:76
+msgid "Negate"
+msgstr "Tersi"
+
+#: models.py:18 templates/admin/advanced_filters.html:14
+msgid "Advanced Filter"
+msgstr "Gelişmiş Filtre"
+
+#: models.py:19
+msgid "Advanced Filters"
+msgstr "Gelişmiş Filtreler"
+
+#: models.py:21
+msgid "Title"
+msgstr "Başlık"
+
+#: models.py:25
+msgid "Created by"
+msgstr "Oluşturan"
+
+#: models.py:28
+msgid "Created at"
+msgstr "Oluşturulma tarihi"
+
+#: models.py:29
+msgid "URL"
+msgstr "URL"
+
+#: models.py:30
+msgid "Users"
+msgstr "Kullanıcılar"
+
+#: models.py:31
+msgid "Groups"
+msgstr "Gruplar"
+
+#: templates/admin/advanced_filters.html:14
+msgid "Edit"
+msgstr "Düzenle"
+
+#: templates/admin/advanced_filters.html:26
+msgid "Create advanced filter"
+msgstr "Gelişmiş filtre oluştur"
+
+#: templates/admin/advanced_filters.html:64
+msgid "Save"
+msgstr "Kaydet"
+
+#: templates/admin/advanced_filters.html:65
+#: templates/admin/advanced_filters/change_form.html:50
+msgid "Save & Filter Now!"
+msgstr "Kaydet & Filtrele"
+
+#: templates/admin/advanced_filters.html:66
+msgid "Cancel"
+msgstr "İptal Et"
+
+#: templates/admin/advanced_filters/change_form.html:14
+msgid "Change advanced filter"
+msgstr "Gelişmiş filtreyi değiştir"
+
+#: templates/admin/common_js_init.html:14
+msgid "Add another filter"
+msgstr "Başka bir filtre ekle"
+
+#: templates/admin/common_js_init.html:15
+msgid "Remove"
+msgstr "Kaldır"
