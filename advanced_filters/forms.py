@@ -20,6 +20,7 @@ from six.moves import range, reduce
 from django.utils.text import capfirst
 
 import django
+import re
 
 from .models import AdvancedFilter
 from .form_helpers import CleanWhiteSpacesMixin,  VaryingTypeCharField
@@ -43,6 +44,9 @@ def date_to_string(timestamp):
 
 class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
     """ Build the query from field, operator and value """
+    ADDITIONAL_OPERATORS = (
+        ("in", _("In")),
+    )
     OPERATORS = (
         ("iexact", _("Equals")),
         ("icontains", _("Contains")),
@@ -84,21 +88,42 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
             key=lambda f: f[1].lower())
         ) + self.FIELD_CHOICES
 
-    def _build_query_dict(self, formdata=None):
+    def _build_query_dict(self, formdata=None, model=None):
         """
         Take submitted data from form and create a query dict to be
         used in a Q object (or filter)
         """
         if self.is_valid() and formdata is None:
             formdata = self.cleaned_data
-        key = "{field}__{operator}".format(**formdata)
+
+        value = formdata['value']
+
+        key = "{field}__{operator}".format(
+            field=formdata['field'],
+            operator=formdata['operator']
+        )
+
         if formdata['operator'] == "isnull":
             return {key: None}
         elif formdata['operator'] == "istrue":
             return {formdata['field']: True}
         elif formdata['operator'] == "isfalse":
             return {formdata['field']: False}
-        return {key: formdata['value']}
+        elif model \
+                and model._meta.get_field(formdata['field']).rel is not None \
+                and formdata['operator'] in ['iexact', 'icontains', 'iregex']:
+
+            value = re.findall(r'(\d+)', value)
+
+            if len(value) > 1:
+                key = "{field}__in".format(
+                    field=formdata['field'],
+                )
+            elif len(value) == 1:
+                value = value[0]
+                key = formdata['field']
+
+        return {key: value}
 
     @staticmethod
     def _parse_query_dict(query_data, model):
@@ -114,7 +139,8 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         if len(parts) < 2:
             field = parts[0]
         else:
-            if parts[-1] in dict(AdvancedFilterQueryForm.OPERATORS).keys():
+            if parts[-1] in dict(AdvancedFilterQueryForm.OPERATORS).keys() \
+                    or parts[-1] in dict(AdvancedFilterQueryForm.ADDITIONAL_OPERATORS).keys():
                 field = '__'.join(parts[:-1])
                 operator = parts[-1]
             else:
@@ -171,8 +197,9 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
 
     def make_query(self, *args, **kwargs):
         """ Returns a Q object from the submitted form """
+        model = kwargs.get('model')
         query = Q()  # initial is an empty query
-        query_dict = self._build_query_dict(self.cleaned_data)
+        query_dict = self._build_query_dict(self.cleaned_data, model)
         if 'negate' in self.cleaned_data and self.cleaned_data['negate']:
             query = query & ~Q(**query_dict)
         else:
@@ -332,7 +359,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
                 ORed.append(query)
                 query = Q()
             else:
-                query = query & form.make_query()
+                query = query & form.make_query(model=self._model)
         if ORed:
             if query:  # add last query for OR if any
                 ORed.append(query)
