@@ -5,10 +5,16 @@ from django.contrib import admin, messages
 from django.contrib.admin.utils import unquote
 from django.http import HttpResponseRedirect
 from django.shortcuts import resolve_url
-from django.utils.translation import ugettext_lazy as _
 
 from .forms import AdvancedFilterForm
 from .models import AdvancedFilter
+
+# django < 1.9 support
+from django import VERSION
+if VERSION >= (2, 0):
+    from django.utils.translation import gettext_lazy as _
+else:
+    from django.utils.translation import ugettext_lazy as _
 
 
 logger = logging.getLogger('advanced_filters.admin')

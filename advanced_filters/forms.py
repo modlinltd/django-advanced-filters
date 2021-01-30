@@ -15,18 +15,22 @@ from django.db.models import Q
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext_lazy as _
 from six.moves import range, reduce
 from django.utils.text import capfirst
-
-import django
 
 from .models import AdvancedFilter
 from .form_helpers import CleanWhiteSpacesMixin,  VaryingTypeCharField
 
+# django < 1.9 support
+from django import VERSION
+if VERSION >= (2, 0):
+    from django.utils.translation import gettext_lazy as _
+else:
+    from django.utils.translation import ugettext_lazy as _
+
 
 # django < 1.9 support
-USE_VENDOR_DIR = django.VERSION >= (1, 9)
+USE_VENDOR_DIR = VERSION >= (1, 9)
 logger = logging.getLogger('advanced_filters.forms')
 
 # select2 location can be modified via settings
