@@ -105,7 +105,7 @@ By default the mixin uses a template which extends django's built-in
 of this template (hence the 'grp' classes and funny looking javascript).
 
 The default template also uses the superb
-`magnificPopup <dimsemenov/Magnific-Popup>`__ which is currently bundled
+`magnificPopup <https://github.com/dimsemenov/Magnific-Popup>`__ which is currently bundled
 with the application.
 
 Regardless of the above, you can easily write your own template which
