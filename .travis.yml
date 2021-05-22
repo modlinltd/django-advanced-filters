@@ -18,6 +18,7 @@ env:
     - DJANGO="2.2"
     - DJANGO="3.0"
     - DJANGO="3.1"
+    - DJANGO="3.2"
 
 install: pip install tox-travis coveralls
 script: tox
