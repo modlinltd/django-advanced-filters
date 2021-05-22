@@ -3,13 +3,16 @@ import logging
 from django.apps import apps
 from django.conf import settings
 from django.contrib.admin.utils import get_fields_from_path
-from django.db import models
 from django.core.exceptions import FieldDoesNotExist
+from django.db import models
 from django.utils.encoding import force_str
 from django.views.generic import View
 
-from braces.views import (CsrfExemptMixin, StaffuserRequiredMixin,
-                          JSONResponseMixin)
+from advanced_filters.mixins import (
+    CsrfExemptMixin,
+    JSONResponseMixin,
+    StaffuserRequiredMixin,
+)
 
 logger = logging.getLogger('advanced_filters.views')
 
