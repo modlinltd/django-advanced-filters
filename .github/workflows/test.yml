@@ -1,7 +1,6 @@
 name: Test with tox
 
 on:
-  - push
   - pull_request
 
 jobs:
