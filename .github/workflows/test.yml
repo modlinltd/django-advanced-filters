@@ -23,3 +23,5 @@ jobs:
         pip install tox tox-gh-actions coveralls
     - name: Test with tox
       run: tox -p auto
+      env:
+        TOX_PARALLEL_NO_SPINNER: 1
