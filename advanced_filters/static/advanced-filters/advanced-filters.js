@@ -70,7 +70,11 @@ var OperatorHandlers = function($) {
 						  MODEL_LABEL) + '/' + field;
 		var input = $(elm).parents('tr').find('input.query-value');
 		input.select2("destroy");
+		var value = input.val();
 		$.get(choices_url, function(data) {
+			if (value) {
+				data.results.push({'id': value, 'text': value})
+			}
 			input.select2({'data': data, 'createSearchChoice': function(term) {
                 return { 'id': term, 'text': term };
             }});
@@ -126,6 +130,7 @@ var OperatorHandlers = function($) {
 				if ($(this).val() != before_change) self.field_selected(this);
 				$(this).data('pre_change', $(this).val());
 			}).change();
+			self.initialize_select2(this)
 		});
 		self.field_selected($('.form-row select.query-field').first());
 
