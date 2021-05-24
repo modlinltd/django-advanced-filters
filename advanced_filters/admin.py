@@ -6,8 +6,9 @@ from django.contrib.admin.utils import unquote
 from django.http import HttpResponseRedirect
 from django.shortcuts import resolve_url
 
-from .forms import AdvancedFilterForm
+from .forms import AdvancedFilterForm, AdvancedFilterQueryForm
 from .models import AdvancedFilter
+from .q_serializer import QSerializer
 
 # django < 1.9 support
 from django import VERSION
@@ -49,6 +50,31 @@ class AdvancedListFilters(admin.SimpleListFilter):
         return queryset
 
 
+class AdvancedQueryFilters(admin.SimpleListFilter):
+    """Allow filtering by advanced filters query"""
+    title = ' '
+    template = 'admin/query_filter.html'
+
+    parameter_name = '_aquery'
+
+    def lookups(self, request, model_admin):
+        return None
+
+    def queryset(self, request, queryset):
+        if self.value():
+            query_serializer = QSerializer(base64=True)
+            query = query_serializer.loads(self.value())
+            return queryset.filter(query).distinct()
+
+        return queryset
+
+    def choices(self, changelist):
+        return []
+
+    def has_output(self):
+        return True
+
+
 class AdminAdvancedFiltersMixin(object):
     """ Generic AdvancedFilters mixin """
     advanced_change_list_template = "admin/advanced_filters.html"
@@ -62,15 +88,24 @@ class AdminAdvancedFiltersMixin(object):
             self.original_change_list_template = "admin/change_list.html"
         self.change_list_template = self.advanced_change_list_template
         # add list filters to filters
-        self.list_filter = (AdvancedListFilters,) + tuple(self.list_filter)
+        self.list_filter = (AdvancedListFilters, AdvancedQueryFilters,) + tuple(self.list_filter)
 
-    def save_advanced_filter(self, request, form):
+    def save_advanced_filter(self, request, form, save_instance):
+        if '_just_filter' in request.POST:
+            search_query = form.generate_query()
+            query_serializer = QSerializer(base64=True)
+            b64_query = query_serializer.dumps(search_query)
+            url = "{path}?_aquery={query}"\
+                .format(path=request.path, query=b64_query)
+            return HttpResponseRedirect(url)
         if form.is_valid():
             afilter = form.save(commit=False)
             afilter.created_by = request.user
             afilter.query = form.generate_query()
-            afilter.save()
-            afilter.users.add(request.user)
+
+            if save_instance:
+                afilter.save()
+                afilter.users.add(request.user)
             messages.add_message(
                 request, messages.SUCCESS,
                 _('Advanced filter added successfully.')
@@ -83,9 +118,36 @@ class AdminAdvancedFiltersMixin(object):
         elif request.method == "POST":
             logger.info('Failed saving advanced filter, params: %s', form.data)
 
+    def get_advanced_filter_data(self, request):
+        if request.POST.get('action') == 'advanced_filters':
+            return request.POST, True
+
+        search_query = request.GET.get('_aquery')
+        if search_query:
+            query_serializer = QSerializer(base64=True)
+            raw_query = query_serializer.loads(search_query, raw=True)
+            query_list = query_serializer.get_field_values_list(raw_query)
+
+            data = {
+                'form-TOTAL_FORMS': 0,
+                'form-INITIAL_FORMS': 0,
+                'title': 'unsaved filter'
+            }
+
+            for idx, query in enumerate(query_list):
+                query_dict = AdvancedFilterQueryForm._parse_query_dict(query, self.model)
+
+                for key, value in query_dict.items():
+                    data['form-{idx}-{key}'.format(idx=idx, key=key)] = value
+
+                data['form-TOTAL_FORMS'] += 1
+
+            return data, False
+
+        return None, False
+
     def adv_filters_handle(self, request, extra_context={}):
-        data = request.POST if request.POST.get(
-            'action') == 'advanced_filters' else None
+        data, save_instance = self.get_advanced_filter_data(request)
         adv_filters_form = self.advanced_filter_form(
             data=data, model_admin=self, extra_form=True)
         extra_context.update({
@@ -94,7 +156,7 @@ class AdminAdvancedFiltersMixin(object):
             'current_afilter': request.GET.get('_afilter'),
             'app_label': self.opts.app_label,
         })
-        return self.save_advanced_filter(request, adv_filters_form)
+        return self.save_advanced_filter(request, adv_filters_form, save_instance)
 
     def changelist_view(self, request, extra_context=None):
         """Add advanced_filters form to changelist context"""
