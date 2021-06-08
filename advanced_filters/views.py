@@ -49,6 +49,15 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
                 {'error': force_str(e)}, status=400)
 
         choices = field.choices
+
+        # handling choices with a two level hierarchy
+        if len(choices) and isinstance(choices[0][1], tuple):
+            data = []
+            for item in choices:
+                for c in item[1]:
+                    data.append((c[0], "{} - {}".format(item[0], c[1])))
+            choices = data
+
         # if no choices, populate with distinct values from instances
         if not choices:
             choices = []
@@ -77,3 +86,5 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
                    choices, key=lambda x: (x[0] is not None, x[0]))]
 
         return self.render_json_response({'results': results})
+
+

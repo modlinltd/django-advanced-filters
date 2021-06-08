@@ -69,6 +69,7 @@ var OperatorHandlers = function($) {
 		var choices_url = ADVANCED_FILTER_CHOICES_LOOKUP_URL + (FORM_MODEL ||
 						  MODEL_LABEL) + '/' + field;
 		var input = $(elm).parents('tr').find('input.query-value');
+
 		input.select2("destroy");
 		$.get(choices_url, function(data) {
 			input.select2({'data': data, 'createSearchChoice': function(term) {
@@ -123,7 +124,7 @@ var OperatorHandlers = function($) {
 			$(this).data('pre_change', $(this).val());
 			$(this).on("change", function() {
 				var before_change = $(this).data('pre_change');
-				if ($(this).val() != before_change) self.field_selected(this);
+				self.field_selected(this);
 				$(this).data('pre_change', $(this).val());
 			}).change();
 		});
@@ -154,3 +155,4 @@ var OperatorHandlers = function($) {
 		}
 	});
 })(window._jq || jQuery);
+
