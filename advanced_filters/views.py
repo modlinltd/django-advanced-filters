@@ -55,7 +55,7 @@ class GetFieldChoices(CsrfExemptMixin, StaffuserRequiredMixin,
             data = []
             for item in choices:
                 for c in item[1]:
-                    data.append((c[0], "{} - {}".format(item[0], c[1])))
+                    data.append(c)
             choices = data
 
         # if no choices, populate with distinct values from instances
