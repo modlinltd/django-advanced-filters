@@ -83,11 +83,12 @@ class AdminAdvancedFiltersMixin(object):
         elif request.method == "POST":
             logger.info('Failed saving advanced filter, params: %s', form.data)
 
-    def adv_filters_handle(self, request, extra_context={}):
+    def adv_filters_handle(self, request, extra_context=None):
         data = request.POST if request.POST.get(
             'action') == 'advanced_filters' else None
         adv_filters_form = self.advanced_filter_form(
             data=data, model_admin=self, extra_form=True)
+        extra_context = extra_context or {}
         extra_context.update({
             'original_change_list_template': self.original_change_list_template,
             'advanced_filters': adv_filters_form,
