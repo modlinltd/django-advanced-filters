@@ -4,7 +4,7 @@ from django.apps import apps
 from django.conf import settings
 from django.contrib.admin.utils import get_fields_from_path
 from django.db import models
-from django.db.models.fields import FieldDoesNotExist
+from django.core.exceptions import FieldDoesNotExist
 from django.utils.encoding import force_str
 from django.views.generic import View
 

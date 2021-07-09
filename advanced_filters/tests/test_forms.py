@@ -3,7 +3,8 @@ import time
 
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from django.db.models import Q, FieldDoesNotExist
+from django.db.models import Q
+from django.core.exceptions import FieldDoesNotExist
 from django.test import TestCase
 import django
 
