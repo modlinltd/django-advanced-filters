@@ -86,3 +86,13 @@ def test_create_form_valid(user, client, good_data, query):
     assert url.endswith("%s?_afilter=%s" % (URL_CLIENT_CHANGELIST, created_filter.pk))
 
     assert list(created_filter.query.children[0]) == query
+
+    # just filter
+    form_data.pop('_save_goto')
+    form_data['_just_filter'] = 1
+    res = client.post(URL_CLIENT_CHANGELIST, data=form_data)
+
+    assert res.status_code == 302
+    assert AdvancedFilter.objects.count() == 2
+    url = res['location']
+    assert '?_aquery=' in url
