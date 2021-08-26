@@ -16,11 +16,6 @@ except ImportError:
     from django.utils.encoding import force_text as force_string
 from django.views.decorators.csrf import csrf_exempt
 
-try:
-    from django.utils import six
-except ImportError:
-    import six
-
 
 class CsrfExemptMixin:
     """

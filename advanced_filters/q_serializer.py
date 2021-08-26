@@ -3,7 +3,6 @@ from datetime import datetime, date
 import base64
 import time
 
-import six
 from django.db.models import Q
 from django.core.serializers.base import SerializationError
 
@@ -121,7 +120,7 @@ class QSerializer:
             raise SerializationError
         string = json.dumps(self.serialize(obj), default=dt2ts)
         if self.b64_enabled:
-            return base64.b64encode(six.b(string)).decode("utf-8")
+            return base64.b64encode(string.encode("latin-1")).decode("utf-8")
         return string
 
     def loads(self, string, raw=False):

@@ -15,7 +15,7 @@ from django.db.models import Q
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
 from django.utils.functional import cached_property
-from six.moves import reduce
+from functools import reduce
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 
