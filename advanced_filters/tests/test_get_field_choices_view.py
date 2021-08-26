@@ -39,22 +39,13 @@ def assert_view_error(client, error, exception=None, **view_kwargs):
 
 
 NO_APP_INSTALLED_ERROR = "No installed app with label 'foo'."
+ARGUMENT_LENGTH_ERROR = "not enough values to unpack (expected 2, got 1)"
+MISSING_FIELD_ERROR = "SalesRep has no field named 'baz'"
 
 if django.VERSION < (1, 11):
     NO_MODEL_ERROR = "App 'reps' doesn't have a 'foo' model."
 else:
     NO_MODEL_ERROR = "App 'reps' doesn't have a 'Foo' model."
-
-
-if sys.version_info >= (3, 5):
-    ARGUMENT_LENGTH_ERROR = "not enough values to unpack (expected 2, got 1)"
-else:
-    ARGUMENT_LENGTH_ERROR = "need more than 1 value to unpack"
-
-if sys.version_info < (3,) and django.VERSION < (1, 11):
-    MISSING_FIELD_ERROR = "SalesRep has no field named u'baz'"
-else:
-    MISSING_FIELD_ERROR = "SalesRep has no field named 'baz'"
 
 
 def test_invalid_view_kwargs(client):
