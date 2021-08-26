@@ -17,20 +17,12 @@ from django.forms.formsets import formset_factory, BaseFormSet
 from django.utils.functional import cached_property
 from six.moves import range, reduce
 from django.utils.text import capfirst
+from django.utils.translation import gettext_lazy as _
 
 from .models import AdvancedFilter
 from .form_helpers import CleanWhiteSpacesMixin,  VaryingTypeCharField
 
-# django < 1.9 support
-from django import VERSION
-if VERSION >= (2, 0):
-    from django.utils.translation import gettext_lazy as _
-else:
-    from django.utils.translation import ugettext_lazy as _
 
-
-# django < 1.9 support
-USE_VENDOR_DIR = VERSION >= (1, 9)
 logger = logging.getLogger('advanced_filters.forms')
 
 # select2 location can be modified via settings
@@ -234,7 +226,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
 
     class Media:
         required_js = [
-            'admin/js/%sjquery.min.js' % ('vendor/jquery/' if USE_VENDOR_DIR else ''),
+            'admin/js/vendor/jquery/jquery.min.js',
             'advanced-filters/jquery_adder.js',
             'orig_inlines%s.js' % ('' if settings.DEBUG else '.min'),
             'magnific-popup/jquery.magnific-popup.js',

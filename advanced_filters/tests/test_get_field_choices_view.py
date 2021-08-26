@@ -8,12 +8,8 @@ import factory
 import pytest
 from django.utils import timezone
 from django.utils.encoding import force_str
+from django.urls import reverse
 from tests.factories import ClientFactory
-
-try:
-    from django.urls import reverse
-except ImportError:  # Django < 2.0
-    from django.core.urlresolvers import reverse
 
 
 URL_NAME = "afilters_get_field_choices"
@@ -41,11 +37,7 @@ def assert_view_error(client, error, exception=None, **view_kwargs):
 NO_APP_INSTALLED_ERROR = "No installed app with label 'foo'."
 ARGUMENT_LENGTH_ERROR = "not enough values to unpack (expected 2, got 1)"
 MISSING_FIELD_ERROR = "SalesRep has no field named 'baz'"
-
-if django.VERSION < (1, 11):
-    NO_MODEL_ERROR = "App 'reps' doesn't have a 'foo' model."
-else:
-    NO_MODEL_ERROR = "App 'reps' doesn't have a 'Foo' model."
+NO_MODEL_ERROR = "App 'reps' doesn't have a 'Foo' model."
 
 
 def test_invalid_view_kwargs(client):

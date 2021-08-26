@@ -106,17 +106,8 @@ class TestQueryForm(TestCase):
         assert isinstance(q, Q)
         assert isinstance(q.children, list)
         assert q.connector == 'AND'
-        if django.VERSION >= (2, 0):
-            # django 2+ flattens nested empty Query
-            assert q.negated
-            assert q.children[0] == ('fname__iexact', 'john')
-        else:
-            # django <2 has a parent Query that stays default
-            assert not q.negated
-            subquery = q.children[0]
-            assert isinstance(subquery, Q)
-            assert subquery.negated
-            assert subquery.children[0] == ('fname__iexact', 'john')
+        assert q.negated
+        assert q.children[0] == ('fname__iexact', 'john')
 
     def test_invalid_existing_query(self):
         Rep = get_user_model()
