@@ -25,7 +25,7 @@ def dt2ts(obj):
     return time.mktime(obj.timetuple()) if isinstance(obj, date) else obj
 
 
-class QSerializer(object):
+class QSerializer:
     """
     A Q object serializer base class. Pass base64=True when initializing
     to Base-64 encode/decode the returned/passed string.

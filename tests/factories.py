@@ -15,7 +15,7 @@ class SalesRepFactory(factory.django.DjangoModelFactory):
     @classmethod
     def _prepare(cls, create, **kwargs):
         password = kwargs.pop('password', None)
-        user = super(SalesRepFactory, cls)._prepare(create, **kwargs)
+        user = super()._prepare(create, **kwargs)
         if password:
             user.set_password(password)
             if create:

@@ -219,8 +219,8 @@ class CommonFormTest(TestCase):
                                  created_by=self.user)
 
     def _create_query_form_data(self, form_number=0, data=None, **kwargs):
-        form_data = dict(('form-%d-%s' % (form_number, k), v)
-                         for k, v in (data or self.formset_data).items())
+        form_data = {'form-%d-%s' % (form_number, k): v
+                     for k, v in (data or self.formset_data).items()}
         form_data.update(self.mgmg_form_data)
         form_data.update(dict(title='baz filter'))
         form_data.update(kwargs)
@@ -236,9 +236,9 @@ class TestAdvancedFilterForm(CommonFormTest):
                                    **self.default_error)
         assert form.non_field_errors() == self.default_non_field_err
         assert form.fields_formset.errors == [
-            {'operator': [u'This field is required.'],
-             'field': [u'This field is required.'],
-             'value': [u'This field is required.']}]
+            {'operator': ['This field is required.'],
+             'field': ['This field is required.'],
+             'value': ['This field is required.']}]
 
     def test_invalid_field_validation(self):
         form = AdvancedFilterForm(self._create_query_form_data(), instance=self.af,
@@ -279,7 +279,7 @@ class TestAdvancedFilterForm(CommonFormTest):
 
 class TestAdminInitialization(CommonFormTest):
     def setUp(self):
-        super(TestAdminInitialization, self).setUp()
+        super().setUp()
         self.fdata = self._create_query_form_data(form_number=0, data={
             'field': 'groups__name', 'negate': False, 'operator': 'iexact',
             'value': 'bar'})
@@ -323,7 +323,7 @@ class TestAdminInitialization(CommonFormTest):
 
     def test_create_instance_with_modeladmin(self):
         form = AdvancedFilterForm(data=self.fdata, model_admin=self.rep_model_admin)
-        assert form.is_valid(), 'errors: %s, %s' % (form.errors, form.fields_formset.errors)
+        assert form.is_valid(), f'errors: {form.errors}, {form.fields_formset.errors}'
         instance = form.save(commit=False)
         instance.created_by = self.user
         assert isinstance(instance, AdvancedFilter)

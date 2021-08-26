@@ -35,11 +35,11 @@ def get_full_description():
     readme = 'README.rst'
     changelog = 'CHANGELOG.rst'
     base = os.path.dirname(__file__)
-    with io.open(os.path.join(base, readme), encoding='utf-8') as readme:
+    with open(os.path.join(base, readme), encoding='utf-8') as readme:
         README = readme.read()
-    with io.open(os.path.join(base, changelog), encoding='utf-8') as changelog:
+    with open(os.path.join(base, changelog), encoding='utf-8') as changelog:
         CHANGELOG = changelog.read()
-    return '%s\n%s' % (README, CHANGELOG)
+    return f'{README}\n{CHANGELOG}'
 
 
 # allow setup.py to be run from any path

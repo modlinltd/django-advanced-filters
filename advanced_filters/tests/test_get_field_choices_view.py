@@ -140,7 +140,7 @@ def test_choices_no_date_fields_support(user, client, settings):
 def test_choices_has_null(user, client, settings):
     settings.ADVANCED_FILTERS_MAX_CHOICES = 4
     named_users = ClientFactory.create_batch(2, assigned_to=user)
-    names = [None] + sorted(set([nu.first_name for nu in named_users]))
+    names = [None] + sorted({nu.first_name for nu in named_users})
     assert len(named_users) == 2
     ClientFactory.create_batch(2, assigned_to=user, first_name=None)
     view_url = reverse(

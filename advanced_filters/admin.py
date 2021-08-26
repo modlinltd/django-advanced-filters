@@ -24,8 +24,8 @@ class AdvancedListFilters(admin.SimpleListFilter):
         if not model_admin:
             raise Exception('Cannot use AdvancedListFilters without a '
                             'model_admin')
-        model_name = "%s.%s" % (model_admin.model._meta.app_label,
-                                model_admin.model._meta.object_name)
+        model_name = "{}.{}".format(model_admin.model._meta.app_label,
+                                    model_admin.model._meta.object_name)
         return AdvancedFilter.objects.filter_by_user(request.user).filter(
             model=model_name).values_list('id', 'title')
 
@@ -43,13 +43,13 @@ class AdvancedListFilters(admin.SimpleListFilter):
         return queryset
 
 
-class AdminAdvancedFiltersMixin(object):
+class AdminAdvancedFiltersMixin:
     """ Generic AdvancedFilters mixin """
     advanced_change_list_template = "admin/advanced_filters.html"
     advanced_filter_form = AdvancedFilterForm
 
     def __init__(self, *args, **kwargs):
-        super(AdminAdvancedFiltersMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if self.change_list_template:
             self.original_change_list_template = self.change_list_template
         else:
@@ -98,8 +98,7 @@ class AdminAdvancedFiltersMixin(object):
                                            extra_context=extra_context)
         if response:
             return response
-        return super(AdminAdvancedFiltersMixin, self
-                     ).changelist_view(request, extra_context=extra_context)
+        return super().changelist_view(request, extra_context=extra_context)
 
 
 class AdvancedFilterAdmin(admin.ModelAdmin):
@@ -118,20 +117,20 @@ class AdvancedFilterAdmin(admin.ModelAdmin):
         if new_object and not new_object.pk:
             new_object.created_by = request.user
 
-        super(AdvancedFilterAdmin, self).save_model(
+        super().save_model(
             request, new_object, *args, **kwargs)
 
     def change_view(self, request, object_id, form_url='', extra_context=None):
-        orig_response = super(AdvancedFilterAdmin, self).change_view(
+        orig_response = super().change_view(
             request, object_id, form_url, extra_context)
         if '_save_goto' in request.POST:
             obj = self.get_object(request, unquote(object_id))
             if obj:
                 app, model = obj.model.split('.')
-                path = resolve_url('admin:%s_%s_changelist' % (
+                path = resolve_url('admin:{}_{}_changelist'.format(
                     app, model.lower()))
                 url = "{path}{qparams}".format(
-                    path=path, qparams="?_afilter={id}".format(id=object_id))
+                    path=path, qparams=f"?_afilter={object_id}")
                 return HttpResponseRedirect(url)
         return orig_response
 
@@ -142,18 +141,18 @@ class AdvancedFilterAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         if self.user_has_permission(request.user):
-            return super(AdvancedFilterAdmin, self).get_queryset(request)
+            return super().get_queryset(request)
         else:
             return self.model.objects.filter_by_user(request.user)
 
     def has_change_permission(self, request, obj=None):
         if obj is None:
-            return super(AdvancedFilterAdmin, self).has_change_permission(request)
+            return super().has_change_permission(request)
         return self.user_has_permission(request.user) or obj in self.model.objects.filter_by_user(request.user)
 
     def has_delete_permission(self, request, obj=None):
         if obj is None:
-            return super(AdvancedFilterAdmin, self).has_delete_permission(request)
+            return super().has_delete_permission(request)
         return self.user_has_permission(request.user) or obj in self.model.objects.filter_by_user(request.user)
 
 

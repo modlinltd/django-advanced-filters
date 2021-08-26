@@ -22,7 +22,7 @@ except ImportError:
     import six
 
 
-class CsrfExemptMixin(object):
+class CsrfExemptMixin:
     """
     Exempts the view from CSRF requirements.
     NOTE:
@@ -31,10 +31,10 @@ class CsrfExemptMixin(object):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
-        return super(CsrfExemptMixin, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 
-class AccessMixin(object):
+class AccessMixin:
     """
     'Abstract' mixin that gives access mixins the same customizable
     functionality.
@@ -104,11 +104,11 @@ class StaffuserRequiredMixin(AccessMixin):
         if not request.user.is_staff:
             return self.handle_no_permission(request)
 
-        return super(StaffuserRequiredMixin, self).dispatch(
+        return super().dispatch(
             request, *args, **kwargs)
 
 
-class JSONResponseMixin(object):
+class JSONResponseMixin:
     """
     A mixin that allows you to easily serialize simple data such as a dict or
     Django models.
@@ -120,7 +120,7 @@ class JSONResponseMixin(object):
     def get_content_type(self):
         if (self.content_type is not None and
             not isinstance(self.content_type,
-                           (six.string_types, six.text_type))):
+                           ((str,), str))):
             raise ImproperlyConfigured(
                 '{0} is missing a content type. Define {0}.content_type, '
                 'or override {0}.get_content_type().'.format(
