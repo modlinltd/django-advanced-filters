@@ -18,3 +18,4 @@ tests/db.sqlite*
 /tests/local.db
 /.venv
 .vscode/settings.json
+pyrightconfig.json
