@@ -27,7 +27,6 @@ Requirements
 ============
 
 -  Django >= 1.9 (Django 1.9 - 3.1 on Python 2/3/PyPy3)
--  django-braces >= 1.4, <= 1.14.0
 -  simplejson >= 3.6.5, < 4
 
 

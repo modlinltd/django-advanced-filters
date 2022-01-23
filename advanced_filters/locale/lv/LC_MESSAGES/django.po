@@ -1,0 +1,156 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Māris Nartišs <mn@sungis.lv>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-30 12:51+0200\n"
+"PO-Revision-Date: 2021-01-30 13:20+0200\n"
+"Last-Translator: Māris Nartišs <mn@sungis.lv>\n"
+"Language-Team: Latvian <kde-i18n-doc@kde.org>\n"
+"Language: lv_LV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 :"
+" 2);\n"
+"X-Generator: Lokalize 20.08.2\n"
+
+#: admin.py:25
+msgid "Advanced filters"
+msgstr "Paplašināti filtri"
+
+#: admin.py:76
+msgid "Advanced filter added successfully."
+msgstr "Sekmīgi pievienots paplašināts filtrs."
+
+#: forms.py:51
+msgid "Equals"
+msgstr "vienāds"
+
+#: forms.py:52
+msgid "Contains"
+msgstr "satur"
+
+#: forms.py:53
+msgid "One of"
+msgstr "viens no"
+
+#: forms.py:54
+msgid "DateTime Range"
+msgstr "datuma un laika diapazons"
+
+#: forms.py:55
+msgid "Is NULL"
+msgstr "ir NULL"
+
+#: forms.py:56
+msgid "Is TRUE"
+msgstr "ir TRUE"
+
+#: forms.py:57
+msgid "Is FALSE"
+msgstr "ir FALSE"
+
+#: forms.py:58
+msgid "Less Than"
+msgstr "mazāks kā"
+
+#: forms.py:59
+msgid "Greater Than"
+msgstr "lielāks kā"
+
+#: forms.py:60
+msgid "Less Than or Equal To"
+msgstr "mazāks vai vienāds ar"
+
+#: forms.py:61
+msgid "Greater Than or Equal To"
+msgstr "lielāks vai vienāds ar"
+
+#: forms.py:65
+msgid "Or (mark an or between blocks)"
+msgstr "vai (pievieno vai starp blokiem)"
+
+#: forms.py:69
+msgid "Field"
+msgstr "Lauks"
+
+#: forms.py:71
+msgid "Operator"
+msgstr "Operators"
+
+#: forms.py:75
+msgid "Value"
+msgstr "Vērtība"
+
+#: forms.py:80
+msgid "Negate"
+msgstr "Pretēji"
+
+#: models.py:24 templates/admin/advanced_filters.html:14
+msgid "Advanced Filter"
+msgstr "Paplašināts filtrs"
+
+#: models.py:25
+msgid "Advanced Filters"
+msgstr "Paplašināti filtri"
+
+#: models.py:27
+msgid "Title"
+msgstr "Nosaukums"
+
+#: models.py:31
+msgid "Created by"
+msgstr "Izveidojis"
+
+#: models.py:34
+msgid "Created at"
+msgstr "Izveidots"
+
+#: models.py:35
+msgid "URL"
+msgstr "URL"
+
+#: models.py:36
+msgid "Users"
+msgstr "Lietotāji"
+
+#: models.py:37
+msgid "Groups"
+msgstr "Grupas"
+
+#: templates/admin/advanced_filters.html:14
+msgid "Edit"
+msgstr "Rediģēt"
+
+#: templates/admin/advanced_filters.html:26
+msgid "Create advanced filter"
+msgstr "Izveidot paplašinātu filtru"
+
+#: templates/admin/advanced_filters.html:64
+msgid "Save"
+msgstr "Saglabāt"
+
+#: templates/admin/advanced_filters.html:65
+#: templates/admin/advanced_filters/change_form.html:50
+msgid "Save & Filter Now!"
+msgstr "Saglabāt un filtrēt!"
+
+#: templates/admin/advanced_filters.html:66
+msgid "Cancel"
+msgstr "Atcelt"
+
+#: templates/admin/advanced_filters/change_form.html:14
+msgid "Change advanced filter"
+msgstr "Mainīt paplašināto filtru"
+
+#: templates/admin/common_js_init.html:14
+msgid "Add another filter"
+msgstr "Pievienot vēl vienu filtru"
+
+#: templates/admin/common_js_init.html:15
+msgid "Remove"
+msgstr "Noņemt"
