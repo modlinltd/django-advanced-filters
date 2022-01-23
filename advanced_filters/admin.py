@@ -56,10 +56,7 @@ class AdminAdvancedFiltersMixin(object):
 
     def __init__(self, *args, **kwargs):
         super(AdminAdvancedFiltersMixin, self).__init__(*args, **kwargs)
-        if self.change_list_template:
-            self.original_change_list_template = self.change_list_template
-        else:
-            self.original_change_list_template = "admin/change_list.html"
+        self.original_change_list_template = "admin/change_list.html"
         self.change_list_template = self.advanced_change_list_template
         # add list filters to filters
         self.list_filter = (AdvancedListFilters,) + tuple(self.list_filter)
@@ -80,30 +77,32 @@ class AdminAdvancedFiltersMixin(object):
                     path=request.path, qparams="?_afilter={id}".format(
                         id=afilter.id))
                 return HttpResponseRedirect(url)
-        elif request.method == "POST":
+        else:
             logger.info('Failed saving advanced filter, params: %s', form.data)
-
-    def adv_filters_handle(self, request, extra_context={}):
-        data = request.POST if request.POST.get(
-            'action') == 'advanced_filters' else None
-        adv_filters_form = self.advanced_filter_form(
-            data=data, model_admin=self, extra_form=True)
-        extra_context.update({
-            'original_change_list_template': self.original_change_list_template,
-            'advanced_filters': adv_filters_form,
-            'current_afilter': request.GET.get('_afilter'),
-            'app_label': self.opts.app_label,
-        })
-        return self.save_advanced_filter(request, adv_filters_form)
 
     def changelist_view(self, request, extra_context=None):
         """Add advanced_filters form to changelist context"""
         if extra_context is None:
             extra_context = {}
-        response = self.adv_filters_handle(request,
-                                           extra_context=extra_context)
-        if response:
-            return response
+
+        data = None
+        if request.method == "POST":
+            if request.POST.get('action') == 'advanced_filters':
+                data = request.POST
+
+        form = self.advanced_filter_form(data=data, model_admin=self, extra_form=True)
+        extra_context.update({
+            'original_change_list_template': self.original_change_list_template,
+            'advanced_filters': form,
+            'current_afilter': request.GET.get('_afilter'),
+            'app_label': self.opts.app_label,
+        })
+
+        if request.method == "POST":
+            response = self.save_advanced_filter(request, form)
+            if response:
+                return response
+
         return super(AdminAdvancedFiltersMixin, self
                      ).changelist_view(request, extra_context=extra_context)
 
