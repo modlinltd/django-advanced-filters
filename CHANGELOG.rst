@@ -1,6 +1,35 @@
 Changelog
 =========
 
+1.3.0 - Django 3.1 and more
+---------------------------
+
+Apologies for the late release, and thanks to everyone that contributed.
+
+Bug fixes
+~~~~~~~~~
+
+- Add support for python 3.9 and django 3.1
+- import FieldDoesNotExist from django.core.exceptions
+
+Misc
+~~~~
+
+- Update django-braces
+- Update Admin to show model
+- Add Turkish translation
+- Correct travis.yml deprecated/dupe keywords
+
+Contributors
+~~~~~~~~~~~~
+
+- Pavel Savchenko
+- predatell
+- Özcan YARIMDÜNYA
+- Thu Trang Pham
+- João Batista
+
+
 1.2.0 - Django 3 and more
 -------------------------
 
