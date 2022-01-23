@@ -22,16 +22,20 @@ class AdvancedListFilters(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         if not model_admin:
-            raise Exception('Cannot use AdvancedListFilters without a '
-                            'model_admin')
-        model_name = "{}.{}".format(model_admin.model._meta.app_label,
-                                    model_admin.model._meta.object_name)
+            raise Exception(
+                "Cannot use AdvancedListFilters without a model_admin"
+            )
+        model_name = (
+            f"{model_admin.model._meta.app_label}."
+            f"{model_admin.model._meta.object_name}"
+        )
         return AdvancedFilter.objects.filter_by_user(request.user).filter(
             model=model_name).values_list('id', 'title')
 
     def queryset(self, request, queryset):
         if self.value():
             filters = AdvancedFilter.objects.filter(id=self.value())
+            advfilter = None
             if hasattr(filters, 'first'):
                 advfilter = filters.first()
             if not advfilter:
