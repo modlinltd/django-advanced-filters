@@ -200,14 +200,6 @@ class AdvancedFilterFormSet(BaseFormSet):
         kwargs['model_fields'] = self.model_fields
         return kwargs
 
-    @cached_property
-    def forms(self):
-        # override the original property to include `model_fields` argument
-        forms = [self._construct_form(i, model_fields=self.model_fields)
-                 for i in range(self.total_form_count())]
-        forms.append(self.empty_form)  # add initial empty form
-        return forms
-
 
 AFQFormSet = formset_factory(
     AdvancedFilterQueryForm, formset=AdvancedFilterFormSet,
