@@ -1,12 +1,8 @@
 import pytest
 from django.contrib.auth.models import Permission
+from django.urls import reverse_lazy
 
 from ..models import AdvancedFilter
-
-try:
-    from django.urls import reverse_lazy
-except ImportError:  # Django < 2.0
-    from django.core.urlresolvers import reverse_lazy
 
 URL_CLIENT_CHANGELIST = reverse_lazy("admin:customers_client_changelist")
 
@@ -83,6 +79,6 @@ def test_create_form_valid(user, client, good_data, query):
 
     created_filter = AdvancedFilter.objects.order_by("pk").last()
     url = res["location"]
-    assert url.endswith("%s?_afilter=%s" % (URL_CLIENT_CHANGELIST, created_filter.pk))
+    assert url.endswith(f"{URL_CLIENT_CHANGELIST}?_afilter={created_filter.pk}")
 
     assert list(created_filter.query.children[0]) == query
