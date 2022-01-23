@@ -17,3 +17,4 @@ tests/db.sqlite*
 .pytest_cache
 /tests/local.db
 /.venv
+.vscode/settings.json
