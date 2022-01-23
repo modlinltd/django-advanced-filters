@@ -14,7 +14,6 @@ from django.core.exceptions import FieldDoesNotExist
 from django.db.models import Q
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
-from django.utils.functional import cached_property
 from functools import reduce
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
@@ -199,14 +198,6 @@ class AdvancedFilterFormSet(BaseFormSet):
         kwargs = super().get_form_kwargs(index)
         kwargs['model_fields'] = self.model_fields
         return kwargs
-
-    @cached_property
-    def forms(self):
-        # override the original property to include `model_fields` argument
-        forms = [self._construct_form(i, model_fields=self.model_fields)
-                 for i in range(self.total_form_count())]
-        forms.append(self.empty_form)  # add initial empty form
-        return forms
 
 
 AFQFormSet = formset_factory(
