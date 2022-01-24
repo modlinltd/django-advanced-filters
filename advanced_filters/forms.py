@@ -113,10 +113,6 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
             return query_data
 
         parts = query_data['field'].split('__')
-        boolean_lookups = ['isnull', 'istrue', 'isfalse']
-        for boolean_lookup in boolean_lookups:
-            if query_data['field'].endswith(f'__{boolean_lookup}'):
-                query_data['operator'] = boolean_lookup
 
         if len(parts) < 2:
             field = parts[0]
