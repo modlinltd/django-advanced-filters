@@ -1,6 +1,70 @@
 Changelog
 =========
 
+1.4.0 - Latvian translation and minor fixes
+-------------------------------------------
+
+**NOTE: This release will be the last one to include features in 1.X branch, other than urgent hotfixes; version 2.X will drop support for EOL python and Django versions, and all future development will be done against 2.X branch**
+
+Changes since 1.3.0:
+
+Features
+~~~~~~~~
+
+- Add Latvian translation (#135)
+- Commit compiled translation files (Merge db448fa)
+
+Bug fixes
+~~~~~~~~~
+
+- switch from ugettext to gettext (#134)
+- don't use default dict (Merge db448fa)
+- correctly update extra_context (Merge db448fa)
+- support parallel coverage reporting (Merge db448fa)
+
+Other
+~~~~~
+
+- Fix CI for 2021 (#147)
+- Don't run tests in GitHub actions twice, one per PR is enough (da6fe7f24982a0fa69fcebff79d658b087de5e5b)
+- Ignore vscode settings (Merge db448fa)
+
+Contributors
+~~~~~~~~~~~~
+
+- Pavel Savchenko
+- Māris Nartišs
+
+
+1.3.0 - Django 3.1 and more
+---------------------------
+
+Apologies for the late release, and thanks to everyone that contributed.
+
+Bug fixes
+~~~~~~~~~
+
+- Add support for python 3.9 and django 3.1
+- import FieldDoesNotExist from django.core.exceptions
+
+Misc
+~~~~
+
+- Update django-braces
+- Update Admin to show model
+- Add Turkish translation
+- Correct travis.yml deprecated/dupe keywords
+
+Contributors
+~~~~~~~~~~~~
+
+- Pavel Savchenko
+- predatell
+- Özcan YARIMDÜNYA
+- Thu Trang Pham
+- João Batista
+
+
 1.2.0 - Django 3 and more
 -------------------------
 

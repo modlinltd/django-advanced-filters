@@ -8,7 +8,7 @@ from ..q_serializer import QSerializer
 class QSerializerTest(TestCase):
     correct_query = {
         'children': [('test', 1234)],
-        'connector': u'AND',
+        'connector': 'AND',
         'negated': False,
     }
 
@@ -28,7 +28,7 @@ class QSerializerTest(TestCase):
     def test_deserialize_q(self):
         qres = self.s.deserialize({
             'children': [('test', 1234)],
-            'connector': u'AND',
+            'connector': 'AND',
             'negated': False,
             'subtree_parents': []
         })

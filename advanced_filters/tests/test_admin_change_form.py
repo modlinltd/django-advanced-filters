@@ -1,14 +1,10 @@
 import pytest
 from django.contrib.auth.models import Permission
 from django.db.models import Q
+from django.urls import reverse
 
 from ..models import AdvancedFilter
 from .factories import AdvancedFilterFactory
-
-try:
-    from django.urls import reverse
-except ImportError:  # Django < 2.0
-    from django.core.urlresolvers import reverse
 
 URL_NAME_CHANGE = "admin:advanced_filters_advancedfilter_change"
 URL_NAME_ADD = "admin:advanced_filters_advancedfilter_add"
