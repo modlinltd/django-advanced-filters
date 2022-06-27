@@ -26,7 +26,7 @@ For release notes, see `Changelog <https://raw.githubusercontent.com/modlinltd/d
 Requirements
 ============
 
--  Django 2.2, >= 3.1 on Python 3.6+/PyPy3
+-  Django 2.2, >= 3.2 on Python 3.6+/PyPy3
 -  simplejson >= 3.6.5, < 4
 
 
