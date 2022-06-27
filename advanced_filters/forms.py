@@ -14,23 +14,14 @@ from django.core.exceptions import FieldDoesNotExist
 from django.db.models import Q
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
-from django.utils.functional import cached_property
-from six.moves import range, reduce
+from functools import reduce
 from django.utils.text import capfirst
+from django.utils.translation import gettext_lazy as _
 
 from .models import AdvancedFilter
 from .form_helpers import CleanWhiteSpacesMixin,  VaryingTypeCharField
 
-# django < 1.9 support
-from django import VERSION
-if VERSION >= (2, 0):
-    from django.utils.translation import gettext_lazy as _
-else:
-    from django.utils.translation import ugettext_lazy as _
 
-
-# django < 1.9 support
-USE_VENDOR_DIR = VERSION >= (1, 9)
 logger = logging.getLogger('advanced_filters.forms')
 
 # select2 location can be modified via settings
@@ -84,7 +75,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         Iterate over passed model fields tuple and update initial choices.
         """
         return tuple(sorted(
-            [(fquery, capfirst(fname)) for fquery, fname in fields.items()],
+            ((fquery, capfirst(fname)) for fquery, fname in fields.items()),
             key=lambda f: f[1].lower())
         ) + self.FIELD_CHOICES
 
@@ -166,7 +157,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         data['value'] = (dtfrom, dtto)
 
     def clean(self):
-        cleaned_data = super(AdvancedFilterQueryForm, self).clean()
+        cleaned_data = super().clean()
         if cleaned_data.get('operator') == "range":
             if ('value_from' in cleaned_data and
                     'value_to' in cleaned_data):
@@ -184,7 +175,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         return query
 
     def __init__(self, model_fields={}, *args, **kwargs):
-        super(AdvancedFilterQueryForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.FIELD_CHOICES = self._build_field_choices(model_fields)
         self.fields['field'].choices = self.FIELD_CHOICES
         if not self.fields['field'].initial:
@@ -198,23 +189,15 @@ class AdvancedFilterFormSet(BaseFormSet):
 
     def __init__(self, *args, **kwargs):
         self.model_fields = kwargs.pop('model_fields', {})
-        super(AdvancedFilterFormSet, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if self.forms:
             form = self.forms[0]
             self.fields = form.visible_fields()
 
     def get_form_kwargs(self, index):
-        kwargs = super(AdvancedFilterFormSet, self).get_form_kwargs(index)
+        kwargs = super().get_form_kwargs(index)
         kwargs['model_fields'] = self.model_fields
         return kwargs
-
-    @cached_property
-    def forms(self):
-        # override the original property to include `model_fields` argument
-        forms = [self._construct_form(i, model_fields=self.model_fields)
-                 for i in range(self.total_form_count())]
-        forms.append(self.empty_form)  # add initial empty form
-        return forms
 
 
 AFQFormSet = formset_factory(
@@ -234,7 +217,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
 
     class Media:
         required_js = [
-            'admin/js/%sjquery.min.js' % ('vendor/jquery/' if USE_VENDOR_DIR else ''),
+            'admin/js/vendor/jquery/jquery.min.js',
             'advanced-filters/jquery_adder.js',
             'orig_inlines%s.js' % ('' if settings.DEBUG else '.min'),
             'magnific-popup/jquery.magnific-popup.js',
@@ -294,7 +277,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
         self._filter_fields = filter_fields or getattr(
             model_admin, 'advanced_filter_fields', ())
 
-        super(AdvancedFilterForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # populate existing or empty forms formset
         data = None
@@ -305,15 +288,15 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
         self.initialize_form(instance, self._model, data, extra_form)
 
     def clean(self):
-        cleaned_data = super(AdvancedFilterForm, self).clean()
+        cleaned_data = super().clean()
         if not self.fields_formset.is_valid():
             logger.debug(
                 "Errors validating advanced query filters: %s",
                 pformat([(f.errors, f.non_field_errors())
                          for f in self.fields_formset.forms]))
             raise forms.ValidationError("Error validating filter forms")
-        cleaned_data['model'] = "%s.%s" % (self._model._meta.app_label,
-                                           self._model._meta.object_name)
+        cleaned_data['model'] = "{}.{}".format(self._model._meta.app_label,
+                                               self._model._meta.object_name)
         return cleaned_data
 
     @property
@@ -364,4 +347,4 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
     def save(self, commit=True):
         self.instance.query = self.generate_query()
         self.instance.model = self.cleaned_data.get('model')
-        return super(AdvancedFilterForm, self).save(commit)
+        return super().save(commit)

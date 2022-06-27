@@ -8,12 +8,8 @@ import factory
 import pytest
 from django.utils import timezone
 from django.utils.encoding import force_str
+from django.urls import reverse
 from tests.factories import ClientFactory
-
-try:
-    from django.urls import reverse
-except ImportError:  # Django < 2.0
-    from django.core.urlresolvers import reverse
 
 
 URL_NAME = "afilters_get_field_choices"
@@ -39,22 +35,9 @@ def assert_view_error(client, error, exception=None, **view_kwargs):
 
 
 NO_APP_INSTALLED_ERROR = "No installed app with label 'foo'."
-
-if django.VERSION < (1, 11):
-    NO_MODEL_ERROR = "App 'reps' doesn't have a 'foo' model."
-else:
-    NO_MODEL_ERROR = "App 'reps' doesn't have a 'Foo' model."
-
-
-if sys.version_info >= (3, 5):
-    ARGUMENT_LENGTH_ERROR = "not enough values to unpack (expected 2, got 1)"
-else:
-    ARGUMENT_LENGTH_ERROR = "need more than 1 value to unpack"
-
-if sys.version_info < (3,) and django.VERSION < (1, 11):
-    MISSING_FIELD_ERROR = "SalesRep has no field named u'baz'"
-else:
-    MISSING_FIELD_ERROR = "SalesRep has no field named 'baz'"
+ARGUMENT_LENGTH_ERROR = "not enough values to unpack (expected 2, got 1)"
+MISSING_FIELD_ERROR = "SalesRep has no field named 'baz'"
+NO_MODEL_ERROR = "App 'reps' doesn't have a 'Foo' model."
 
 
 def test_invalid_view_kwargs(client):
@@ -157,7 +140,7 @@ def test_choices_no_date_fields_support(user, client, settings):
 def test_choices_has_null(user, client, settings):
     settings.ADVANCED_FILTERS_MAX_CHOICES = 4
     named_users = ClientFactory.create_batch(2, assigned_to=user)
-    names = [None] + sorted(set([nu.first_name for nu in named_users]))
+    names = [None] + sorted({nu.first_name for nu in named_users})
     assert len(named_users) == 2
     ClientFactory.create_batch(2, assigned_to=user, first_name=None)
     view_url = reverse(

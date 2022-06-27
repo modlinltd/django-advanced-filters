@@ -1,6 +1,51 @@
 Changelog
 =========
 
+2.0.0 - Support Django 3.2 and 4.0
+----------------------------------
+
+**BREAKING CHANGE:** This release is the first 2.x release, and drops support for EOL python and Django versions, all feature development will be done against 2.X branch.**
+
+Changes since 1.4.0:
+
+Features
+~~~~~~~~
+
+- Add support for python 3.10 and Django 4.0 (Merge 7bfb5b6)
+- Add compiled IT translation (Merge e39395f)
+
+Bug fixes
+~~~~~~~~~
+
+- Don't add empty form to AdvancedFilterFormSet.forms (Merge 7bfb5b6)
+
+Other
+~~~~~
+
+- Drop support for EOL Python 2.7 and 3.5 (Merge dfeb005)
+- Drop support for EOL Django 3.0 (Merge dfeb005)
+- Drop support for EOL Django up to 2.2 (Merge dfeb005)
+- Upgrade Python syntax with pyupgrade --py36-plus (Merge dfeb005)
+- Remove six (Merge dfeb005)
+- Remove unused import (Merge dfeb005)
+- Drop support for python 3.6 (Merge 7bfb5b6)
+- Correct support matrix (Merge 7bfb5b6)
+- Simplify url path import (Merge 7bfb5b6)
+- Remove standalone clean env from tox envlist (Merge 7bfb5b6)
+- Remove unused cached_property import (Merge 7bfb5b6)
+- Add Django 3.2 to classifiers (#163)
+- f-string for model_name string interpolation (Merge dfeb005)
+- remove unsupported django 3.1 from tox matrix (Merge 7bfb5b6)
+- update README and remove Django 3.1 classifier
+
+Contributors
+~~~~~~~~~~~~
+
+- Fabrizio Corallini
+- Dmytro Litvinov
+- Hugo van Kemenade
+- Pavel Savchenko
+
 1.4.0 - Latvian translation and minor fixes
 -------------------------------------------
 
