@@ -87,12 +87,10 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         if self.is_valid() and formdata is None:
             formdata = self.cleaned_data
         key = "{field}__{operator}".format(**formdata)
-        if formdata['operator'] == "isnull":
-            return {key: None}
-        elif formdata['operator'] == "istrue":
-            return {formdata['field']: True}
-        elif formdata['operator'] == "isfalse":
-            return {formdata['field']: False}
+
+        if formdata['operator'] in ["isnull", "istrue", "isfalse"]:
+            return {key: True if str(formdata['value']).lower() in ['1', 'true'] else False}
+
         return {key: formdata['value']}
 
     @staticmethod
@@ -106,6 +104,7 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
             return query_data
 
         parts = query_data['field'].split('__')
+
         if len(parts) < 2:
             field = parts[0]
         else:
@@ -123,18 +122,11 @@ class AdvancedFilterQueryForm(CleanWhiteSpacesMixin, forms.Form):
         else:
             mfield = mfield[-1]  # get the field object
 
-        if query_data['value'] is None:
-            query_data['operator'] = "isnull"
-        elif query_data['value'] is True:
-            query_data['operator'] = "istrue"
-        elif query_data['value'] is False:
-            query_data['operator'] = "isfalse"
+        if isinstance(mfield, DateField):
+            # this is a date/datetime field
+            query_data['operator'] = "range"  # default
         else:
-            if isinstance(mfield, DateField):
-                # this is a date/datetime field
-                query_data['operator'] = "range"  # default
-            else:
-                query_data['operator'] = operator  # default
+            query_data['operator'] = operator  # default
 
         if isinstance(query_data.get('value'),
                       list) and query_data['operator'] == 'range':

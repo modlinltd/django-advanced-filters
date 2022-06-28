@@ -139,7 +139,7 @@ var OperatorHandlers = function($) {
 			$(this).off("change");
 		});
 		$('.form-row input.query-value').each(function() {
-			$(this).select2("destroy");
+			// $(this).select2("destroy");
 		});
 	};
 };
