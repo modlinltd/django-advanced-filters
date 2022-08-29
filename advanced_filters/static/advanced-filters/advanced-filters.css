@@ -58,12 +58,19 @@
 
 .white-popup {
 	position: relative;
-	background: #FFF;
+	background: #FFF; /* fallback */
+	background: var(--body-bg);
 	padding: 20px;
 	width: auto;
 	max-width: 800px;
 	margin: 20px auto;
 }
+
+.th-entry {
+	color: black; /* fallback */
+	color: var(--body-quiet-color);
+}
+
 .empty-form {
 	display: none;
 }
