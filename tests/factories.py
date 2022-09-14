@@ -20,9 +20,27 @@ class SalesRepFactory(factory.django.DjangoModelFactory):
         return manager.create_user(*args, **kwargs)
 
 
+class AttributeFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = 'customers.Attribute'
+
+    name = factory.Sequence(lambda n: 'attribute%d' % n)
+
+
 class ClientFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = 'customers.Client'
 
     first_name = factory.faker.Faker('first_name')
     email = factory.Sequence(lambda n: 'c%d@foo.com' % n)
+
+    @factory.post_generation
+    def attributes(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for attribute in extracted:
+                self.attributes.add(attribute)
