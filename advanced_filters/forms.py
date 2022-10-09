@@ -15,6 +15,7 @@ from django.db.models import Q
 from django.db.models.fields import DateField
 from django.forms.formsets import formset_factory, BaseFormSet
 from functools import reduce
+from django.utils.functional import cached_property
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 
@@ -199,6 +200,14 @@ class AdvancedFilterFormSet(BaseFormSet):
         kwargs['model_fields'] = self.model_fields
         return kwargs
 
+    @cached_property
+    def forms(self):
+        """Instantiate forms at first property access."""
+        forms = super().forms
+        if self.extra > 0 and not self.data:
+            forms += [self.empty_form]
+        return forms
+
 
 AFQFormSet = formset_factory(
     AdvancedFilterQueryForm, formset=AdvancedFilterFormSet,
@@ -221,6 +230,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
             'advanced-filters/jquery_adder.js',
             SELECT2_JS,
             'magnific-popup/jquery.magnific-popup.js',
+            'admin/js/inlines.js',
             'advanced-filters/advanced-filters.js',
         ]
         js = required_js
@@ -289,12 +299,6 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        if not self.fields_formset.is_valid():
-            logger.debug(
-                "Errors validating advanced query filters: %s",
-                pformat([(f.errors, f.non_field_errors())
-                         for f in self.fields_formset.forms]))
-            raise forms.ValidationError("Error validating filter forms")
         cleaned_data['model'] = "{}.{}".format(self._model._meta.app_label,
                                                self._model._meta.object_name)
         return cleaned_data
@@ -302,10 +306,11 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
     @property
     def _non_deleted_forms(self):
         forms = []
-        for form in self.fields_formset.forms:
-            if form in self.fields_formset.deleted_forms:
-                continue  # skip deleted forms when generating query
-            forms.append(form)
+        if self.fields_formset.is_valid():
+            for form in self.fields_formset.forms:
+                if form in self.fields_formset.deleted_forms:
+                    continue  # skip deleted forms when generating query
+                forms.append(form)
         return forms
 
     def generate_query(self):
@@ -345,6 +350,7 @@ class AdvancedFilterForm(CleanWhiteSpacesMixin, forms.ModelForm):
         )
 
     def save(self, commit=True):
-        self.instance.query = self.generate_query()
-        self.instance.model = self.cleaned_data.get('model')
+        if self.is_valid():
+            self.instance.query = self.generate_query()
+            self.instance.model = self.cleaned_data.get('model')
         return super().save(commit)
