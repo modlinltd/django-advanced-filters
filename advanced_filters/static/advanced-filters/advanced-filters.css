@@ -58,7 +58,7 @@
 
 .white-popup {
 	position: relative;
-	background: #FFF;
+	background: var(--body-bg, #FFF);
 	padding: 20px;
 	width: auto;
 	max-width: 800px;
