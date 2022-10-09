@@ -71,23 +71,6 @@ class TestQueryForm(TestCase):
             'fname': 'First name'
         }
 
-    def test_build_query_dict(self):
-        data = self.data.copy()
-        form = AdvancedFilterQueryForm(self.fields, data=data)
-        assert form._build_query_dict() == {'fname__iexact': 'john'}
-
-        data['operator'] = 'isnull'
-        form = AdvancedFilterQueryForm(self.fields, data=data)
-        assert form._build_query_dict() == {'fname__isnull': None}
-
-        data['operator'] = 'istrue'
-        form = AdvancedFilterQueryForm(self.fields, data=data)
-        assert form._build_query_dict() == {'fname': True}
-
-        data['operator'] = 'isfalse'
-        form = AdvancedFilterQueryForm(self.fields, data=data)
-        assert form._build_query_dict() == {'fname': False}
-
     def test_make_query(self):
         form = AdvancedFilterQueryForm(self.fields, data=self.data)
         assert form.is_valid()
@@ -199,6 +182,33 @@ class TestQueryForm(TestCase):
             res = AdvancedFilterQueryForm._parse_query_dict(field, Rep)
             assert isinstance(res, dict)
             assert res == expected[i]
+
+
+@pytest.mark.parametrize("fields, data, expected", [
+    (
+        dict(bday='birthday', fname='first name'),
+        dict(field='fname', value='john', operator='iexact'),
+        {'fname__iexact': 'john'}
+    ),
+    (
+        dict(bday='birthday', fname='first name'),
+        dict(field='fname', value='john', operator='isnull'),
+        {'fname__isnull': True}
+    ),
+    (
+        dict(bday='birthday', fname='first name'),
+        dict(field='fname', value='john', operator='istrue'),
+        {'fname': True}
+    ),
+    (
+        dict(bday='birthday', fname='first name'),
+        dict(field='fname', value='john', operator='isfalse'),
+        {'fname': False}
+    ),
+])
+def test_build_query_dict(data, fields, expected):
+    form = AdvancedFilterQueryForm(fields, data=data)
+    assert form._build_query_dict() == expected
 
 
 class CommonFormTest(TestCase):
