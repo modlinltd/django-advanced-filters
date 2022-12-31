@@ -55,19 +55,16 @@ else:
 setup(
     name='django-advanced-filters',
     version=__version__,
-    url='https://github.com/modlinltd/django-advanced-filters',
+    url='https://github.com/baseplate-admin/django-advanced-filters',
     license='MIT',
     description='A Django application for advanced admin filters',
     keywords='django-admin admin advanced filters custom query',
     long_description=get_full_description(),
     packages=find_packages(exclude=['tests*', 'tests.*', '*.tests']),
     include_package_data=True,
-    install_requires=[
-        'simplejson>=3.6.5,<4',
-    ],
     extras_require=dict(test=TEST_REQS),
     zip_safe=False,
-    author='Pavel Savchenko',
+    author='Baseplate Admin',
     author_email='pavel@modlinltd.com',
     python_requires='>=3.6',
     classifiers=[
