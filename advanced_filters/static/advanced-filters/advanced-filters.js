@@ -67,7 +67,7 @@ var OperatorHandlers = function($) {
 		// initialize select2 widget and populate field choices
 		var field = $(elm).val();
 		var choices_url = ADVANCED_FILTER_CHOICES_LOOKUP_URL + (FORM_MODEL ||
-						  MODEL_LABEL) + '/' + field;
+						  MODEL_LABEL) + '/' + field + '/';
 		var input = $(elm).parents('tr').find('input.query-value');
 		input.select2("destroy");
 		$.get(choices_url, function(data) {
