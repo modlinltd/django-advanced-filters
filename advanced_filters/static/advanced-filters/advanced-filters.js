@@ -1,7 +1,7 @@
+const $ = django.jQuery;
 var _af_handlers = window._af_handlers || null;
 var OperatorHandlers = function($) {
 	var self = this;
-	self.value = null;
 	self.val_input = null;
 	self.selected_field_elm = null;
 
@@ -53,27 +53,61 @@ var OperatorHandlers = function($) {
 
 	self.modify_widget = function(elm) {
 		// pick a widget for the value field according to operator
-		self.value = $(elm).val();
-		self.val_input = $(elm).parents('tr').find('.query-value');
-		console.log("selected operator: " + self.value);
-		if (self.value == "range") {
+		let op = $(elm);
+		let op_value = $(elm).val();
+		let row = $(elm).parents('tr');
+		self.val_input = row.find('select.query-value');
+
+		console.log("selected operator: " + op_value);
+		if (op_value == "range") {
 			self.add_datepickers();
 		} else {
 			self.remove_datepickers();
+
+			if (op_value == "isnull") {
+				self.val_input.select2("destroy");
+
+				self.val_input.val("null").prop("disabled", true);
+				self.val_input.after(
+					'<input type="hidden" value="' + self.val_input.val() +
+					'" name="' + self.val_input.attr("name") + '">'
+				);
+			} else {
+				self.initialize_select2(row.find("select.query-field").first());
+
+				op.prop("disabled", false);
+				op.siblings('input[type="hidden"]').remove();
+				self.val_input.prop("disabled", false);
+				self.val_input.siblings('input[type="hidden"]').remove();
+
+			}
 		}
 	};
+
+	self.destroy_select2 = function(elm) {
+		if (elm.hasClass("select2-hidden-accessible")) {
+			elm.select2("destroy");
+			// options added from the backend need to be removed
+			elm.find("option").remove();
+		}
+	}
 
 	self.initialize_select2 = function(elm) {
 		// initialize select2 widget and populate field choices
 		var field = $(elm).val();
 		var choices_url = ADVANCED_FILTER_CHOICES_LOOKUP_URL + (FORM_MODEL ||
 						  MODEL_LABEL) + '/' + field;
-		var input = $(elm).parents('tr').find('input.query-value');
-		input.select2("destroy");
+		var select = $(elm).parents('tr').find('select.query-value');
+		self.destroy_select2(select);
 		$.get(choices_url, function(data) {
-			input.select2({'data': data, 'createSearchChoice': function(term) {
-                return { 'id': term, 'text': term };
-            }});
+			const initialData = data.results.map(function(tag, index) {
+				let tag_id = typeof(tag.id) === "string" ? tag.id : tag.id + "";
+				return {id: tag_id, text: tag.text.toString()};
+			})
+			select.select2({
+				data: initialData,
+				tags: true,
+			});
 		});
 	};
 
@@ -94,9 +128,10 @@ var OperatorHandlers = function($) {
 			op.siblings('input[type="hidden"]').remove();
 			value.prop("disabled", false);
 			value.siblings('input[type="hidden"]').remove();
-			if (!value.val() == "null") {
-				value.val("");
-			}
+			// DEPRECATED: Does this do anything?
+			// if (!value.val() == "null") {
+			// 	value.val("");
+			// }
 			op.val("iexact").change();
 			self.initialize_select2(elm);
 		}
@@ -127,8 +162,6 @@ var OperatorHandlers = function($) {
 				$(this).data('pre_change', $(this).val());
 			}).change();
 		});
-		self.field_selected($('.form-row select.query-field').first());
-
 	};
 
 	self.destroy = function() {
@@ -138,13 +171,12 @@ var OperatorHandlers = function($) {
 		$('.form-row select.query-field').each(function() {
 			$(this).off("change");
 		});
-		$('.form-row input.query-value').each(function() {
-			$(this).select2("destroy");
+		$('.form-row select.query-value').each(function() {
+			self.destroy_select2($(this));
 		});
 	};
 };
 
-// using Grappelli's jquery if available
 (function($) {
 	$(document).ready(function() {
 		if (!_af_handlers) {
@@ -153,4 +185,4 @@ var OperatorHandlers = function($) {
 			_af_handlers.init();
 		}
 	});
-})(window._jq || jQuery);
+})(django.jQuery);

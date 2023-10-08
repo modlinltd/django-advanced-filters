@@ -102,3 +102,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# use non-minified version for testing
+SELECT2_JS = 'admin/js/vendor/select2/select2.full.js'
+SELECT2_CSS = 'admin/css/vendor/select2/select2.css'

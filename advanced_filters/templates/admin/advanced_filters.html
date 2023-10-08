@@ -22,7 +22,7 @@
 	{# Add the dialog content to the bottom of the content #}
 	{% if advanced_filters %}
 		{% with advanced_filters.fields_formset as formset %}
-			<div class="white-popup mfp-hide" id="advanced_filters">
+			<div class="{{ formset.classes }} white-popup mfp-hide" id="advanced_filters">
 				<h1>{% trans "Create advanced filter" %}:</h1>
 				<form novalidate method="POST" id="advanced_filters_form">
 					{% csrf_token %}
@@ -42,7 +42,7 @@
 						</thead>
 						<tbody>
 							{% for form in formset %}
-								<tr class="form-row {% cycle "row1" "row2" %} {% if forloop.last %}empty-form{% endif %}" id="{{ formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}">
+								<tr class="form-row {% if forloop.last %}empty-form{% endif %}" id="{{ formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}">
 									{{form.non_field_errors}}
 									{% for field in form.visible_fields %}
 										<td{% if field.field.name %} class="field-{{ field.field.name }}"{% endif %}>
@@ -63,31 +63,38 @@
 					<br />
 					<input method="POST" type="submit" value="{% trans "Save" %}">
 					<input method="POST" name="_save_goto" type="submit" value="{% trans "Save & Filter Now!" %}">
-					<a href="#" class="grp-button" style="margin:auto" onclick="$.magnificPopup.close();">{% trans "Cancel" %}</a>
+					<a href="#" class="grp-button close" style="margin:auto">{% trans "Cancel" %}</a>
 				</form>
 
 				{{ advanced_filters.media.js }}
 
 				<script type="text/javascript" charset="utf-8">
-					// using django's original jquery, initial formset
-					var FORM_MODEL = undefined;
-					var MODEL_LABEL = '{{ app_label }}.{{ opts.model_name }}';
-					(function($) {
-						$.magnificPopup.instance._onFocusIn = function(e) {
-							// Do nothing if target element is select2 input
-							if( $(e.target).hasClass('select2-input') ) {
-								return true;
+					'use strict';
+					{
+						// using django's original jquery, initial formset
+						const $ = django.jQuery;
+						var FORM_MODEL = undefined;
+						var MODEL_LABEL = '{{ app_label }}.{{ opts.model_name }}';
+						$(function () {
+							$.magnificPopup.instance._onFocusIn = function(e) {
+								// Do nothing if target element is select2 input
+								if( $(e.target).hasClass('select2-input') ) {
+									return true;
+								}
+								// Else call parent method
+								$.magnificPopup.proto._onFocusIn.call(this,e);
+							};
+							$('.ajax-popup-link').magnificPopup({
+								type:'inline',
+							});
+							if ($(".errorlist", "#advanced_filters").length) {
+								$('.ajax-popup-link').magnificPopup('open');
 							}
-							// Else call parent method
-							$.magnificPopup.proto._onFocusIn.call(this,e);
-						};
-						$('.ajax-popup-link').magnificPopup({
-							type:'inline',
+							$("#advanced_filters_form a.close").on("click", function() {
+								$.magnificPopup.close();
+							})
 						});
-						if ($(".errorlist", "#advanced_filters").length) {
-							$('.ajax-popup-link').magnificPopup('open');
-						}
-					})(jQuery);
+					}
 				</script>
 
 				{% include "admin/common_js_init.html" with formset=formset %}
