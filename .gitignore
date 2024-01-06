@@ -19,3 +19,4 @@ tests/db.sqlite*
 /.venv
 .vscode/settings.json
 pyrightconfig.json
+.ropeproject
