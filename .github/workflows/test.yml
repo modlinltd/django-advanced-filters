@@ -9,7 +9,7 @@ jobs:
     container: mcr.microsoft.com/playwright:v1.42.1-jammy
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "pypy-3.7", "pypy-3.8"]
+        python-version: ["3.8", "3.9", "3.10", "pypy-3.8"]
 
     steps:
       - uses: actions/checkout@v1
