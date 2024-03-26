@@ -54,7 +54,7 @@
 				{% prepopulated_fields_js %}
 				{{ adminform.media.js }}
 
-				<script type="text/javascript" charset="utf-8">
+				<script type="text/javascript" charset="utf-8" nonce="{{request.csp_nonce}}">
 					// using django's original jquery, initial formset
 					var FORM_MODEL = '{% if adminform %}{{ adminform.form.instance.model }}{% endif %}';
 					var MODEL_LABEL = '{{ app_label }}.{{ opts.model_name }}';
