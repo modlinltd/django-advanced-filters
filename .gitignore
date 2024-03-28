@@ -10,6 +10,7 @@ django_advanced_filters.egg-info/
 tests/db.sqlite*
 /.python-version
 /.cache/
+__pycache__/
 /.eggs/
 /htmlcov/
 /advanced_filters/.coverage
@@ -18,5 +19,6 @@ tests/db.sqlite*
 /tests/local.db
 /.venv
 .vscode/settings.json
+Sublimerge.vcs-cache
 pyrightconfig.json
 .ropeproject

@@ -2,7 +2,7 @@ import pytest
 from django.contrib.auth.models import Permission
 from django.urls import reverse_lazy
 
-from ..models import AdvancedFilter
+from advanced_filters.models import AdvancedFilter
 
 URL_CLIENT_CHANGELIST = reverse_lazy("admin:customers_client_changelist")
 

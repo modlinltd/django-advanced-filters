@@ -1,26 +1,28 @@
 import json
-import sys
 from datetime import timedelta
-from operator import attrgetter
+from operator import itemgetter
 
-import django
 import factory
 import pytest
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import force_str
-from django.urls import reverse
-from tests.factories import ClientFactory
 
+from tests.factories import ClientFactory
 
 URL_NAME = "afilters_get_field_choices"
 
 
+def parse_json(content):
+    return json.loads(force_str(content))
+
+
 def assert_json(content, expect):
-    assert json.loads(force_str(content)) == expect
+    assert parse_json(content) == expect
 
 
 def assert_view_error(client, error, exception=None, **view_kwargs):
-    """ Ensure view either raises exception or returns a 400 json error """
+    """Ensure view either raises exception or returns a 400 json error"""
     view_url = reverse(URL_NAME, kwargs=view_kwargs)
 
     if exception is not None:
@@ -71,11 +73,6 @@ def test_field_with_choices(client):
     )
 
 
-@pytest.fixture
-def three_clients(user):
-    return ClientFactory.create_batch(3, assigned_to=user)
-
-
 def test_disabled_field(three_clients, client, settings):
     settings.ADVANCED_FILTERS_DISABLE_FOR_FIELDS = ("email",)
     view_url = reverse(
@@ -98,10 +95,10 @@ def test_database_choices(three_clients, client):
         URL_NAME, kwargs=dict(model="customers.Client", field_name="email")
     )
     response = client.get(view_url)
-    assert_json(
-        response.content,
-        {"results": [dict(id=e.email, text=e.email) for e in three_clients]},
-    )
+    result = parse_json(response.content)
+    data = (dict(id=e.email, text=e.email) for e in three_clients)
+    sort_func = itemgetter("id")
+    assert sorted(result["results"], key=sort_func) == sorted(data, key=sort_func)
 
 
 def test_more_than_max_database_choices(user, client, settings):
