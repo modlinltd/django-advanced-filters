@@ -1,16 +1,14 @@
 import json
-import sys
 from datetime import timedelta
-from operator import attrgetter, itemgetter
+from operator import itemgetter
 
-import django
 import factory
 import pytest
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import force_str
-from django.urls import reverse
-from tests.factories import ClientFactory
 
+from tests.factories import ClientFactory
 
 URL_NAME = "afilters_get_field_choices"
 
@@ -24,7 +22,7 @@ def assert_json(content, expect):
 
 
 def assert_view_error(client, error, exception=None, **view_kwargs):
-    """ Ensure view either raises exception or returns a 400 json error """
+    """Ensure view either raises exception or returns a 400 json error"""
     view_url = reverse(URL_NAME, kwargs=view_kwargs)
 
     if exception is not None:
@@ -99,8 +97,8 @@ def test_database_choices(three_clients, client):
     response = client.get(view_url)
     result = parse_json(response.content)
     data = (dict(id=e.email, text=e.email) for e in three_clients)
-    sort_func = itemgetter('id')
-    assert sorted(result['results'], key=sort_func) == sorted(data, key=sort_func)
+    sort_func = itemgetter("id")
+    assert sorted(result["results"], key=sort_func) == sorted(data, key=sort_func)
 
 
 def test_more_than_max_database_choices(user, client, settings):

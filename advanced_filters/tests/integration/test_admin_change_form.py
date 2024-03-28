@@ -3,8 +3,8 @@ from django.contrib.auth.models import Permission
 from django.db.models import Q
 from django.urls import reverse
 
-from ..models import AdvancedFilter
-from .factories import AdvancedFilterFactory
+from advanced_filters.models import AdvancedFilter
+from advanced_filters.tests.factories import AdvancedFilterFactory
 
 URL_NAME_CHANGE = "admin:advanced_filters_advancedfilter_change"
 URL_NAME_ADD = "admin:advanced_filters_advancedfilter_add"
@@ -42,7 +42,9 @@ def test_change_and_goto(client, user, settings, advanced_filter):
     res = client.post(url, data=form_data)
     assert res.status_code == 302
     url = res["location"]
-    assert url.endswith("%s?_afilter=1" % reverse(URL_NAME_CLIENT_CHANGELIST))
+    changelist_url = reverse(URL_NAME_CLIENT_CHANGELIST)
+    new_filter_id = AdvancedFilter.objects.last().pk
+    assert url.endswith(f"{changelist_url}?_afilter={new_filter_id}")
 
 
 def test_create_page_disabled(client, user):
