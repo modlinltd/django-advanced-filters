@@ -10,6 +10,7 @@ django_advanced_filters.egg-info/
 tests/db.sqlite*
 /.python-version
 /.cache/
+__pycache__/
 /.eggs/
 /htmlcov/
 /advanced_filters/.coverage
