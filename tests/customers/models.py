@@ -4,6 +4,10 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
+class Attribute(models.Model):
+    name = models.CharField(max_length=100)
+
+
 class Client(AbstractBaseUser):
     VALID_LANGUAGES = (
         ('en', 'English'),
@@ -23,3 +27,4 @@ class Client(AbstractBaseUser):
                     'active. Unselect this instead of deleting accounts.'))
     assigned_to = models.ForeignKey('reps.SalesRep', on_delete=models.CASCADE)
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    attributes = models.ManyToManyField(Attribute, blank=True)
