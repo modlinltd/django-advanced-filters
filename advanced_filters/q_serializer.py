@@ -6,7 +6,7 @@ import time
 from django.db.models import Q
 from django.core.serializers.base import SerializationError
 
-import simplejson as json
+import json
 
 
 try:
