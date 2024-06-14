@@ -1,6 +1,6 @@
 {% load i18n static %}
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="{{request.csp_nonce}}">
 	// globals
 	var _af_handlers = window._af_handlers || null;
 	var ADVANCED_FILTER_CHOICES_LOOKUP_URL = "{% url 'afilters_get_field_choices' %}";

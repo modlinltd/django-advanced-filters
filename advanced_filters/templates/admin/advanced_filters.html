@@ -63,12 +63,13 @@
 					<br />
 					<input method="POST" type="submit" value="{% trans "Save" %}">
 					<input method="POST" name="_save_goto" type="submit" value="{% trans "Save & Filter Now!" %}">
-					<a href="#" class="grp-button" style="margin:auto" onclick="$.magnificPopup.close();">{% trans "Cancel" %}</a>
+					<a href="#" id="advanced-filters-close-btn" class="grp-button" style="margin:auto">{% trans "Cancel" %}</a>
 				</form>
 
 				{{ advanced_filters.media.js }}
 
-				<script type="text/javascript" charset="utf-8">
+				<script type="text/javascript" charset="utf-8" nonce="{{request.csp_nonce}}">
+					document.getElementById("advanced-filters-close-btn").addEventListener('click', ()=>$.magnificPopup.close());
 					// using django's original jquery, initial formset
 					var FORM_MODEL = undefined;
 					var MODEL_LABEL = '{{ app_label }}.{{ opts.model_name }}';
