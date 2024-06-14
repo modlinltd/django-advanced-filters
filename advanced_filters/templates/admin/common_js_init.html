@@ -12,16 +12,7 @@
 				prefix: "{{ formset.prefix }}",
 				adminStaticPrefix: '{% static "admin/" %}',
 				addText: "{% trans "Add another filter" %}",
-				deleteText: "{% trans 'Remove' %}",
-				added: function(row) {
-					if (_af_handlers) _af_handlers.init();  // re-init
-
-					// call original "added" callback
-					$.fn.tabularFormset.default_added(row);
-				},
-				preAdded: function(row) {
-					if (_af_handlers) _af_handlers.destroy();  // cleanup
-				}
-		});
+				deleteText: "{% trans 'Remove' %}"
+                        });
 	})(django.jQuery);
 </script>
