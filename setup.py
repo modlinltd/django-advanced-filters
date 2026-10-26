@@ -63,6 +63,7 @@ setup(
     packages=find_packages(exclude=['tests*', 'tests.*', '*.tests']),
     include_package_data=True,
     install_requires=[
+        'Django>=2.2',
         'simplejson>=3.6.5,<4',
     ],
     extras_require=dict(test=TEST_REQS),
